@@ -15,7 +15,7 @@ public class FuchsSwitch : BooleanFieldBase, IBooleanField
 {
 	public static readonly BindableProperty IsCheckedProperty = BindableProperty.Create(
 		nameof(IsChecked),
-		typeof(bool?),
+		typeof(bool),
 		typeof(FuchsSwitch),
 		false, BindingMode.TwoWay, propertyChanged: OnCheckedChanged);
 
@@ -24,13 +24,14 @@ public class FuchsSwitch : BooleanFieldBase, IBooleanField
 		if (bindable is FuchsSwitch switchControl)
 		{
 			Debug.WriteLine($"Switch value changed: {switchControl.IsChecked}");
+			switchControl.CoerceValue(HelpTextProperty);
 		}
 	}
 
 	/// <inheritdoc />
-	public bool? IsChecked
+	public bool IsChecked
 	{
-		get => (bool?)GetValue(IsCheckedProperty);
+		get => (bool)GetValue(IsCheckedProperty);
 		set => SetValue(IsCheckedProperty, value);
 	}
 

@@ -8,5 +8,5 @@ namespace FuchsControls.Fields;
 
 public interface IBooleanField : IFieldBase
 {
-	public bool? IsChecked { get; set; }
+	public bool IsChecked { get; set; }
 }
