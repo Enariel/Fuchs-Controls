@@ -27,8 +27,8 @@ public class FuchsEditor : TextEditorBase
 		editor.SetBinding(Editor.HeightRequestProperty, new Binding(nameof(EditorHeight), source: this, mode: BindingMode.OneWay));
 		editor.SetBinding(Editor.TextProperty, new Binding(nameof(Text), source: this, mode: BindingMode.TwoWay));
 		
-
 		stack.Children.Add(label);
+		stack.Children.Add(editor);
 		
 #if WINDOWS
         if (!string.IsNullOrEmpty(HelpText))

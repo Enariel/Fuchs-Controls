@@ -12,12 +12,12 @@ public class FuchsEntry : TextFieldBase, ITextField
 {
 	public FuchsEntry()
 	{
-		var stack = new StackLayout();
-		stack.Orientation = GetOrientation();
-
+		var stack = new StackLayout() { Spacing = 5, Orientation = GetOrientation() };
 		var label = new Label();
-		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(Label), source: this, mode: BindingMode.OneWay));
 		var editor = new Entry();
+		
+		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(Label), source: this, mode: BindingMode.OneWay));
+		
 		editor.SetBinding(Entry.KeyboardProperty, new Binding(nameof(Keyboard), source: this, mode: BindingMode.OneWay));
 		editor.SetBinding(Entry.ReturnTypeProperty, new Binding(nameof(ReturnType), source: this, mode: BindingMode.OneWay));
 		editor.SetBinding(PlaceholderProperty, new Binding(nameof(Placeholder), source: this, mode: BindingMode.OneWay));
@@ -27,6 +27,7 @@ public class FuchsEntry : TextFieldBase, ITextField
 
 		stack.Children.Add(label);
 		stack.Children.Add(editor);
+		
 		Content = stack;
 	}
 
