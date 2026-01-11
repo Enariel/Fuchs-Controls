@@ -20,7 +20,7 @@
 
                 <Label x:Name="ChevronLabel"
                        Grid.Column="1"
-                       Text="展开"
+                       Text="^"
                        FontSize="12"
                        VerticalOptions="Center" />
             </Grid>
