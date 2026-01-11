@@ -22,7 +22,6 @@
 
     <ItemGroup>
       <Folder Include="Containers\" />
-      <Folder Include="Resources\Styles\" />
     </ItemGroup>
 
 </Project>

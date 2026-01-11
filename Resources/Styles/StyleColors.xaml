@@ -1,0 +1,41 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Primary Colors -->
+    <Color x:Key="Primary">#512BD4</Color>
+    <Color x:Key="PrimaryDark">#3A1F99</Color>
+    <Color x:Key="PrimaryLight">#7D5FE8</Color>
+
+    <!-- Secondary Colors -->
+    <Color x:Key="Secondary">#DFD8F7</Color>
+    <Color x:Key="SecondaryDark">#B8AEDB</Color>
+    <Color x:Key="SecondaryLight">#F5F2FF</Color>
+
+    <!-- Tertiary Colors -->
+    <Color x:Key="Tertiary">#2B0B98</Color>
+    <Color x:Key="TertiaryDark">#1F0870</Color>
+    <Color x:Key="TertiaryLight">#4420C4</Color>
+
+    <!-- Background Colors -->
+    <Color x:Key="Background">#FFFFFF</Color>
+    <Color x:Key="BackgroundDark">#1C1C1E</Color>
+    <Color x:Key="Surface">#F5F5F5</Color>
+    <Color x:Key="SurfaceDark">#2C2C2E</Color>
+
+    <!-- Text Colors -->
+    <Color x:Key="TextPrimary">#000000</Color>
+    <Color x:Key="TextSecondary">#666666</Color>
+    <Color x:Key="TextOnPrimary">#FFFFFF</Color>
+    <Color x:Key="TextDisabled">#CCCCCC</Color>
+
+    <!-- Status Colors -->
+    <Color x:Key="Success">#4CAF50</Color>
+    <Color x:Key="Warning">#FF9800</Color>
+    <Color x:Key="Error">#F44336</Color>
+    <Color x:Key="Info">#2196F3</Color>
+
+    <!-- Border and Divider Colors -->
+    <Color x:Key="Border">#E0E0E0</Color>
+    <Color x:Key="Divider">#EEEEEE</Color>
+    
+</ResourceDictionary>
