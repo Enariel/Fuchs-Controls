@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<fields:BooleanFieldBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                         xmlns:fields="using:FuchsControls.Fields"
+                         x:Class="FuchsControls.Fields.FuchsToggle"
+                         x:Name="this">
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        
+        <Label Grid.Column="0" x:Name="ToggleLabel" />
+        
+        <!-- Track -->
+        <Border x:Name="Track"
+                Grid.Column="1"
+                WidthRequest="50"
+                HeightRequest="28"
+                StrokeShape="RoundRectangle 14"
+                StrokeThickness="0"
+                BackgroundColor="{Binding Source={x:Reference this}, Path=OffColor}">
+
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnTapped" />
+            </Border.GestureRecognizers>
+
+            <HorizontalStackLayout HorizontalOptions="Start">
+                <Ellipse x:Name="Thumb"
+                         WidthRequest="22"
+                         HeightRequest="22"
+                         Fill="White"
+                         VerticalOptions="Center"
+                         Margin="3,0">
+                    <Ellipse.Shadow>
+                        <Shadow Brush="Black" Offset="0,1" Radius="2" Opacity="0.2" />
+                    </Ellipse.Shadow>
+                </Ellipse>
+            </HorizontalStackLayout>
+        </Border>
+    </Grid>
+</fields:BooleanFieldBase>
