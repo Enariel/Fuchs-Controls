@@ -1,7 +1,9 @@
 ﻿#region Meta
+
 // FuchsControls
 // Created: 10/01/2026
 // Modified: 10/01/2026
+
 #endregion
 
 namespace FuchsControls.Fields;
@@ -26,13 +28,13 @@ public class FuchsEditor : TextEditorBase
 		editor.SetBinding(Editor.AutoSizeProperty, new Binding(nameof(AutoSize), source: this, mode: BindingMode.OneWay));
 		editor.SetBinding(Editor.HeightRequestProperty, new Binding(nameof(EditorHeight), source: this, mode: BindingMode.OneWay));
 		editor.SetBinding(Editor.TextProperty, new Binding(nameof(Text), source: this, mode: BindingMode.TwoWay));
-		
+
 		stack.Children.Add(label);
 		stack.Children.Add(editor);
-		
+
 #if WINDOWS
-        if (!string.IsNullOrEmpty(HelpText))
-            ToolTipProperties.SetText(label, new Binding(nameof(HelpText), source: this));
+		if (!string.IsNullOrEmpty(HelpText))
+			ToolTipProperties.SetText(label, new Binding(nameof(HelpText), source: this));
 #else
 		var helpText = new Label();
 		helpText.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(HelpText), source: this));
@@ -40,7 +42,7 @@ public class FuchsEditor : TextEditorBase
 #endif
 		Content = stack;
 	}
-	
+
 	private StackOrientation GetOrientation()
 	{
 		switch (Orientation)
