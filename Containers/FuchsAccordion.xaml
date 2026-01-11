@@ -2,6 +2,34 @@
 
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FuchsControls.Containers.FuchsAccordion">
-    
+             x:Class="FuchsControls.Containers.FuchsAccordion"
+             x:Name="ThisAccordion">
+    <Border Padding="20" BackgroundColor="Transparent" VerticalOptions="Start">
+        <VerticalStackLayout Spacing="20" VerticalOptions="Start" >
+            
+            <!-- Header Section -->
+            <Grid ColumnDefinitions="*, Auto" Padding="10" BackgroundColor="{Binding HeaderBackgroundColor, Source={x:Reference ThisAccordion}}">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnHeaderTapped" />
+                </Grid.GestureRecognizers>
+
+                <Label Text="{Binding Title, Source={x:Reference ThisAccordion}}"
+                       VerticalOptions="Center"
+                       FontSize="24"
+                       FontAttributes="Bold" />
+
+                <Label x:Name="ChevronLabel"
+                       Grid.Column="1"
+                       Text="展开"
+                       FontSize="12"
+                       VerticalOptions="Center" />
+            </Grid>
+
+            <!-- Content Section -->
+            <ContentView x:Name="ContentContainer"
+                         IsVisible="{Binding IsExpanded, Source={x:Reference ThisAccordion}}"
+                         Content="{Binding AccordionContent, Source={x:Reference ThisAccordion}}" />
+
+        </VerticalStackLayout>
+    </Border>
 </ContentView>
