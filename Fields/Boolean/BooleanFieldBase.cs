@@ -18,15 +18,13 @@ public abstract class BooleanFieldBase : ContentView, IFieldBase
 		nameof(HelpText),
 		typeof(string),
 		typeof(BooleanFieldBase),
-		default(string));
+		default(string), BindingMode.TwoWay);
 
 	public static readonly BindableProperty PlaceholderProperty = BindableProperty.Create(
 		nameof(Placeholder),
 		typeof(string),
 		typeof(BooleanFieldBase),
 		default(string));
-
-
 
 	/// <inheritdoc />
 	public string Label

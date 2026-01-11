@@ -27,10 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Containers\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Remove="FuchsControls.csproj.DotSettings" />
     </ItemGroup>
 

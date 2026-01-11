@@ -14,6 +14,8 @@ public partial class FuchsInt : NumericFieldBase<Int32>
 {
 	public FuchsInt()
 	{
+		Margin = new Thickness(0, 5, 0, 5);
+		
 		BuildLayout();
 	}
 

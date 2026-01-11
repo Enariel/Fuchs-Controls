@@ -12,13 +12,14 @@ public class FuchsEditor : TextEditorBase
 {
 	public FuchsEditor()
 	{
+		Margin = new Thickness(0, 5, 0, 5);
 		var stack = new StackLayout
 		{
 			Orientation = GetOrientation(),
 			Spacing = 5
 		};
 
-		var label = new Label();
+		var label = new Label() { FontSize = 16 };
 		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(Label), source: this, mode: BindingMode.OneWay));
 
 		var editor = new Editor();

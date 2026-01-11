@@ -12,8 +12,10 @@ public class FuchsEnumSelect<TValue> : SelectFieldBase<TValue> where TValue : st
 {
 	public FuchsEnumSelect()
 	{
+		Margin = new Thickness(0, 5, 0, 5);
+		
 		var root = this;
-		var label = new Label();
+		var label = new Label() { FontSize = 16 };
 		var picker = new Picker()
 		{
 			ItemsSource = Enum.GetValues<TValue>().Cast<TValue>().ToList(),
@@ -22,7 +24,7 @@ public class FuchsEnumSelect<TValue> : SelectFieldBase<TValue> where TValue : st
 		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(Label), source: root));
 		picker.SetBinding(Picker.SelectedItemProperty, new Binding(nameof(SelectedValue), source: root));
 
-		var stack = new StackLayout(){ Spacing = 5, Children = { label, picker }};
+		var stack = new StackLayout() { Spacing = 5, Children = { label, picker } };
 		Content = stack;
 	}
 }
