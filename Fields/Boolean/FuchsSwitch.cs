@@ -37,7 +37,7 @@ public class FuchsSwitch : BooleanFieldBase, IBooleanField
 	
 	public FuchsSwitch()
 	{
-		Margin = new Thickness(0, 5, 0, 5);
+		Margin = new Thickness(2, 5, 2, 5);
 
 		var label = new Label() { FontSize = 16 };
 		var helpText = new Label() { FontSize = 12 };
@@ -49,7 +49,8 @@ public class FuchsSwitch : BooleanFieldBase, IBooleanField
 		
 		var layout = new VerticalStackLayout
 		{
-			Spacing = 5, Children =
+			Spacing = 5,
+			Children =
 			{
 				label,
 				toggle,

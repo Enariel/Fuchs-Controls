@@ -18,8 +18,6 @@ public class FuchsEditor : TextEditorBase
 			Spacing = 5
 		};
 		
-		stack.SetBinding(StackLayout.OrientationProperty, new Binding(nameof(Orientation), source: this, mode: BindingMode.OneWay));
-
 		var label = new Label() { FontSize = 16 };
 		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(Label), source: this, mode: BindingMode.OneWay));
 
@@ -31,12 +29,17 @@ public class FuchsEditor : TextEditorBase
 		editor.SetBinding(Editor.HeightRequestProperty, new Binding(nameof(EditorHeight), source: this, mode: BindingMode.OneWay));
 		editor.SetBinding(Editor.TextProperty, new Binding(nameof(Text), source: this, mode: BindingMode.TwoWay));
 
+		stack.SetBinding(StackLayout.OrientationProperty, new Binding(nameof(Orientation), source: this, mode: BindingMode.OneWay));
 		stack.Children.Add(label);
 		stack.Children.Add(editor);
 
 #if WINDOWS
-		if (!string.IsNullOrEmpty(HelpText))
-			ToolTipProperties.SetText(stack, new Binding(nameof(HelpText), source: this));
+		ToolTipProperties.SetText(
+			stack,
+			new Binding(
+				nameof(HelpText),
+				source: this,
+				converter: new FuchsControls.EmptyStringToNullConverter()));
 #else
 		var helpText = new Label();
 		helpText.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(HelpText), source: this));
