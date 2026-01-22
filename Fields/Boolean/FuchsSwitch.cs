@@ -57,6 +57,12 @@ public class FuchsSwitch : BooleanFieldBase, IBooleanField
 			}
 		};
 
+#if WINDOWS
+		if (!string.IsNullOrEmpty(HelpText))
+			ToolTipProperties.SetText(layout, new Binding(nameof(HelpText), source: this));
+#endif
+
+		
 		Content = layout;
 	}
 }

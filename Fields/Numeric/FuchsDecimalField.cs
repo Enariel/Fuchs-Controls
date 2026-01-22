@@ -56,6 +56,11 @@ public partial class FuchsDecimal : NumericFieldBase<decimal>
 		grid.Add(MainEditor, 0, 0);
 		grid.Add(MainStepper, 1, 0);
 
+#if WINDOWS
+		if (!string.IsNullOrEmpty(HelpText))
+			ToolTipProperties.SetText(MainStepper, new Binding(nameof(HelpText), source: this));
+#endif
+		
 		var editorBorder = new Border
 		{
 			Content = grid

@@ -35,7 +35,7 @@ public class FuchsEditor : TextEditorBase
 
 #if WINDOWS
 		if (!string.IsNullOrEmpty(HelpText))
-			ToolTipProperties.SetText(label, new Binding(nameof(HelpText), source: this));
+			ToolTipProperties.SetText(stack, new Binding(nameof(HelpText), source: this));
 #else
 		var helpText = new Label();
 		helpText.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(HelpText), source: this));

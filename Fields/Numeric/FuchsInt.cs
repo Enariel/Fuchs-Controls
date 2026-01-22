@@ -40,6 +40,11 @@ public partial class FuchsInt : NumericFieldBase<Int32>
 		MainStepper.SetBinding(Stepper.MaximumProperty, new Binding(nameof(Maximum), source: this, mode: BindingMode.TwoWay));
 		MainStepper.SetBinding(Stepper.ValueProperty, new Binding(nameof(NumericValue), source: this, mode: BindingMode.TwoWay));
 		MainStepper.ValueChanged += OnNumberChanged;
+		
+#if WINDOWS
+		if (!string.IsNullOrEmpty(HelpText))
+			ToolTipProperties.SetText(MainStepper, new Binding(nameof(HelpText), source: this));
+#endif
 
 		// 3. Border & Grid
 		var grid = new Grid
