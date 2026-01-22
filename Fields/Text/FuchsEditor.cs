@@ -12,12 +12,13 @@ public class FuchsEditor : TextEditorBase
 {
 	public FuchsEditor()
 	{
-		Margin = new Thickness(0, 5, 0, 5);
+		Margin = new Thickness(2, 5, 2, 5);
 		var stack = new StackLayout
 		{
-			Orientation = GetOrientation(),
 			Spacing = 5
 		};
+		
+		stack.SetBinding(StackLayout.OrientationProperty, new Binding(nameof(Orientation), source: this, mode: BindingMode.OneWay));
 
 		var label = new Label() { FontSize = 16 };
 		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(Label), source: this, mode: BindingMode.OneWay));
@@ -42,18 +43,5 @@ public class FuchsEditor : TextEditorBase
 		stack.Children.Add(helpText);
 #endif
 		Content = stack;
-	}
-
-	private StackOrientation GetOrientation()
-	{
-		switch (Orientation)
-		{
-			case FieldOrientation.Horizontal:
-				return StackOrientation.Horizontal;
-			case FieldOrientation.Vertical:
-				return StackOrientation.Vertical;
-			default:
-				return StackOrientation.Vertical;
-		}
 	}
 }

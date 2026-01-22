@@ -12,7 +12,7 @@ public class FuchsEnumSelect<TValue> : SelectFieldBase<TValue> where TValue : st
 {
 	public FuchsEnumSelect()
 	{
-		Margin = new Thickness(0, 5, 0, 5);
+		Margin = new Thickness(2, 5, 2, 5);
 		
 		var root = this;
 		var label = new Label() { FontSize = 16 };

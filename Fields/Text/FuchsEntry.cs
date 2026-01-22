@@ -12,11 +12,10 @@ public class FuchsEntry : TextFieldBase, ITextField
 {
 	public FuchsEntry()
 	{
-		Margin = new Thickness(0, 5, 0, 5);
-		var stack = new StackLayout() { Spacing = 5, Orientation = GetOrientation() };
+		Margin = new Thickness(2, 5, 2, 5);
+		var stack = new StackLayout() { Spacing = 5 };
 		var label = new Label() { FontSize = 16 };
 		var editor = new Entry();
-
 		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(Label), source: this, mode: BindingMode.OneWay));
 
 		editor.SetBinding(Entry.KeyboardProperty, new Binding(nameof(Keyboard), source: this, mode: BindingMode.OneWay));
@@ -26,6 +25,7 @@ public class FuchsEntry : TextFieldBase, ITextField
 		editor.SetBinding(Entry.TextProperty, new Binding(nameof(Text), source: this, mode: BindingMode.TwoWay));
 		editor.SetBinding(InputView.IsReadOnlyProperty, new Binding(nameof(IsReadOnly), source: this, mode: BindingMode.TwoWay));
 
+		stack.SetBinding(StackLayout.OrientationProperty, new Binding(nameof(Orientation), source: this, mode: BindingMode.OneWay));
 		stack.Children.Add(label);
 		stack.Children.Add(editor);
 		
@@ -40,18 +40,5 @@ public class FuchsEntry : TextFieldBase, ITextField
 #endif
 
 		Content = stack;
-	}
-
-	private StackOrientation GetOrientation()
-	{
-		switch (Orientation)
-		{
-			case FieldOrientation.Horizontal:
-				return StackOrientation.Horizontal;
-			case FieldOrientation.Vertical:
-				return StackOrientation.Vertical;
-			default:
-				return StackOrientation.Vertical;
-		}
 	}
 }

@@ -70,12 +70,12 @@ public abstract class TextFieldBase : ContentView, ITextField
     public static readonly BindableProperty OrientationProperty = BindableProperty.Create
     (
         nameof(Orientation),
-        typeof(FieldOrientation),
+        typeof(StackOrientation),
         typeof(TextFieldBase),
-        defaultValue: FieldOrientation.Vertical
+        defaultValue: StackOrientation.Vertical
     );
 
-    public FieldOrientation Orientation { get => (FieldOrientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
+    public StackOrientation Orientation { get => (StackOrientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
 
     #region ITextField Members
 
