@@ -73,7 +73,7 @@ public partial class FuchsInt : NumericFieldBase<Int32>
 
 		// 5. Labels
 		var label = new Label { };
-		label.SetBinding(TextProperty, new Binding(nameof(Label), source: this));
+		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(Label), source: this, mode: BindingMode.OneWay));
 
 		var helpLabel = new Label
 		{
@@ -85,6 +85,8 @@ public partial class FuchsInt : NumericFieldBase<Int32>
 		// 6. Assemble StackLayout
 		Content = new StackLayout
 		{
+			Orientation = StackOrientation.Vertical,
+			Spacing = 5,
 			Children = { label, editorBorder, MobileStepper, helpLabel }
 		};
 	}

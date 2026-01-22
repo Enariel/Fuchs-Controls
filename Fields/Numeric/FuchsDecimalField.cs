@@ -1,7 +1,9 @@
 #region Meta
+
 // FuchsControls
 // Created: 11/01/2026
 // Modified: 11/01/2026
+
 #endregion
 
 using CommunityToolkit.Maui.Converters;
@@ -13,7 +15,7 @@ public partial class FuchsDecimal : NumericFieldBase<decimal>
 	public FuchsDecimal()
 	{
 		Margin = new Thickness(0, 5, 0, 5);
-		
+
 		BuildLayout();
 	}
 
@@ -33,9 +35,12 @@ public partial class FuchsDecimal : NumericFieldBase<decimal>
 		};
 		MainStepper.SetBinding(Stepper.IsEnabledProperty,
 			new Binding(nameof(IsReadOnly), source: this, converter: new InvertedBoolConverter()));
-		MainStepper.SetBinding(Stepper.MinimumProperty, new Binding(nameof(Minimum), source: this, mode: BindingMode.TwoWay, converter: new DoubleToDecimalConverter()));
-		MainStepper.SetBinding(Stepper.MaximumProperty, new Binding(nameof(Maximum), source: this, mode: BindingMode.TwoWay, converter: new DoubleToDecimalConverter()));
-		MainStepper.SetBinding(Stepper.ValueProperty, new Binding(nameof(NumericValue), source: this, mode: BindingMode.TwoWay, converter: new DoubleToDecimalConverter()));
+		MainStepper.SetBinding(Stepper.MinimumProperty,
+			new Binding(nameof(Minimum), source: this, mode: BindingMode.TwoWay, converter: new DoubleToDecimalConverter()));
+		MainStepper.SetBinding(Stepper.MaximumProperty,
+			new Binding(nameof(Maximum), source: this, mode: BindingMode.TwoWay, converter: new DoubleToDecimalConverter()));
+		MainStepper.SetBinding(Stepper.ValueProperty,
+			new Binding(nameof(NumericValue), source: this, mode: BindingMode.TwoWay, converter: new DoubleToDecimalConverter()));
 		MainStepper.ValueChanged += OnNumberChanged;
 
 		// 3. Border & Grid
@@ -63,9 +68,12 @@ public partial class FuchsDecimal : NumericFieldBase<decimal>
 			IsVisible = DeviceInfo.Current.Platform != DevicePlatform.WinUI
 		};
 		MobileStepper.SetBinding(Stepper.IsEnabledProperty, new Binding(nameof(IsReadOnly), source: this, converter: new InvertedBoolConverter()));
-		MobileStepper.SetBinding(Stepper.MinimumProperty, new Binding(nameof(Minimum), source: this, mode: BindingMode.TwoWay, converter: new DoubleToDecimalConverter()));
-		MobileStepper.SetBinding(Stepper.MaximumProperty, new Binding(nameof(Maximum), source: this, mode: BindingMode.TwoWay, converter: new DoubleToDecimalConverter()));
-		MobileStepper.SetBinding(Stepper.ValueProperty, new Binding(nameof(NumericValue), source: this, mode: BindingMode.TwoWay, converter: new DoubleToDecimalConverter()));
+		MobileStepper.SetBinding(Stepper.MinimumProperty,
+			new Binding(nameof(Minimum), source: this, mode: BindingMode.TwoWay, converter: new DoubleToDecimalConverter()));
+		MobileStepper.SetBinding(Stepper.MaximumProperty,
+			new Binding(nameof(Maximum), source: this, mode: BindingMode.TwoWay, converter: new DoubleToDecimalConverter()));
+		MobileStepper.SetBinding(Stepper.ValueProperty,
+			new Binding(nameof(NumericValue), source: this, mode: BindingMode.TwoWay, converter: new DoubleToDecimalConverter()));
 		MobileStepper.ValueChanged += OnNumberChanged;
 
 		// 5. Labels
@@ -82,7 +90,12 @@ public partial class FuchsDecimal : NumericFieldBase<decimal>
 		// 6. Assemble StackLayout
 		Content = new StackLayout
 		{
-			Children = { label, editorBorder, MobileStepper, helpLabel }
+			Orientation = StackOrientation.Horizontal,
+			Spacing = 5,
+			Children =
+			{
+				label, editorBorder, MobileStepper, helpLabel
+			}
 		};
 	}
 
@@ -103,7 +116,7 @@ public partial class FuchsDecimal : NumericFieldBase<decimal>
 	protected override void OnTextChanged(object sender, TextChangedEventArgs e)
 	{
 		if (string.IsNullOrWhiteSpace(e.NewTextValue)) return;
-		
+
 		if (decimal.TryParse(e.NewTextValue, out var value))
 			NumericValue = value;
 		else
