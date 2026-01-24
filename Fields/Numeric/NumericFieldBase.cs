@@ -1,7 +1,9 @@
 ﻿#region Meta
+
 // FuchsControls
 // Created: 10/01/2026
 // Modified: 10/01/2026
+
 #endregion
 
 namespace FuchsControls.Fields;
@@ -13,7 +15,8 @@ public abstract class NumericFieldBase<TNumber> : TextFieldBase, INumericField<T
 		nameof(NumericValue),
 		typeof(TNumber),
 		typeof(NumericFieldBase<TNumber>),
-		defaultValue: default(TNumber)
+		defaultValue: default(TNumber),
+		defaultBindingMode: BindingMode.TwoWay
 	);
 
 	public TNumber NumericValue
