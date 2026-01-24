@@ -8,32 +8,8 @@ using System.Diagnostics;
 
 namespace FuchsControls.Fields;
 
-public abstract class TextFieldBase : ContentView, ITextField
+public abstract class TextFieldBase : FieldBase, ITextField
 {
-   public static readonly BindableProperty LabelProperty = BindableProperty.Create
-    (
-        nameof(Label),
-        typeof(string),
-        typeof(TextFieldBase),
-        defaultValue: string.Empty
-    );
-
-    public static readonly BindableProperty HelpTextProperty = BindableProperty.Create
-    (
-        nameof(HelpText),
-        typeof(string),
-        typeof(TextFieldBase),
-        defaultValue: string.Empty
-    );
-
-    public static readonly BindableProperty PlaceholderProperty = BindableProperty.Create
-    (
-        nameof(Placeholder),
-        typeof(string),
-        typeof(TextFieldBase),
-        defaultValue: string.Empty
-    );
-
     public static readonly BindableProperty TextProperty = BindableProperty.Create
     (
         nameof(Text),
@@ -67,23 +43,7 @@ public abstract class TextFieldBase : ContentView, ITextField
         defaultValue: int.MaxValue
     );
 
-    public static readonly BindableProperty OrientationProperty = BindableProperty.Create
-    (
-        nameof(Orientation),
-        typeof(StackOrientation),
-        typeof(TextFieldBase),
-        defaultValue: StackOrientation.Vertical
-    );
-
-    public StackOrientation Orientation { get => (StackOrientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
-
     #region ITextField Members
-
-    public string Label { get => (string)GetValue(LabelProperty); set => SetValue(LabelProperty, value); }
-
-    public string HelpText { get => (string)GetValue(HelpTextProperty); set => SetValue(HelpTextProperty, value); }
-
-    public string Placeholder { get => (string)GetValue(PlaceholderProperty); set => SetValue(PlaceholderProperty, value); }
 
     public string Text { get => (string)GetValue(TextProperty); set => SetValue(TextProperty, value); }
 
