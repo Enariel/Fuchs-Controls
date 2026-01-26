@@ -1,30 +1,30 @@
 #region Meta
 
 // FuchsControls
-// Created: 11/01/2026
-// Modified: 11/01/2026
+// Created: 26/01/2026
+// Modified: 26/01/2026
 
 #endregion
 
 using System.Diagnostics;
-using Switch = Microsoft.Maui.Controls.Switch;
+using CheckBox = Microsoft.Maui.Controls.CheckBox;
 
 namespace FuchsControls.Fields;
 
-public class FuchsSwitch : BooleanFieldBase, IBooleanField
+public class FuchsCheck : BooleanFieldBase, IBooleanField
 {
 	public static readonly BindableProperty IsCheckedProperty = BindableProperty.Create(
 		nameof(IsChecked),
 		typeof(bool),
-		typeof(FuchsSwitch),
+		typeof(FuchsCheck),
 		false, BindingMode.TwoWay, propertyChanged: OnCheckedChanged);
 
 	private static void OnCheckedChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is FuchsSwitch switchControl)
+		if (bindable is FuchsCheck checkControl)
 		{
-			Debug.WriteLine($"Switch value changed: {switchControl.IsChecked}");
-			switchControl.CoerceValue(HelpTextProperty);
+			Debug.WriteLine($"Check value changed: {checkControl.IsChecked}");
+			checkControl.CoerceValue(HelpTextProperty);
 		}
 	}
 
@@ -35,15 +35,15 @@ public class FuchsSwitch : BooleanFieldBase, IBooleanField
 		set => SetValue(IsCheckedProperty, value);
 	}
 	
-	public FuchsSwitch()
+	public FuchsCheck()
 	{
 		Margin = new Thickness(2, 5, 2, 5);
 
 		var label = new Label() { FontSize = 16 };
-		var toggle = new Switch();
+		var check = new CheckBox();
 
 		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(Label), source: this, mode: BindingMode.OneWay));
-		toggle.SetBinding(Switch.IsToggledProperty, new Binding(nameof(IsChecked), source: this, mode: BindingMode.TwoWay));
+		check.SetBinding(CheckBox.IsCheckedProperty, new Binding(nameof(IsChecked), source: this, mode: BindingMode.TwoWay));
 		
 		var layout = new VerticalStackLayout
 		{
@@ -51,7 +51,7 @@ public class FuchsSwitch : BooleanFieldBase, IBooleanField
 			Children =
 			{
 				label,
-				toggle,
+				check,
 			}
 		};
 
