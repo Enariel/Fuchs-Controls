@@ -8,7 +8,7 @@
 
 namespace FuchsControls.Fields;
 
-public class FuchsSelect<TValue> : SelectFieldBase<TValue> where TValue : struct, Enum
+public class FuchsSelect<TValue> : SelectFieldBase<TValue>
 {
 	public static readonly BindableProperty ItemsSourceProperty =
 		BindableProperty.Create(
@@ -23,6 +23,22 @@ public class FuchsSelect<TValue> : SelectFieldBase<TValue> where TValue : struct
 		set => SetValue(ItemsSourceProperty, value);
 	}
 
+	public static readonly BindableProperty DisplayPathProperty =
+		BindableProperty.Create(
+			nameof(DisplayPath),
+			typeof(string),
+			typeof(FuchsSelect<TValue>),
+			null,
+			propertyChanged: OnDisplayPathChanged);
+
+	public string DisplayPath
+	{
+		get => (string)GetValue(DisplayPathProperty);
+		set => SetValue(DisplayPathProperty, value);
+	}
+
+	private readonly Picker _picker;
+
 	public FuchsSelect()
 	{
 		Margin = new Thickness(2, 5, 2, 5);
@@ -30,15 +46,15 @@ public class FuchsSelect<TValue> : SelectFieldBase<TValue> where TValue : struct
 		var label = new Label { FontSize = 16 };
 		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(Label), source: this, mode: BindingMode.OneWay));
 
-		var picker = new Picker();
-		picker.SetBinding(Picker.ItemsSourceProperty, new Binding(nameof(ItemsSource), source: this, mode: BindingMode.OneWay));
-		picker.SetBinding(Picker.SelectedItemProperty, new Binding(nameof(SelectedValue), source: this, mode: BindingMode.TwoWay));
-		picker.SetBinding(Picker.TitleProperty, new Binding(nameof(Placeholder), source: this, mode: BindingMode.OneWay));
+		_picker = new Picker();
+		_picker.SetBinding(Picker.ItemsSourceProperty, new Binding(nameof(ItemsSource), source: this, mode: BindingMode.OneWay));
+		_picker.SetBinding(Picker.SelectedItemProperty, new Binding(nameof(SelectedValue), source: this, mode: BindingMode.TwoWay));
+		_picker.SetBinding(Picker.TitleProperty, new Binding(nameof(Placeholder), source: this, mode: BindingMode.OneWay));
 
 		var stack = new StackLayout { Spacing = 5 };
 		stack.SetBinding(StackLayout.OrientationProperty, new Binding(nameof(Orientation), source: this, mode: BindingMode.OneWay));
 		stack.Children.Add(label);
-		stack.Children.Add(picker);
+		stack.Children.Add(_picker);
 
 #if WINDOWS
 		ToolTipProperties.SetText(
@@ -50,10 +66,20 @@ public class FuchsSelect<TValue> : SelectFieldBase<TValue> where TValue : struct
 #else
 		var helpText = new Label { FontSize = 12 };
 		helpText.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(HelpText), source: this));
-		helpText.SetBinding(VisualElement.IsVisibleProperty, new Binding(nameof(HelpText), source: this, converter: new FuchsControls.StringIsNotNullOrEmptyConverter()));
+		helpText.SetBinding(VisualElement.IsVisibleProperty,
+			new Binding(nameof(HelpText), source: this, converter: new FuchsControls.StringIsNotNullOrEmptyConverter()));
 		stack.Children.Add(helpText);
 #endif
 
 		Content = stack;
+	}
+
+	private static void OnDisplayPathChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is not FuchsSelect<TValue> select)
+			return;
+
+		var path = newValue as string;
+		select._picker.ItemDisplayBinding = string.IsNullOrWhiteSpace(path) ? null : new Binding(path);
 	}
 }

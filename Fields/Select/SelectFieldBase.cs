@@ -8,7 +8,7 @@
 
 namespace FuchsControls.Fields;
 
-public abstract class SelectFieldBase<TValue> : FieldBase, ISelectField<TValue> where TValue : struct, Enum
+public abstract class SelectFieldBase<TValue> : FieldBase, ISelectField<TValue>
 {
 	public static readonly BindableProperty SelectedValueProperty =
 		BindableProperty.Create(nameof(SelectedValue), typeof(TValue), typeof(SelectFieldBase<TValue>), default(TValue), BindingMode.TwoWay);

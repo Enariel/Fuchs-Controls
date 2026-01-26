@@ -8,7 +8,7 @@
 
 namespace FuchsControls.Fields;
 
-public interface ISelectField<T> : IFieldBase where T : struct, Enum
+public interface ISelectField<T> : IFieldBase
 {
 	public T SelectedValue { get; set; }
 }
