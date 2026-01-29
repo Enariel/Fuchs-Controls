@@ -36,6 +36,8 @@ Currently, the project does not have a dedicated test project in the repository.
       #endregion
       ```
     * Follow standard MAUI/C# naming conventions (PascalCase for classes/methods, camelCase for private fields).
+    * Respect nullability annotations and handle potential nulls defensively.
+    * Do not use obsolete APIs, such as 'Frame' components when creating xaml pages/components.
 * **Structure**:
     * `Fields/`: Contains custom MAUI controls designed for various forms of input.
     * `Converters/`: Contains IValueConverter implementations.
@@ -48,3 +50,13 @@ Currently, the project does not have a dedicated test project in the repository.
 * **Resources**:
     * Use https://learn.microsoft.com/en-us/dotnet/maui/user-interface/controls/?view=net-maui-10.0 and related documentation for reference.
     * Explore community forums and GitHub issues for additional insights and troubleshooting.
+* **How Junie should be used**:
+    * Use the `CommunityToolkit.Maui` and `CommunityToolkit.Mvvm` NuGet packages.
+    * Use the `FuchsControls.slnx` solution file for development.
+    * Do not change SDK versions, frameworks, or platform settings unless explicitly asked.
+    * Avoid unrelated edits.
+    * Use the existing `CommunityToolkit.Mvvm` helpers and extensions where possible.
+    * Use the existing `CommunityToolkit.Maui` helpers and extensions where possible.
+    * Use the existing `CommunityToolkit.Maui.Markup` helpers and extensions where possible.
+    * Do not use obsolete APIs (e.g. `Frame` components).
+    * Do not introduce new dependencies or libraries without explicit approval.

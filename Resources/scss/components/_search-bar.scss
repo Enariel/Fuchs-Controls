@@ -1,0 +1,28 @@
+.search-bar {
+  position: relative;
+
+  input[type="text"],
+  input[type="search"] {
+    width: 100%;
+    padding-inline-end: 3.14em;
+
+    // on focus background should be lighter.
+    &.style-light:focus {
+      background: var(--#{$CSS_VAR_PFX}bg-color) !important;
+      filter: none !important;
+    }
+  }
+
+  .search-button {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2.2em;
+    height: 2.2em;
+    margin: auto 0;
+    font-size: 1em;
+    color: var(--#{$CSS_VAR_PFX}form-element-txt-color);
+    border-radius: calc(var(--#{$CSS_VAR_PFX}border-radius) * 0.75);
+    inset-inline-end: 0.5em;
+  }
+}

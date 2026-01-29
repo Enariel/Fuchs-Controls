@@ -6,8 +6,6 @@
 
 #endregion
 
-using CommunityToolkit.Maui.Converters;
-
 namespace FuchsControls.Fields;
 
 public partial class FuchsDecimal : NumericFieldBase<decimal>

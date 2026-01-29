@@ -1,0 +1,74 @@
+.toggle-wrapper {
+  .check {
+    // force minimum width for limited space cases
+    min-width: 3em;
+    width: 3em;
+
+    &:after {
+      top: 0;
+      bottom: 0;
+      inset-inline-start: 0.18em;
+      width: 0.9em;
+      height: 0.9em;
+      margin: auto 0;
+      background: var(--#{$CSS_VAR_PFX}form-element-border-color);
+      border-radius: calc(var(--#{$CSS_VAR_PFX}border-radius) * 0.3);
+      transition: all var(--#{$CSS_VAR_PFX}bouncing-transition);
+    }
+  }
+
+  input:checked + .check {
+    &:after {
+      background: var(--#{$CSS_VAR_PFX}form-element-accent-color);
+    }
+  }
+
+  // To prevent delayed animation it is not available for touch users
+  @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    &:active {
+      .check:after {
+        transition: all 0.1s 0.05s;
+      }
+
+      input:disabled {
+        &:not(:checked) + .check:after {
+          transform: scale(1) !important;
+        }
+        &:checked + .check:after {
+          transform: scale(1) translateX(1.4em) !important;
+        }
+      }
+
+      input:not(:checked) + .check:after {
+        transform: scaleX(1.2) scaleY(0.7) !important;
+      }
+
+      input:checked + .check:after {
+        &:dir(ltr) {
+          transform: translateX(1.2em) scaleY(0.7) scaleX(1.4) !important;
+        }
+        &:dir(rtl) {
+          transform: translateX(-1.2em) scaleY(0.7) scaleX(1.4) !important;
+        }
+      }
+    }
+  }
+}
+
+:dir(ltr) .toggle-wrapper:hover:not(:focus-within) input:not(:disabled) + .check:after,
+.ltr .toggle-wrapper:hover:not(:focus-within) input:not(:disabled) + .check:after {
+  transform: translateX(0.3em);
+}
+:dir(rtl) .toggle-wrapper:hover:not(:focus-within) input:not(:disabled) + .check:after,
+.rtl .toggle-wrapper:hover:not(:focus-within) input:not(:disabled) + .check:after {
+  transform: translateX(-0.3em);
+}
+
+:dir(ltr) .toggle-wrapper input:checked + .check:after,
+.ltr .toggle-wrapper input:checked + .check:after {
+  transform: translateX(1.4em) !important;
+}
+:dir(rtl) .toggle-wrapper input:checked + .check:after,
+.rtl .toggle-wrapper input:checked + .check:after {
+  transform: translateX(-1.4em) !important;
+}

@@ -1,41 +1,102 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <!-- Base background colors -->
+    <Color x:Key="FuchsBgColor">#FFFFFF</Color>
+    <Color x:Key="FuchsBgColor2">#F1F4F7</Color>
+    <Color x:Key="FuchsBgColor3">#CED9E3</Color>
+    <Color x:Key="FuchsBgColor4">#809CB6</Color>
 
-    <!-- Primary Colors -->
-    <Color x:Key="Primary">#512BD4</Color>
-    <Color x:Key="PrimaryDark">#3A1F99</Color>
-    <Color x:Key="PrimaryLight">#7D5FE8</Color>
+    <!-- Text colors -->
+    <Color x:Key="FuchsTextColor">#2E4051</Color>
+    <Color x:Key="FuchsTextColorLight">#77838E</Color>
+    <Color x:Key="FuchsTextColorDark">#1E2A35</Color>
+    <Color x:Key="FuchsTextColorDarker">#121A20</Color>
+    <Color x:Key="FuchsTextColorInverted">#FFFFFF</Color>
 
-    <!-- Secondary Colors -->
-    <Color x:Key="Secondary">#DFD8F7</Color>
-    <Color x:Key="SecondaryDark">#B8AEDB</Color>
-    <Color x:Key="SecondaryLight">#F5F2FF</Color>
+    <!-- Blue palette -->
+    <Color x:Key="FuchsBlue">#1CB0F6</Color>
+    <Color x:Key="FuchsBlueLight">#77D0FA</Color>
+    <Color x:Key="FuchsBlueDark">#1896D1</Color>
+    <Color x:Key="FuchsBlueDarker">#0E587B</Color>
 
-    <!-- Tertiary Colors -->
-    <Color x:Key="Tertiary">#2B0B98</Color>
-    <Color x:Key="TertiaryDark">#1F0870</Color>
-    <Color x:Key="TertiaryLight">#4420C4</Color>
+    <!-- Green palette -->
+    <Color x:Key="FuchsGreen">#58CC02</Color>
+    <Color x:Key="FuchsGreenLight">#9BE067</Color>
+    <Color x:Key="FuchsGreenDark">#4BAD02</Color>
+    <Color x:Key="FuchsGreenDarker">#2C6601</Color>
 
-    <!-- Background Colors -->
-    <Color x:Key="Background">#FFFFFF</Color>
-    <Color x:Key="BackgroundDark">#1C1C1E</Color>
-    <Color x:Key="Surface">#F5F5F5</Color>
-    <Color x:Key="SurfaceDark">#2C2C2E</Color>
+    <!-- Yellow palette -->
+    <Color x:Key="FuchsYellow">#FFDE00</Color>
+    <Color x:Key="FuchsYellowLight">#FFEB66</Color>
+    <Color x:Key="FuchsYellowDark">#D9BD00</Color>
+    <Color x:Key="FuchsYellowDarker">#A69000</Color>
 
-    <!-- Text Colors -->
-    <Color x:Key="TextPrimary">#000000</Color>
-    <Color x:Key="TextSecondary">#666666</Color>
-    <Color x:Key="TextOnPrimary">#FFFFFF</Color>
-    <Color x:Key="TextDisabled">#CCCCCC</Color>
+    <!-- Orange palette -->
+    <Color x:Key="FuchsOrange">#FF9600</Color>
+    <Color x:Key="FuchsOrangeLight">#FFC066</Color>
+    <Color x:Key="FuchsOrangeDark">#D98000</Color>
+    <Color x:Key="FuchsOrangeDarker">#804B00</Color>
 
-    <!-- Status Colors -->
-    <Color x:Key="Success">#4CAF50</Color>
-    <Color x:Key="Warning">#FF9800</Color>
-    <Color x:Key="Error">#F44336</Color>
-    <Color x:Key="Info">#2196F3</Color>
+    <!-- Red palette -->
+    <Color x:Key="FuchsRed">#FF4B4B</Color>
+    <Color x:Key="FuchsRedLight">#FF9393</Color>
+    <Color x:Key="FuchsRedDark">#D94040</Color>
+    <Color x:Key="FuchsRedDarker">#802626</Color>
 
-    <!-- Border and Divider Colors -->
-    <Color x:Key="Border">#E0E0E0</Color>
-    <Color x:Key="Divider">#EEEEEE</Color>
-    
+    <!-- Pink palette -->
+    <Color x:Key="FuchsPink">#FF86D0</Color>
+    <Color x:Key="FuchsPinkLight">#FFB6E3</Color>
+    <Color x:Key="FuchsPinkDark">#D972B1</Color>
+    <Color x:Key="FuchsPinkDarker">#804368</Color>
+
+    <!-- Purple palette -->
+    <Color x:Key="FuchsPurple">#C164FF</Color>
+    <Color x:Key="FuchsPurpleLight">#DAA2FF</Color>
+    <Color x:Key="FuchsPurpleDark">#A455D9</Color>
+    <Color x:Key="FuchsPurpleDarker">#603280</Color>
+
+    <!-- Semantic aliases (accent/info/success/warning/danger, light/dark) -->
+    <Color x:Key="FuchsAccent">#1CB0F6</Color>
+    <Color x:Key="FuchsAccentLight">#77D0FA</Color>
+    <Color x:Key="FuchsAccentDark">#1896D1</Color>
+    <Color x:Key="FuchsAccentDarker">#0E587B</Color>
+
+    <Color x:Key="FuchsSuccess">#58CC02</Color>
+    <Color x:Key="FuchsSuccessLight">#9BE067</Color>
+    <Color x:Key="FuchsSuccessDark">#4BAD02</Color>
+    <Color x:Key="FuchsSuccessDarker">#2C6601</Color>
+
+    <Color x:Key="FuchsInfo">#1CB0F6</Color>
+    <Color x:Key="FuchsInfoLight">#77D0FA</Color>
+    <Color x:Key="FuchsInfoDark">#1896D1</Color>
+    <Color x:Key="FuchsInfoDarker">#0E587B</Color>
+
+    <Color x:Key="FuchsWarning">#FF9600</Color>
+    <Color x:Key="FuchsWarningLight">#FFC066</Color>
+    <Color x:Key="FuchsWarningDark">#D98000</Color>
+    <Color x:Key="FuchsWarningDarker">#804B00</Color>
+
+    <Color x:Key="FuchsDanger">#FF4B4B</Color>
+    <Color x:Key="FuchsDangerLight">#FF9393</Color>
+    <Color x:Key="FuchsDangerDark">#D94040</Color>
+    <Color x:Key="FuchsDangerDarker">#802626</Color>
+
+    <Color x:Key="FuchsLight">#F1F4F7</Color>
+    <Color x:Key="FuchsLightLight">#FFFFFF</Color>
+    <Color x:Key="FuchsLightDark">#CED9E3</Color>
+    <Color x:Key="FuchsLightDarker">#809CB6</Color>
+
+    <Color x:Key="FuchsDark">#2E4051</Color>
+    <Color x:Key="FuchsDarkLight">#77838E</Color>
+    <Color x:Key="FuchsDarkDark">#1E2A35</Color>
+    <Color x:Key="FuchsDarkDarker">#121A20</Color>
+
+    <!-- Optional brushes for convenience -->
+    <SolidColorBrush x:Key="FuchsBgBrush" Color="{StaticResource FuchsBgColor}" />
+    <SolidColorBrush x:Key="FuchsTextBrush" Color="{StaticResource FuchsTextColor}" />
+    <SolidColorBrush x:Key="FuchsAccentBrush" Color="{StaticResource FuchsAccent}" />
+    <SolidColorBrush x:Key="FuchsSuccessBrush" Color="{StaticResource FuchsSuccess}" />
+    <SolidColorBrush x:Key="FuchsInfoBrush" Color="{StaticResource FuchsInfo}" />
+    <SolidColorBrush x:Key="FuchsWarningBrush" Color="{StaticResource FuchsWarning}" />
+    <SolidColorBrush x:Key="FuchsDangerBrush" Color="{StaticResource FuchsDanger}" />
 </ResourceDictionary>

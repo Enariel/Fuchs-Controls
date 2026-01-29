@@ -1,0 +1,200 @@
+:root {
+  --#{$CSS_VAR_PFX}table-border-color: var(--#{$CSS_VAR_PFX}bg-color-darker);
+  --#{$CSS_VAR_PFX}table-bg-color: var(--#{$CSS_VAR_PFX}bg-color);
+  --#{$CSS_VAR_PFX}table-bg-color-dark: var(--#{$CSS_VAR_PFX}bg-color-dark);
+  --#{$CSS_VAR_PFX}table-bg-color-darker: var(--#{$CSS_VAR_PFX}bg-color-darker);
+  --#{$CSS_VAR_PFX}table-txt-color: var(--#{$CSS_VAR_PFX}txt-color);
+}
+
+table {
+  $table_radius: var(--#{$CSS_VAR_PFX}border-radius);
+  $table_border: var(--#{$CSS_VAR_PFX}border-width) solid var(--#{$CSS_VAR_PFX}table-border-color);
+
+  display: table;
+  table-layout: fixed;
+  caption-side: bottom;
+  color: var(--#{$CSS_VAR_PFX}table-txt-color);
+  width: 100%;
+
+  td,
+  th {
+    padding: 0.75em 1em;
+    background: var(--#{$CSS_VAR_PFX}table-bg-color);
+  }
+
+  thead {
+    word-break: break-word;
+
+    td,
+    th {
+      background: var(--#{$CSS_VAR_PFX}table-bg-color-dark);
+    }
+  }
+
+  &:not(.bordered) {
+    border-collapse: collapse;
+  }
+
+  &.bordered:not(.horizontal) {
+    border-spacing: 0;
+
+    tr:first-child {
+      th,
+      td {
+        border-top: $table_border;
+      }
+    }
+
+    td,
+    th {
+      border-inline-start: $table_border;
+
+      &:last-child {
+        border-inline-end: $table_border;
+      }
+    }
+
+    td,
+    th {
+      border-bottom: $table_border;
+    }
+
+    thead + tbody tr {
+      td,
+      th {
+        border-top: none !important;
+      }
+    }
+  }
+
+  &.horizontal {
+    tr {
+      flex-basis: 100%;
+      white-space: nowrap;
+    }
+    thead {
+      float: inline-start;
+
+      td,
+      th {
+        display: block;
+      }
+    }
+    tbody {
+      display: flex;
+      overflow-x: auto;
+
+      tr {
+        display: inline-block;
+      }
+      td,
+      th {
+        display: block;
+      }
+    }
+
+    &.bordered {
+      border-spacing: 0;
+      thead {
+        tr {
+          display: block;
+          border-inline-end: $table_border;
+        }
+        td,
+        th {
+          border-inline-start: $table_border;
+        }
+      }
+      tbody {
+        th,
+        td {
+          border-inline-end: $table_border;
+        }
+      }
+      td,
+      th {
+        border-top: $table_border;
+        &:last-child {
+          border-bottom: $table_border;
+        }
+      }
+    }
+
+    // horizontal border radius
+    thead tr {
+      th,
+      td {
+        &:first-child {
+          border-start-start-radius: var(--#{$CSS_VAR_PFX}table-radius);
+        }
+        &:last-child {
+          border-start-end-radius: var(--#{$CSS_VAR_PFX}table-radius);
+        }
+      }
+    }
+    tbody tr:last-child {
+      th,
+      td {
+        &:first-child {
+          border-end-start-radius: var(--#{$CSS_VAR_PFX}table-radius);
+        }
+        &:last-child {
+          border-end-end-radius: var(--#{$CSS_VAR_PFX}table-radius);
+        }
+      }
+    }
+  }
+
+  // vertical border radius
+  &:not(.horizontal) {
+    tr:last-child {
+      th {
+        &:first-child {
+          border-start-start-radius: var(--#{$CSS_VAR_PFX}table-radius);
+        }
+        &:last-child {
+          border-start-end-radius: var(--#{$CSS_VAR_PFX}table-radius);
+        }
+      }
+      td {
+        &:first-child {
+          border-end-start-radius: var(--#{$CSS_VAR_PFX}table-radius);
+        }
+        &:last-child {
+          border-end-end-radius: var(--#{$CSS_VAR_PFX}table-radius);
+        }
+      }
+    }
+  }
+
+  &.striped {
+    thead {
+      th,
+      td {
+        background: var(--#{$CSS_VAR_PFX}table-bg-color-darker);
+      }
+    }
+    tbody tr:nth-child(odd) {
+      td,
+      th {
+        background: var(--#{$CSS_VAR_PFX}table-bg-color-dark);
+      }
+    }
+  }
+}
+
+caption {
+  font-size: 0.9em;
+  padding: 0.75em 0;
+  opacity: 0.8;
+}
+
+th {
+  font-weight: var(--#{$CSS_VAR_PFX}medium-font-weight);
+  text-align: inherit;
+  text-align: -webkit-match-parent;
+}
+
+.table-active {
+  background: var(--#{$CSS_VAR_PFX}table-bg-color-darker);
+}
