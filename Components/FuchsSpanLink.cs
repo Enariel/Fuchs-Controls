@@ -1,21 +1,20 @@
 #region Meta
 
 // FuchsControls
-// Created: 22/01/2026
+// Created: 28/01/2026
 // Modified: 28/01/2026
 
 #endregion
 
 using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace FuchsControls;
 
 /// <summary>
-/// Represents a clickable hyperlink label with customizable appearance and behavior.
+/// Represents a clickable hyperlink span for use inside FormattedString, with the same behavior as FuchsLink.
 /// </summary>
-public partial class FuchsLink : Label
+public partial class FuchsSpanLink : Span
 {
 	// Reuse shared bindable properties from the behavior
 	public static readonly BindableProperty UrlProperty = FuchsLinkBehavior.UrlProperty;
@@ -26,7 +25,7 @@ public partial class FuchsLink : Label
 
 	private readonly FuchsLinkBehavior _behavior;
 
-	public FuchsLink()
+	public FuchsSpanLink()
 	{
 		_behavior = new FuchsLinkBehavior(
 			this,
@@ -40,6 +39,7 @@ public partial class FuchsLink : Label
 		});
 
 #if WINDOWS || MACCATALYST
+        // Pointer gestures on Span are not guaranteed on all platforms; add where supported
         var pointer = new PointerGestureRecognizer();
         pointer.PointerEntered += (_, _) => _behavior.SetHovered(true);
         pointer.PointerExited += (_, _) => _behavior.SetHovered(false);
