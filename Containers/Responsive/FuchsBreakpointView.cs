@@ -13,33 +13,37 @@ namespace FuchsControls.Containers.Responsive;
 
 /// <summary>
 /// Displays content based on available width using responsive breakpoints.
-/// Defaults roughly follow common web breakpoints but can be customized.
+/// Defaults align with the SCSS breakpoints defined in Resources/scss/_config.scss
+/// (rounded to whole numbers) and can be customized by consumers.
 ///
-/// Ranges (defaults):
-///  XS:   0   - 479
-///  SM: 480   - 767
-///  MD: 768   - 1023
-///  LG: 1024  - 1439
-///  XL: 1440  - 1919
-///  XXL: >= 1920
+/// Ranges (default, rounded):
+///  XS:   0    - 575
+///  SM:  576  - 767
+///  MD:  768  - 991
+///  LG:  >= 992
+///
+/// You may define any subset of templates (XS/SM/MD/LG). The control will try the
+/// selected breakpoint first, then search upwards to larger breakpoints, then downwards
+/// to smaller ones. If no template is provided at all, a <see cref="NullTemplateException"/>
+/// is thrown.
 /// </summary>
 public sealed class FuchsBreakpointView : FuchsResponsiveView
 {
-	// Thresholds define the MAX width for each bucket except XXL
+	// Thresholds define the MAX width for XS/SM/MD; LG is open-ended
 	public static readonly BindableProperty XsMaxProperty = BindableProperty.Create(
-		nameof(XsMax), typeof(double), typeof(FuchsBreakpointView), 479.0, propertyChanged: OnBreakpointChanged);
+		nameof(XsMax), typeof(double), typeof(FuchsBreakpointView), 575.0,
+		propertyChanged: OnBreakpointChanged,
+		coerceValue: CoerceToWholeNumber);
 
 	public static readonly BindableProperty SmMaxProperty = BindableProperty.Create(
-		nameof(SmMax), typeof(double), typeof(FuchsBreakpointView), 767.0, propertyChanged: OnBreakpointChanged);
+		nameof(SmMax), typeof(double), typeof(FuchsBreakpointView), 767.0,
+		propertyChanged: OnBreakpointChanged,
+		coerceValue: CoerceToWholeNumber);
 
 	public static readonly BindableProperty MdMaxProperty = BindableProperty.Create(
-		nameof(MdMax), typeof(double), typeof(FuchsBreakpointView), 1023.0, propertyChanged: OnBreakpointChanged);
-
-	public static readonly BindableProperty LgMaxProperty = BindableProperty.Create(
-		nameof(LgMax), typeof(double), typeof(FuchsBreakpointView), 1439.0, propertyChanged: OnBreakpointChanged);
-
-	public static readonly BindableProperty XlMaxProperty = BindableProperty.Create(
-		nameof(XlMax), typeof(double), typeof(FuchsBreakpointView), 1919.0, propertyChanged: OnBreakpointChanged);
+		nameof(MdMax), typeof(double), typeof(FuchsBreakpointView), 991.0,
+		propertyChanged: OnBreakpointChanged,
+		coerceValue: CoerceToWholeNumber);
 
 	// Templates for each breakpoint bucket
 	public static readonly BindableProperty XsTemplateProperty = BindableProperty.Create(
@@ -53,15 +57,6 @@ public sealed class FuchsBreakpointView : FuchsResponsiveView
 
 	public static readonly BindableProperty LgTemplateProperty = BindableProperty.Create(
 		nameof(LgTemplate), typeof(DataTemplate), typeof(FuchsBreakpointView), default(DataTemplate), propertyChanged: OnTemplateChanged);
-
-	public static readonly BindableProperty XlTemplateProperty = BindableProperty.Create(
-		nameof(XlTemplate), typeof(DataTemplate), typeof(FuchsBreakpointView), default(DataTemplate), propertyChanged: OnTemplateChanged);
-
-	public static readonly BindableProperty XxlTemplateProperty = BindableProperty.Create(
-		nameof(XxlTemplate), typeof(DataTemplate), typeof(FuchsBreakpointView), default(DataTemplate), propertyChanged: OnTemplateChanged);
-
-	public static readonly BindableProperty FallbackTemplateProperty = BindableProperty.Create(
-		nameof(FallbackTemplate), typeof(DataTemplate), typeof(FuchsBreakpointView), default(DataTemplate), propertyChanged: OnTemplateChanged);
 
 	public double XsMax
 	{
@@ -79,18 +74,6 @@ public sealed class FuchsBreakpointView : FuchsResponsiveView
 	{
 		get => (double)GetValue(MdMaxProperty);
 		set => SetValue(MdMaxProperty, value);
-	}
-
-	public double LgMax
-	{
-		get => (double)GetValue(LgMaxProperty);
-		set => SetValue(LgMaxProperty, value);
-	}
-
-	public double XlMax
-	{
-		get => (double)GetValue(XlMaxProperty);
-		set => SetValue(XlMaxProperty, value);
 	}
 
 	public DataTemplate? XsTemplate
@@ -117,43 +100,49 @@ public sealed class FuchsBreakpointView : FuchsResponsiveView
 		set => SetValue(LgTemplateProperty, value);
 	}
 
-	public DataTemplate? XlTemplate
-	{
-		get => (DataTemplate?)GetValue(XlTemplateProperty);
-		set => SetValue(XlTemplateProperty, value);
-	}
-
-	public DataTemplate? XxlTemplate
-	{
-		get => (DataTemplate?)GetValue(XxlTemplateProperty);
-		set => SetValue(XxlTemplateProperty, value);
-	}
-
-	public DataTemplate? FallbackTemplate
-	{
-		get => (DataTemplate?)GetValue(FallbackTemplateProperty);
-		set => SetValue(FallbackTemplateProperty, value);
-	}
-
 	protected override void UpdateContent()
 	{
 		var width = GetCurrentWidth();
-		DataTemplate? template = FallbackTemplate;
 
-		if (width <= XsMax)
-			template = XsTemplate ?? FallbackTemplate;
-		else if (width <= SmMax)
-			template = SmTemplate ?? FallbackTemplate;
-		else if (width <= MdMax)
-			template = MdTemplate ?? FallbackTemplate;
-		else if (width <= LgMax)
-			template = LgTemplate ?? FallbackTemplate;
-		else if (width <= XlMax)
-			template = XlTemplate ?? FallbackTemplate;
-		else
-			template = XxlTemplate ?? FallbackTemplate;
+		// Determine the active bucket index (0..3)
+		int index = width <= XsMax ? 0 :
+			width <= SmMax ? 1 :
+			width <= MdMax ? 2 : 3; // LG (open-ended)
 
-		SetContentFromTemplate(template);
+		var templates = new DataTemplate?[]
+		{
+			XsTemplate, SmTemplate, MdTemplate, LgTemplate
+		};
+
+		DataTemplate? chosen = null;
+
+		// First try upward from current index to find the next defined template
+		for (int i = index; i < templates.Length; i++)
+		{
+			if (templates[i] != null)
+			{
+				chosen = templates[i];
+				break;
+			}
+		}
+
+		// If not found upward, try downward
+		if (chosen == null)
+		{
+			for (int i = index - 1; i >= 0; i--)
+			{
+				if (templates[i] != null)
+				{
+					chosen = templates[i];
+					break;
+				}
+			}
+		}
+
+		if (chosen == null)
+			throw new NullTemplateException("No templates were provided for any breakpoint (XS/SM/MD/LG).");
+
+		SetContentFromTemplate(chosen);
 	}
 
 	private static void OnBreakpointChanged(BindableObject bindable, object oldValue, object newValue)
@@ -166,5 +155,19 @@ public sealed class FuchsBreakpointView : FuchsResponsiveView
 	{
 		if (bindable is FuchsBreakpointView view)
 			view.UpdateContent();
+	}
+
+	private static object CoerceToWholeNumber(BindableObject bindable, object value)
+	{
+		if (value is double d)
+			return Math.Round(d);
+		try
+		{
+			return Math.Round(Convert.ToDouble(value));
+		}
+		catch
+		{
+			return value;
+		}
 	}
 }

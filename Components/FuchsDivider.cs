@@ -1,10 +1,13 @@
 #region Meta
+
 // FuchsControls
 // Created: 22/01/2026
-// Modified: 22/01/2026
+// Modified: 29/01/2026
+
 #endregion
 
 using Microsoft.Maui.Controls.Shapes;
+using FuchsControls.Utility;
 
 namespace FuchsControls;
 
@@ -21,9 +24,9 @@ public class FuchsDivider : Border
 	public static readonly BindableProperty LineColorProperty =
 		BindableProperty.Create(
 			nameof(LineColor),
-			typeof(Color),
+			typeof(FuchsColor),
 			typeof(FuchsDivider),
-			Colors.LightGray,
+			FuchsColor.TextColor,
 			propertyChanged: (b, _, __) => ((FuchsDivider)b).Update());
 
 	public FuchsDivider()
@@ -42,16 +45,16 @@ public class FuchsDivider : Border
 		set => SetValue(ThicknessProperty, value);
 	}
 
-	/// <summary>Line color.</summary>
-	public Color LineColor
+	/// <summary>Line color selection from the FuchsColor enum.</summary>
+	public FuchsColor LineColor
 	{
-		get => (Color)GetValue(LineColorProperty);
+		get => (FuchsColor)GetValue(LineColorProperty);
 		set => SetValue(LineColorProperty, value);
 	}
 
 	private void Update()
 	{
-		Stroke = LineColor;
+		Stroke = FuchsColorHelper.GetColor(LineColor);
 		StrokeThickness = Thickness;
 		HeightRequest = Thickness;
 	}

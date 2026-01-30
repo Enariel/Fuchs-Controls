@@ -14,8 +14,9 @@ namespace FuchsControls.Containers.Responsive;
 
 /// <summary>
 /// Shows different content based on the current <see cref="DeviceIdiom"/>.
-/// Define one or more templates (Phone/Tablet/Desktop/TV/Watch). If a specific
-/// template is not provided, the control will fall back to <see cref="FallbackTemplate"/>.
+/// Define one or more templates (Phone/Tablet/Desktop). Any other idiom will default
+/// to the Desktop template. If the selected template is not provided, the control
+/// will fall back to <see cref="FallbackTemplate"/>.
 /// </summary>
 public sealed class FuchsIdiomView : FuchsResponsiveView
 {
@@ -27,12 +28,6 @@ public sealed class FuchsIdiomView : FuchsResponsiveView
 
 	public static readonly BindableProperty DesktopTemplateProperty = BindableProperty.Create(
 		nameof(DesktopTemplate), typeof(DataTemplate), typeof(FuchsIdiomView), default(DataTemplate), propertyChanged: OnTemplateChanged);
-
-	public static readonly BindableProperty TVTemplateProperty = BindableProperty.Create(
-		nameof(TVTemplate), typeof(DataTemplate), typeof(FuchsIdiomView), default(DataTemplate), propertyChanged: OnTemplateChanged);
-
-	public static readonly BindableProperty WatchTemplateProperty = BindableProperty.Create(
-		nameof(WatchTemplate), typeof(DataTemplate), typeof(FuchsIdiomView), default(DataTemplate), propertyChanged: OnTemplateChanged);
 
 	public static readonly BindableProperty FallbackTemplateProperty = BindableProperty.Create(
 		nameof(FallbackTemplate), typeof(DataTemplate), typeof(FuchsIdiomView), default(DataTemplate), propertyChanged: OnTemplateChanged);
@@ -55,38 +50,25 @@ public sealed class FuchsIdiomView : FuchsResponsiveView
 		set => SetValue(DesktopTemplateProperty, value);
 	}
 
-	public DataTemplate? TVTemplate
-	{
-		get => (DataTemplate?)GetValue(TVTemplateProperty);
-		set => SetValue(TVTemplateProperty, value);
-	}
-
-	public DataTemplate? WatchTemplate
-	{
-		get => (DataTemplate?)GetValue(WatchTemplateProperty);
-		set => SetValue(WatchTemplateProperty, value);
-	}
-
 	public DataTemplate? FallbackTemplate
 	{
 		get => (DataTemplate?)GetValue(FallbackTemplateProperty);
 		set => SetValue(FallbackTemplateProperty, value);
 	}
 
+
 	protected override void UpdateContent()
 	{
 		var idiom = DeviceInfo.Current.Idiom;
-		DataTemplate? template = FallbackTemplate;
+		// Default to Desktop idiom for any non Phone/Tablet/Desktop cases
+		DataTemplate? template = DesktopTemplate ?? FallbackTemplate;
+
 		if (idiom == DeviceIdiom.Phone)
-			template = PhoneTemplate ?? FallbackTemplate;
+			template = PhoneTemplate ?? TabletTemplate ?? DesktopTemplate ?? FallbackTemplate;
 		else if (idiom == DeviceIdiom.Tablet)
-			template = TabletTemplate ?? FallbackTemplate;
+			template = TabletTemplate ?? DesktopTemplate ?? FallbackTemplate;
 		else if (idiom == DeviceIdiom.Desktop)
 			template = DesktopTemplate ?? FallbackTemplate;
-		else if (idiom == DeviceIdiom.TV)
-			template = TVTemplate ?? FallbackTemplate;
-		else if (idiom == DeviceIdiom.Watch)
-			template = WatchTemplate ?? FallbackTemplate;
 
 		SetContentFromTemplate(template);
 	}
@@ -94,8 +76,6 @@ public sealed class FuchsIdiomView : FuchsResponsiveView
 	private static void OnTemplateChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is FuchsIdiomView view)
-		{
 			view.UpdateContent();
-		}
 	}
 }
