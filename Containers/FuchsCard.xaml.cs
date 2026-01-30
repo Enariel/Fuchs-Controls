@@ -24,11 +24,32 @@ public partial class FuchsCard : ContentView
 	public static readonly BindableProperty SubtitleProperty = BindableProperty.Create(nameof(Subtitle), typeof(string), typeof(FuchsCard), default(string));
 	public static readonly BindableProperty TitleProperty = BindableProperty.Create(nameof(Title), typeof(string), typeof(FuchsCard), default(string));
 
-	public static readonly BindableProperty FooterItemsProperty = BindableProperty.Create(nameof(FooterItems), typeof(IList<View>), typeof(FuchsCard),
-		defaultBindingMode: BindingMode.OneWay, defaultValueCreator: _ => new ObservableCollection<View>());
+	public static readonly BindableProperty FooterItemsProperty =
+		BindableProperty.Create(nameof(FooterItems), typeof(View), typeof(FuchsCard), defaultBindingMode: BindingMode.OneWay,
+			propertyChanged: OnFooterItemsChanged);
 
-	public static readonly BindableProperty ActionItemsProperty = BindableProperty.Create(nameof(ActionItems), typeof(IList<View>), typeof(FuchsCard),
-		defaultBindingMode: BindingMode.OneWay, defaultValueCreator: _ => new ObservableCollection<View>());
+	private static void OnFooterItemsChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		// Add content to the FooterItemsGrid
+		if (newValue is View newFooterItems && bindable is FuchsCard card)
+		{
+			card.FooterGrid.Children.Clear();
+			card.FooterGrid.Children.Add(newFooterItems);
+		}
+	}
+
+	public static readonly BindableProperty ActionItemsProperty =
+		BindableProperty.Create(nameof(ActionItems), typeof(View), typeof(FuchsCard), defaultBindingMode: BindingMode.OneWay,
+			propertyChanged: OnActionItemsChanged);
+
+	private static void OnActionItemsChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (newValue is View newActionItems && bindable is FuchsCard card)
+		{
+			card.ActionGrid.Children.Clear();
+			card.ActionGrid.Children.Add(newActionItems);
+		}
+	}
 
 	public static readonly BindableProperty ImageSourceProperty =
 		BindableProperty.Create(nameof(ImageSource), typeof(ImageSource), typeof(FuchsCard), default(ImageSource));
@@ -62,15 +83,15 @@ public partial class FuchsCard : ContentView
 		set => SetValue(BodyProperty, value);
 	}
 
-	public IList<View> FooterItems
+	public View FooterItems
 	{
-		get => (IList<View>)GetValue(FooterItemsProperty);
+		get => (View)GetValue(FooterItemsProperty);
 		set => SetValue(FooterItemsProperty, value);
 	}
 
-	public IList<View> ActionItems
+	public View ActionItems
 	{
-		get => (IList<View>)GetValue(ActionItemsProperty);
+		get => (View)GetValue(ActionItemsProperty);
 		set => SetValue(ActionItemsProperty, value);
 	}
 }
