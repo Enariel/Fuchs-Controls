@@ -8,7 +8,7 @@
         <controls:ListHasItemsConverter x:Key="ListHasItemsConverter" />
         <controls:ObjectIsNotNullConverter x:Key="IsNotNullConverter" />
     </ContentView.Resources>
-    <Border x:Name="CardBorder" Padding="5">
+    <Border x:Name="CardBorder" Padding="5,10">
         <Grid RowDefinitions="Auto,Auto,Auto,Auto">
             <!-- Image (optional) -->
             <Image x:Name="CardImage"
