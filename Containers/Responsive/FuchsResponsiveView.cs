@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
+using System.Threading;
 
 namespace FuchsControls.Containers.Responsive;
 
@@ -19,6 +20,9 @@ namespace FuchsControls.Containers.Responsive;
 /// </summary>
 public abstract class FuchsResponsiveView : ContentView
 {
+	// Throttle updates to avoid storms from Handler/Size changes
+	int _pendingUpdate; // 0 = none, 1 = scheduled
+
 	protected FuchsResponsiveView()
 	{
 		SizeChanged += OnSelfSizeChanged;
@@ -27,25 +31,49 @@ public abstract class FuchsResponsiveView : ContentView
 	protected void SetContentFromTemplate(DataTemplate? template)
 	{
 		if (template == null)
+			return; // do nothing; keep current content to avoid crashes during XAML load
+
+		View? resolvedView = null;
+
+		try
 		{
-			Content = null;
+			var created = template.CreateContent();
+
+			// 1) Direct View
+			if (created is View v1)
+				resolvedView = v1;
+			// 2) Element that is also View
+			else if (created is Element e && e is View v2)
+				resolvedView = v2;
+			// 3) IContentView Content unwrap
+			else if (created is IContentView cv && cv.Content is View v3)
+				resolvedView = v3;
+			// 4) Reflective Content property
+			else
+			{
+				var contentProp = created?.GetType().GetProperty("Content");
+				if (contentProp?.GetValue(created) is View v4)
+					resolvedView = v4;
+			}
+		}
+		catch
+		{
+			// Swallow any template creation issues; keep existing Content intact.
 			return;
 		}
 
-		var created = template.CreateContent();
-		Content = created as View ?? throw new InvalidOperationException("Template must return a View");
+		// Only swap if we actually obtained a view; otherwise leave Content as-is
+		if (resolvedView is not null && !ReferenceEquals(Content, resolvedView))
+			Content = resolvedView;
 	}
 
-	private void OnSelfSizeChanged(object? sender, EventArgs e)
-	{
-		UpdateContent();
-	}
+	private void OnSelfSizeChanged(object? sender, EventArgs e) => RequestUpdate();
 
 	protected override void OnHandlerChanged()
 	{
 		base.OnHandlerChanged();
 		HookWindowEvents(true);
-		UpdateContent();
+		RequestUpdate();
 	}
 
 	protected override void OnParentChanged()
@@ -57,7 +85,7 @@ public abstract class FuchsResponsiveView : ContentView
 	protected override void OnBindingContextChanged()
 	{
 		base.OnBindingContextChanged();
-		UpdateContent();
+		RequestUpdate();
 	}
 
 	private void HookWindowEvents(bool subscribe)
@@ -74,9 +102,25 @@ public abstract class FuchsResponsiveView : ContentView
 		}
 	}
 
-	private void OnWindowSizeChanged(object? sender, EventArgs e)
+	private void OnWindowSizeChanged(object? sender, EventArgs e) => RequestUpdate();
+
+	// Coalesces multiple triggers into a single UpdateContent on the UI thread
+	protected void RequestUpdate()
 	{
-		UpdateContent();
+		if (Interlocked.Exchange(ref _pendingUpdate, 1) == 1)
+			return; // already scheduled
+
+		Dispatcher.Dispatch(() =>
+		{
+			try
+			{
+				UpdateContent();
+			}
+			finally
+			{
+				Interlocked.Exchange(ref _pendingUpdate, 0);
+			}
+		});
 	}
 
 	/// <summary>
