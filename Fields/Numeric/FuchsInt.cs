@@ -13,13 +13,12 @@ public partial class FuchsInt : NumericFieldBase<Int32>
 	public FuchsInt()
 	{
 		Margin = new Thickness(0, 5, 0, 5);
-		
+
 		BuildLayout();
 	}
 
 	private void BuildLayout()
 	{
-		
 		MainEditor = new Entry
 		{
 			Keyboard = Keyboard.Numeric,
@@ -38,7 +37,7 @@ public partial class FuchsInt : NumericFieldBase<Int32>
 		MainStepper.SetBinding(Stepper.MaximumProperty, new Binding(nameof(Maximum), source: this, mode: BindingMode.TwoWay));
 		MainStepper.SetBinding(Stepper.ValueProperty, new Binding(nameof(NumericValue), source: this, mode: BindingMode.TwoWay));
 		MainStepper.ValueChanged += OnNumberChanged;
-		
+
 #if WINDOWS
 		if (!string.IsNullOrEmpty(HelpText))
 			ToolTipProperties.SetText(MainStepper, new Binding(nameof(HelpText), source: this));
@@ -56,11 +55,6 @@ public partial class FuchsInt : NumericFieldBase<Int32>
 		};
 		grid.Add(MainEditor, 0, 0);
 		grid.Add(MainStepper, 1, 0);
-
-		var editorBorder = new Border
-		{
-			Content = grid
-		};
 
 		// 4. Mobile Stepper
 		MobileStepper = new Stepper
@@ -90,7 +84,7 @@ public partial class FuchsInt : NumericFieldBase<Int32>
 		{
 			Orientation = StackOrientation.Vertical,
 			Spacing = 5,
-			Children = { label, editorBorder, MobileStepper, helpLabel }
+			Children = { label, grid, MobileStepper, helpLabel }
 		};
 	}
 
