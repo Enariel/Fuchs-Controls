@@ -71,6 +71,31 @@ public partial class FuchsCard : ContentView
 		set => SetValue(TitleProperty, value);
 	}
 
+	public static readonly BindableProperty TitleFontSizeProperty = BindableProperty.Create(nameof(TitleFontSize), typeof(double), typeof(FuchsCard), 16.0);
+
+	public static readonly BindableProperty SubTitleFontSizeProperty =
+		BindableProperty.Create(nameof(SubTitleFontSize), typeof(double), typeof(FuchsCard), 14.0);
+
+	public static readonly BindableProperty BodyFontSizeProperty = BindableProperty.Create(nameof(BodyFontSize), typeof(double), typeof(FuchsCard), 12.0);
+
+	public double TitleFontSize
+	{
+		get => (double)GetValue(TitleFontSizeProperty);
+		set => SetValue(TitleFontSizeProperty, value);
+	}
+
+	public double SubTitleFontSize
+	{
+		get => (double)GetValue(SubTitleFontSizeProperty);
+		set => SetValue(SubTitleFontSizeProperty, value);
+	}
+
+	public double BodyFontSize
+	{
+		get => (double)GetValue(BodyFontSizeProperty);
+		set => SetValue(BodyFontSizeProperty, value);
+	}
+
 	public string Subtitle
 	{
 		get => (string)GetValue(SubtitleProperty);
@@ -93,5 +118,23 @@ public partial class FuchsCard : ContentView
 	{
 		get => (View)GetValue(ActionItemsProperty);
 		set => SetValue(ActionItemsProperty, value);
+	}
+
+	public static readonly BindableProperty BackgroundProperty =
+		BindableProperty.Create(nameof(Background), typeof(Brush), typeof(FuchsCard), default(Brush));
+
+	public Brush Background
+	{
+		get => (Brush)GetValue(BackgroundProperty);
+		set => SetValue(BackgroundProperty, value);
+	}
+
+	public static readonly BindableProperty BackgroundColorProperty =
+		BindableProperty.Create(nameof(BackgroundColor), typeof(Color), typeof(FuchsCard), default(Color));
+
+	public Color BackgroundColor
+	{
+		get => (Color)GetValue(BackgroundColorProperty);
+		set => SetValue(BackgroundColorProperty, value);
 	}
 }

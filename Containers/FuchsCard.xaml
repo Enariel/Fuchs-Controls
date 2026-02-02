@@ -7,8 +7,10 @@
     <ContentView.Resources>
         <controls:ListHasItemsConverter x:Key="ListHasItemsConverter" />
         <controls:ObjectIsNotNullConverter x:Key="IsNotNullConverter" />
+        <controls:StringIsNotNullOrEmptyConverter x:Key="StringIsNotNull" />
     </ContentView.Resources>
-    <Border x:Name="CardBorder" Padding="5,10">
+    <Border x:Name="CardBorder" Padding="5,10" Background="{Binding Background, Source={x:Reference Root}}"
+            BackgroundColor="{Binding BackgroundColor, Source={x:Reference Root}}">
         <Grid RowDefinitions="Auto,Auto,Auto,Auto">
             <!-- Image (optional) -->
             <Image x:Name="CardImage"
@@ -18,21 +20,31 @@
                    Source="{Binding ImageSource, Source={x:Reference Root}}" />
 
             <!-- Text content -->
-            <VerticalStackLayout Grid.Row="1" Spacing="2">
-                <Label x:Name="TitleLabel" Text="{Binding Title, Source={x:Reference Root}}" />
-                <Label x:Name="SubtitleLabel" Text="{Binding Subtitle, Source={x:Reference Root}}" />
-                <controls:FuchsDivider LineColor="Black" />
-                <Label x:Name="BodyLabel" Text="{Binding Body, Source={x:Reference Root}}" />
+            <VerticalStackLayout Grid.Row="1" Spacing="5">
+                <Label x:Name="TitleLabel"
+                       FontAttributes="Bold"
+                       FontSize="{Binding Source={x:Reference Root}, Path=TitleFontSize}"
+                       IsVisible="{Binding Title, Source={x:Reference Root}, Converter={StaticResource StringIsNotNull}}"
+                       Text="{Binding Title, Source={x:Reference Root}, Mode=OneWay}" />
+                <Label x:Name="SubtitleLabel"
+                       FontAttributes="Italic"
+                       FontSize="{Binding Source={x:Reference Root}, Path=SubTitleFontSize}"
+                       IsVisible="{Binding Subtitle, Source={x:Reference Root}, Converter={StaticResource StringIsNotNull}}"
+                       Text="{Binding Subtitle, Source={x:Reference Root}, Mode=OneWay}" />
+                <Label x:Name="BodyLabel"
+                       FontSize="{Binding Source={x:Reference Root}, Path=BodyFontSize}"
+                       IsVisible="{Binding Body, Source={x:Reference Root}, Converter={StaticResource StringIsNotNull}}"
+                       Text="{Binding  Body, Source={x:Reference Root}, Mode=OneWay}" />
             </VerticalStackLayout>
 
             <!-- Footer area: either custom Content or horizontal list of items -->
             <Grid Grid.Row="2" x:Name="FooterGrid"
-                  IsVisible="{Binding FooterItems, Source={x:Reference Root}, Converter={StaticResource ListHasItemsConverter}}">
+                  IsVisible="{Binding FooterItems, Source={x:Reference Root}, Converter={StaticResource IsNotNullConverter}}">
             </Grid>
 
             <!-- Action area: either custom Content or horizontal list of items -->
             <Grid Grid.Row="3" x:Name="ActionGrid"
-                  IsVisible="{Binding ActionItems, Source={x:Reference Root}, Converter={StaticResource ListHasItemsConverter}}">
+                  IsVisible="{Binding ActionItems, Source={x:Reference Root}, Converter={StaticResource IsNotNullConverter}}">
             </Grid>
         </Grid>
     </Border>
