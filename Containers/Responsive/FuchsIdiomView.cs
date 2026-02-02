@@ -15,8 +15,7 @@ namespace FuchsControls.Containers.Responsive;
 /// <summary>
 /// Shows different content based on the current <see cref="DeviceIdiom"/>.
 /// Define one or more templates (Phone/Tablet/Desktop). Any other idiom will default
-/// to the Desktop template. If the selected template is not provided, the control
-/// will fall back to <see cref="FallbackTemplate"/>.
+/// to the Desktop template. No other fallbacks are used.
 /// </summary>
 public class FuchsIdiomView : FuchsResponsiveView
 {
@@ -56,31 +55,18 @@ public class FuchsIdiomView : FuchsResponsiveView
 		set => SetValue(FallbackTemplateProperty, value);
 	}
 
-
 	protected override void UpdateContent()
 	{
-		// Ensure we have a current idiom; on some platforms this can be Unknown very early
+		// ONLY check current device idiom.
 		var idiom = DeviceInfo.Current?.Idiom ?? DeviceIdiom.Unknown;
 
-		DataTemplate? template = null;
-
+		DataTemplate template;
 		if (idiom == DeviceIdiom.Phone)
-		{
-			template = MobileTemplate ?? TabletTemplate ?? DesktopTemplate ?? FallbackTemplate;
-		}
+			template = MobileTemplate ?? DesktopTemplate ?? FallbackTemplate;
 		else if (idiom == DeviceIdiom.Tablet)
-		{
-			template = TabletTemplate ?? DesktopTemplate ?? FallbackTemplate ?? MobileTemplate;
-		}
-		else if (idiom == DeviceIdiom.Desktop)
-		{
-			template = DesktopTemplate ?? FallbackTemplate ?? TabletTemplate ?? MobileTemplate;
-		}
+			template = TabletTemplate ?? DesktopTemplate ?? FallbackTemplate;
 		else
-		{
-			// Unknown/TV/Watch/etc. -> prefer Desktop, then fallbacks
-			template = DesktopTemplate ?? FallbackTemplate ?? TabletTemplate ?? MobileTemplate;
-		}
+			template = DesktopTemplate ?? FallbackTemplate;
 
 		SetContentFromTemplate(template);
 	}
@@ -88,6 +74,6 @@ public class FuchsIdiomView : FuchsResponsiveView
 	private static void OnTemplateChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is FuchsIdiomView view)
-			view.RequestUpdate(); // coalesced update
+			view.UpdateContent();
 	}
 }

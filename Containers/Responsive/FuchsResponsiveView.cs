@@ -20,18 +20,14 @@ namespace FuchsControls.Containers.Responsive;
 /// </summary>
 public abstract class FuchsResponsiveView : ContentView
 {
-	// Throttle updates to avoid storms from Handler/Size changes
-	int _pendingUpdate; // 0 = none, 1 = scheduled
-
-	protected FuchsResponsiveView()
-	{
-		SizeChanged += OnSelfSizeChanged;
-	}
-
 	protected void SetContentFromTemplate(DataTemplate? template)
 	{
 		if (template == null)
-			return; // do nothing; keep current content to avoid crashes during XAML load
+		{
+			// No fallbacks: render nothing if no template is provided for the current case.
+			Content = null;
+			return;
+		}
 
 		View? resolvedView = null;
 
@@ -58,70 +54,50 @@ public abstract class FuchsResponsiveView : ContentView
 		}
 		catch
 		{
-			// Swallow any template creation issues; keep existing Content intact.
+			// No fallbacks: if template creation fails, render nothing.
+			Content = null;
 			return;
 		}
 
-		// Only swap if we actually obtained a view; otherwise leave Content as-is
-		if (resolvedView is not null && !ReferenceEquals(Content, resolvedView))
-			Content = resolvedView;
+		// Only swap if we actually obtained a view; otherwise render nothing
+		Content = resolvedView;
 	}
 
-	private void OnSelfSizeChanged(object? sender, EventArgs e) => RequestUpdate();
 
 	protected override void OnHandlerChanged()
 	{
 		base.OnHandlerChanged();
-		HookWindowEvents(true);
-		RequestUpdate();
+		AttachWindowSizeChanged();
+		UpdateContent();
 	}
 
 	protected override void OnParentChanged()
 	{
 		base.OnParentChanged();
-		HookWindowEvents(true);
+		AttachWindowSizeChanged();
+		UpdateContent();
 	}
 
 	protected override void OnBindingContextChanged()
 	{
 		base.OnBindingContextChanged();
-		RequestUpdate();
+		UpdateContent();
 	}
 
-	private void HookWindowEvents(bool subscribe)
+	private void AttachWindowSizeChanged()
 	{
-		if (Window == null) return;
-		if (subscribe)
-		{
-			Window.SizeChanged -= OnWindowSizeChanged;
-			Window.SizeChanged += OnWindowSizeChanged;
-		}
-		else
-		{
-			Window.SizeChanged -= OnWindowSizeChanged;
-		}
+		if (Window == null)
+			return;
+
+		Window.SizeChanged -= OnWindowSizeChanged;
+		Window.SizeChanged += OnWindowSizeChanged;
 	}
 
-	private void OnWindowSizeChanged(object? sender, EventArgs e) => RequestUpdate();
-
-	// Coalesces multiple triggers into a single UpdateContent on the UI thread
-	protected void RequestUpdate()
+	private void OnWindowSizeChanged(object? sender, EventArgs e)
 	{
-		if (Interlocked.Exchange(ref _pendingUpdate, 1) == 1)
-			return; // already scheduled
-
-		Dispatcher.Dispatch(() =>
-		{
-			try
-			{
-				UpdateContent();
-			}
-			finally
-			{
-				Interlocked.Exchange(ref _pendingUpdate, 0);
-			}
-		});
+		UpdateContent();
 	}
+
 
 	/// <summary>
 	/// Returns the best available width to drive responsive decisions.

@@ -17,131 +17,76 @@ namespace FuchsControls.Containers.Responsive;
 /// (rounded to whole numbers) and can be customized by consumers.
 ///
 /// Ranges (default, rounded):
-///  XS:   0    - 575
-///  SM:  576  - 767
-///  MD:  768  - 991
-///  LG:  >= 992
+///  Small:  0    - 767
+///  Medium: 768  - 1199
+///  Large:  >= 1200
 ///
-/// You may define any subset of templates (XS/SM/MD/LG). The control will try the
-/// selected breakpoint first, then search upwards to larger breakpoints, then downwards
-/// to smaller ones. If no template is provided at all, a <see cref="NullTemplateException"/>
-/// is thrown.
+/// You may define any subset of templates (Small/Medium/Large). The control will
+/// use only the matching bucket. No fallback search is performed.
 /// </summary>
 public sealed class FuchsBreakpointView : FuchsResponsiveView
 {
-	// Thresholds define the MAX width for XS/SM/MD; LG is open-ended
-	public static readonly BindableProperty XsMaxProperty = BindableProperty.Create(
-		nameof(XsMax), typeof(double), typeof(FuchsBreakpointView), 575.0,
+	// Thresholds define the MAX width for Small/Medium; Large is open-ended
+	public static readonly BindableProperty SmallMaxProperty = BindableProperty.Create(
+		nameof(SmallMax), typeof(double), typeof(FuchsBreakpointView), 767.0,
 		propertyChanged: OnBreakpointChanged,
 		coerceValue: CoerceToWholeNumber);
 
-	public static readonly BindableProperty SmMaxProperty = BindableProperty.Create(
-		nameof(SmMax), typeof(double), typeof(FuchsBreakpointView), 767.0,
-		propertyChanged: OnBreakpointChanged,
-		coerceValue: CoerceToWholeNumber);
-
-	public static readonly BindableProperty MdMaxProperty = BindableProperty.Create(
-		nameof(MdMax), typeof(double), typeof(FuchsBreakpointView), 991.0,
+	public static readonly BindableProperty MediumMaxProperty = BindableProperty.Create(
+		nameof(MediumMax), typeof(double), typeof(FuchsBreakpointView), 1199.0,
 		propertyChanged: OnBreakpointChanged,
 		coerceValue: CoerceToWholeNumber);
 
 	// Templates for each breakpoint bucket
-	public static readonly BindableProperty XsTemplateProperty = BindableProperty.Create(
-		nameof(XsTemplate), typeof(DataTemplate), typeof(FuchsBreakpointView), default(DataTemplate), propertyChanged: OnTemplateChanged);
+	public static readonly BindableProperty SmallTemplateProperty = BindableProperty.Create(
+		nameof(SmallTemplate), typeof(DataTemplate), typeof(FuchsBreakpointView), default(DataTemplate), propertyChanged: OnTemplateChanged);
 
-	public static readonly BindableProperty SmTemplateProperty = BindableProperty.Create(
-		nameof(SmTemplate), typeof(DataTemplate), typeof(FuchsBreakpointView), default(DataTemplate), propertyChanged: OnTemplateChanged);
+	public static readonly BindableProperty MediumTemplateProperty = BindableProperty.Create(
+		nameof(MediumTemplate), typeof(DataTemplate), typeof(FuchsBreakpointView), default(DataTemplate), propertyChanged: OnTemplateChanged);
 
-	public static readonly BindableProperty MdTemplateProperty = BindableProperty.Create(
-		nameof(MdTemplate), typeof(DataTemplate), typeof(FuchsBreakpointView), default(DataTemplate), propertyChanged: OnTemplateChanged);
+	public static readonly BindableProperty LargeTemplateProperty = BindableProperty.Create(
+		nameof(LargeTemplate), typeof(DataTemplate), typeof(FuchsBreakpointView), default(DataTemplate), propertyChanged: OnTemplateChanged);
 
-	public static readonly BindableProperty LgTemplateProperty = BindableProperty.Create(
-		nameof(LgTemplate), typeof(DataTemplate), typeof(FuchsBreakpointView), default(DataTemplate), propertyChanged: OnTemplateChanged);
-
-	public double XsMax
+	public double SmallMax
 	{
-		get => (double)GetValue(XsMaxProperty);
-		set => SetValue(XsMaxProperty, value);
+		get => (double)GetValue(SmallMaxProperty);
+		set => SetValue(SmallMaxProperty, value);
 	}
 
-	public double SmMax
+	public double MediumMax
 	{
-		get => (double)GetValue(SmMaxProperty);
-		set => SetValue(SmMaxProperty, value);
+		get => (double)GetValue(MediumMaxProperty);
+		set => SetValue(MediumMaxProperty, value);
 	}
 
-	public double MdMax
+	public DataTemplate? SmallTemplate
 	{
-		get => (double)GetValue(MdMaxProperty);
-		set => SetValue(MdMaxProperty, value);
+		get => (DataTemplate?)GetValue(SmallTemplateProperty);
+		set => SetValue(SmallTemplateProperty, value);
 	}
 
-	public DataTemplate? XsTemplate
+	public DataTemplate? MediumTemplate
 	{
-		get => (DataTemplate?)GetValue(XsTemplateProperty);
-		set => SetValue(XsTemplateProperty, value);
+		get => (DataTemplate?)GetValue(MediumTemplateProperty);
+		set => SetValue(MediumTemplateProperty, value);
 	}
 
-	public DataTemplate? SmTemplate
+	public DataTemplate? LargeTemplate
 	{
-		get => (DataTemplate?)GetValue(SmTemplateProperty);
-		set => SetValue(SmTemplateProperty, value);
-	}
-
-	public DataTemplate? MdTemplate
-	{
-		get => (DataTemplate?)GetValue(MdTemplateProperty);
-		set => SetValue(MdTemplateProperty, value);
-	}
-
-	public DataTemplate? LgTemplate
-	{
-		get => (DataTemplate?)GetValue(LgTemplateProperty);
-		set => SetValue(LgTemplateProperty, value);
+		get => (DataTemplate?)GetValue(LargeTemplateProperty);
+		set => SetValue(LargeTemplateProperty, value);
 	}
 
 	protected override void UpdateContent()
 	{
 		var width = GetCurrentWidth();
 
-		// Determine the active bucket index (0..3)
-		int index = width <= XsMax ? 0 :
-			width <= SmMax ? 1 :
-			width <= MdMax ? 2 : 3; // LG (open-ended)
+		DataTemplate? chosen =
+			width <= SmallMax ? SmallTemplate :
+			width <= MediumMax ? MediumTemplate :
+			LargeTemplate;
 
-		var templates = new DataTemplate?[]
-		{
-			XsTemplate, SmTemplate, MdTemplate, LgTemplate
-		};
-
-		DataTemplate? chosen = null;
-
-		// First try upward from current index to find the next defined template
-		for (int i = index; i < templates.Length; i++)
-		{
-			if (templates[i] != null)
-			{
-				chosen = templates[i];
-				break;
-			}
-		}
-
-		// If not found upward, try downward
-		if (chosen == null)
-		{
-			for (int i = index - 1; i >= 0; i--)
-			{
-				if (templates[i] != null)
-				{
-					chosen = templates[i];
-					break;
-				}
-			}
-		}
-
-		if (chosen == null)
-			throw new NullTemplateException("No templates were provided for any breakpoint (XS/SM/MD/LG).");
-
+		// No fallback: render only the matching bucket.
 		SetContentFromTemplate(chosen);
 	}
 
