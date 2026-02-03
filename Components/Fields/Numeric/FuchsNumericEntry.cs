@@ -24,27 +24,18 @@ public class FuchsNumericEntry<TNumber> : NumericFieldBase<TNumber>
 		entry.SetBinding(Entry.TextProperty, new Binding(nameof(NumericValue), source: this, mode: BindingMode.TwoWay));
 		entry.TextChanged += OnTextChanged;
 
-		var label = new Label { };
-		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(Label), source: this, mode: BindingMode.OneWay));
-
-		var helpLabel = new Label
-		{
-			FontSize = 12,
-			IsVisible = DeviceInfo.Current.Platform != DevicePlatform.WinUI
-		};
-		helpLabel.SetBinding(TextProperty, new Binding(nameof(HelpText), source: this));
+		var labelView = CreateLabelWithHelpToggle();
+		var helpView = CreateHelpText();
 
 		var layout = new StackLayout
 		{
-			Orientation = StackOrientation.Vertical,
 			Spacing = 5,
-			Children = { label, entry, helpLabel }
+			Children = { labelView, entry, helpView }
 		};
+		layout.SetBinding(StackLayout.OrientationProperty, new Binding(nameof(Orientation), source: this));
 
-#if WINDOWS
-		if (!string.IsNullOrEmpty(HelpText))
-			ToolTipProperties.SetText(layout, new Binding(nameof(HelpText), source: this));
-#endif
+		ApplyToolTip(layout);
+		ApplyAccessibility(entry);
 
 		Content = layout;
 	}

@@ -40,8 +40,18 @@
 
     <ItemGroup>
         <Folder Include="Extensions\"/>
-        <Folder Include="Fields\Upload\"/>
         <Folder Include="Resources\Fonts\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="FuchsControls.Tests\**" />
+        <EmbeddedResource Remove="FuchsControls.Tests\**" />
+        <None Remove="FuchsControls.Tests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Components\Containers\FuchsAccordion.xaml" />
+      <AdditionalFiles Include="Components\Containers\FuchsCard.xaml" />
     </ItemGroup>
 
 </Project>

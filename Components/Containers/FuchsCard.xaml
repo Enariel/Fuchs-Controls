@@ -67,7 +67,7 @@
             </Grid>
 
             <!-- Body content with natural growth (hyphenation analogue via line break mode) -->
-            <Grid Grid.Row="2" Padding="4,0,4,0">
+            <Grid Grid.Row="2" Padding="4,0,4,0" IsVisible="{Binding Body, Source={x:Reference Root}, Converter={StaticResource StringIsNotNull}}">
                 <Label x:Name="BodyLabel"
                        Grid.Row="0"
                        Grid.Column="0"

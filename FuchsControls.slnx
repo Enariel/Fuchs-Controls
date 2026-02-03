@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="FuchsControls.csproj" />
+  <Project Path="FuchsControls.Tests\FuchsControls.Tests.csproj" />
 </Solution>

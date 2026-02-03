@@ -43,33 +43,23 @@ public class FuchsSelect<TValue> : SelectFieldBase<TValue>
 	{
 		Margin = new Thickness(2, 5, 2, 5);
 
-		var label = new Label { FontSize = 16 };
-		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(Label), source: this, mode: BindingMode.OneWay));
-
 		_picker = new Picker();
-		_picker.SetBinding(Picker.ItemsSourceProperty, new Binding(nameof(ItemsSource), source: this, mode: BindingMode.OneWay));
+		_picker.SetBinding(Picker.ItemsSourceProperty, new Binding(nameof(ItemsSource), source: this));
 		_picker.SetBinding(Picker.SelectedItemProperty, new Binding(nameof(SelectedValue), source: this, mode: BindingMode.TwoWay));
-		_picker.SetBinding(Picker.TitleProperty, new Binding(nameof(Placeholder), source: this, mode: BindingMode.OneWay));
+		_picker.SetBinding(Picker.TitleProperty, new Binding(nameof(Placeholder), source: this));
+
+		var labelView = CreateLabelWithHelpToggle();
+		var helpView = CreateHelpText();
 
 		var stack = new StackLayout { Spacing = 5 };
-		stack.SetBinding(StackLayout.OrientationProperty, new Binding(nameof(Orientation), source: this, mode: BindingMode.OneWay));
-		stack.Children.Add(label);
-		stack.Children.Add(_picker);
+		stack.SetBinding(StackLayout.OrientationProperty, new Binding(nameof(Orientation), source: this));
 
-#if WINDOWS
-		ToolTipProperties.SetText(
-			stack,
-			new Binding(
-				nameof(HelpText),
-				source: this,
-				converter: new FuchsControls.EmptyStringToNullConverter()));
-#else
-		var helpText = new Label { FontSize = 12 };
-		helpText.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(HelpText), source: this));
-		helpText.SetBinding(VisualElement.IsVisibleProperty,
-			new Binding(nameof(HelpText), source: this, converter: new FuchsControls.StringIsNotNullOrEmptyConverter()));
-		stack.Children.Add(helpText);
-#endif
+		stack.Children.Add(labelView);
+		stack.Children.Add(_picker);
+		stack.Children.Add(helpView);
+
+		ApplyToolTip(stack);
+		ApplyAccessibility(_picker);
 
 		Content = stack;
 	}
