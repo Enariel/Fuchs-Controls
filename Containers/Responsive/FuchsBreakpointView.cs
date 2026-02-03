@@ -92,14 +92,20 @@ public sealed class FuchsBreakpointView : FuchsResponsiveView
 
 	private static void OnBreakpointChanged(BindableObject bindable, object oldValue, object newValue)
 	{
+		if (Equals(oldValue, newValue))
+			return;
+
 		if (bindable is FuchsBreakpointView view)
-			view.UpdateContent();
+			view.RequestUpdate();
 	}
 
 	private static void OnTemplateChanged(BindableObject bindable, object oldValue, object newValue)
 	{
+		if (ReferenceEquals(oldValue, newValue))
+			return;
+
 		if (bindable is FuchsBreakpointView view)
-			view.UpdateContent();
+			view.RequestUpdate();
 	}
 
 	private static object CoerceToWholeNumber(BindableObject bindable, object value)

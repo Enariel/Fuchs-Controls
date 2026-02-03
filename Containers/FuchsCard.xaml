@@ -9,42 +9,92 @@
         <controls:ObjectIsNotNullConverter x:Key="IsNotNullConverter" />
         <controls:StringIsNotNullOrEmptyConverter x:Key="StringIsNotNull" />
     </ContentView.Resources>
-    <Border x:Name="CardBorder" Padding="5,10" Background="{Binding Background, Source={x:Reference Root}}"
-            BackgroundColor="{Binding BackgroundColor, Source={x:Reference Root}}">
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto">
-            <!-- Image (optional) -->
-            <Image x:Name="CardImage"
-                   Grid.Row="0"
-                   Aspect="AspectFill"
-                   IsVisible="{Binding ImageSource, Source={x:Reference Root}, Converter={StaticResource IsNotNullConverter}}"
-                   Source="{Binding ImageSource, Source={x:Reference Root}}" />
 
-            <!-- Text content -->
-            <VerticalStackLayout Grid.Row="1" Spacing="5">
+    <!-- Outer border: rounded corners, subtle inner shadow mimic via extra padding, no color changes -->
+    <Border x:Name="CardBorder"
+            Padding="12"
+            StrokeShape="RoundRectangle 16"
+            Background="{Binding Background, Source={x:Reference Root}}"
+            BackgroundColor="{Binding BackgroundColor, Source={x:Reference Root}}">
+        <!-- Vertical card structure similar to .card:not(.horizontal) -->
+        <Grid RowDefinitions="Auto,Auto,*,Auto,Auto"
+              ColumnDefinitions="*"
+              RowSpacing="10">
+            <!-- Image (optional) with consistent aspect and rounded corners -->
+            <Border Grid.Row="0"
+                    StrokeShape="RoundRectangle 10"
+                    IsVisible="{Binding ImageSource, Source={x:Reference Root}, Converter={StaticResource IsNotNullConverter}}">
+                <Image x:Name="CardImage"
+                       Aspect="AspectFill"
+                       HeightRequest="160"
+                       Source="{Binding ImageSource, Source={x:Reference Root}}" />
+            </Border>
+
+            <!-- Header: title + inline actions -->
+            <Grid Grid.Row="1"
+                  ColumnDefinitions="*,Auto"
+                  RowDefinitions="Auto,Auto"
+                  ColumnSpacing="8"
+                  RowSpacing="4"
+                  Padding="4,0,4,0">
                 <Label x:Name="TitleLabel"
+                       Grid.Row="0"
+                       Grid.Column="0"
                        FontAttributes="Bold"
+                       Margin="0,6,0,2"
                        FontSize="{Binding Source={x:Reference Root}, Path=TitleFontSize}"
                        IsVisible="{Binding Title, Source={x:Reference Root}, Converter={StaticResource StringIsNotNull}}"
                        Text="{Binding Title, Source={x:Reference Root}, Mode=OneWay}" />
+
+                <!-- Title actions aligned to the end like header badges -->
+                <Grid x:Name="TitleActionGrid"
+                      Grid.Row="0"
+                      Grid.Column="1"
+                      Padding="0"
+                      Margin="6,6,0,0"
+                      IsVisible="{Binding TitleActionItems, Source={x:Reference Root}, Converter={StaticResource IsNotNullConverter}}" />
+
                 <Label x:Name="SubtitleLabel"
+                       Grid.Row="1"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
                        FontAttributes="Italic"
+                       Opacity="0.9"
+                       Margin="0,0,0,4"
                        FontSize="{Binding Source={x:Reference Root}, Path=SubTitleFontSize}"
                        IsVisible="{Binding Subtitle, Source={x:Reference Root}, Converter={StaticResource StringIsNotNull}}"
                        Text="{Binding Subtitle, Source={x:Reference Root}, Mode=OneWay}" />
-                <Label x:Name="BodyLabel"
-                       FontSize="{Binding Source={x:Reference Root}, Path=BodyFontSize}"
-                       IsVisible="{Binding Body, Source={x:Reference Root}, Converter={StaticResource StringIsNotNull}}"
-                       Text="{Binding  Body, Source={x:Reference Root}, Mode=OneWay}" />
-            </VerticalStackLayout>
-
-            <!-- Footer area: either custom Content or horizontal list of items -->
-            <Grid Grid.Row="2" x:Name="FooterGrid"
-                  IsVisible="{Binding FooterItems, Source={x:Reference Root}, Converter={StaticResource IsNotNullConverter}}">
             </Grid>
 
-            <!-- Action area: either custom Content or horizontal list of items -->
-            <Grid Grid.Row="3" x:Name="ActionGrid"
+            <!-- Body content with natural growth (hyphenation analogue via line break mode) -->
+            <Grid Grid.Row="2" Padding="4,0,4,0">
+                <Label x:Name="BodyLabel"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       FontSize="{Binding Source={x:Reference Root}, Path=BodyFontSize}"
+                       LineBreakMode="WordWrap"
+                       IsVisible="{Binding Body, Source={x:Reference Root}, Converter={StaticResource StringIsNotNull}}"
+                       Text="{Binding Body, Source={x:Reference Root}, Mode=OneWay}" />
+            </Grid>
+
+            <!-- Footer area: compact, aligned center -->
+            <Grid Grid.Row="3"
+                  x:Name="FooterGrid"
+                  Padding="0,8,0,0"
+                  IsVisible="{Binding FooterItems, Source={x:Reference Root}, Converter={StaticResource IsNotNullConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+            </Grid>
+
+            <!-- Action area: horizontal button row feel -->
+            <Grid Grid.Row="4"
+                  x:Name="ActionGrid"
+                  Padding="0,6,0,0"
                   IsVisible="{Binding ActionItems, Source={x:Reference Root}, Converter={StaticResource IsNotNullConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
             </Grid>
         </Grid>
     </Border>

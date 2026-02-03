@@ -20,11 +20,21 @@ namespace FuchsControls.Containers.Responsive;
 /// </summary>
 public abstract class FuchsResponsiveView : ContentView
 {
+	private DataTemplate? _lastTemplate;
+	private Window? _attachedWindow;
+	private bool _updatePending;
+	private readonly TimeSpan _updateThrottle = TimeSpan.FromMilliseconds(50);
+	private DateTime _lastUpdateAt;
+
 	protected void SetContentFromTemplate(DataTemplate? template)
 	{
+		if (ReferenceEquals(template, _lastTemplate))
+			return;
+
+		_lastTemplate = template;
+
 		if (template == null)
 		{
-			// No fallbacks: render nothing if no template is provided for the current case.
 			Content = null;
 			return;
 		}
@@ -35,16 +45,12 @@ public abstract class FuchsResponsiveView : ContentView
 		{
 			var created = template.CreateContent();
 
-			// 1) Direct View
 			if (created is View v1)
 				resolvedView = v1;
-			// 2) Element that is also View
 			else if (created is Element e && e is View v2)
 				resolvedView = v2;
-			// 3) IContentView Content unwrap
 			else if (created is IContentView cv && cv.Content is View v3)
 				resolvedView = v3;
-			// 4) Reflective Content property
 			else
 			{
 				var contentProp = created?.GetType().GetProperty("Content");
@@ -54,50 +60,99 @@ public abstract class FuchsResponsiveView : ContentView
 		}
 		catch
 		{
-			// No fallbacks: if template creation fails, render nothing.
 			Content = null;
 			return;
 		}
 
-		// Only swap if we actually obtained a view; otherwise render nothing
 		Content = resolvedView;
 	}
-
 
 	protected override void OnHandlerChanged()
 	{
 		base.OnHandlerChanged();
 		AttachWindowSizeChanged();
-		UpdateContent();
+		ThrottledUpdateContent();
 	}
+
+        protected void RequestUpdate() => ThrottledUpdateContent();
 
 	protected override void OnParentChanged()
 	{
 		base.OnParentChanged();
 		AttachWindowSizeChanged();
-		UpdateContent();
+		ThrottledUpdateContent();
 	}
 
 	protected override void OnBindingContextChanged()
 	{
 		base.OnBindingContextChanged();
-		UpdateContent();
+		ThrottledUpdateContent();
 	}
 
 	private void AttachWindowSizeChanged()
 	{
+		if (_attachedWindow != null)
+		{
+			_attachedWindow.SizeChanged -= OnWindowSizeChanged;
+			_attachedWindow = null;
+		}
+
 		if (Window == null)
 			return;
 
-		Window.SizeChanged -= OnWindowSizeChanged;
-		Window.SizeChanged += OnWindowSizeChanged;
+		_attachedWindow = Window;
+		_attachedWindow.SizeChanged -= OnWindowSizeChanged;
+		_attachedWindow.SizeChanged += OnWindowSizeChanged;
 	}
 
 	private void OnWindowSizeChanged(object? sender, EventArgs e)
 	{
-		UpdateContent();
+		ThrottledUpdateContent();
 	}
 
+	private void ThrottledUpdateContent()
+	{
+		var now = DateTime.UtcNow;
+		if (_updatePending || (now - _lastUpdateAt) < _updateThrottle)
+		{
+			if (_updatePending) return;
+			_updatePending = true;
+			_ = Dispatcher.DispatchDelayed(_updateThrottle, () =>
+			{
+				_updatePending = false;
+				_lastUpdateAt = DateTime.UtcNow;
+				SafeUpdateContent();
+			});
+			return;
+		}
+
+		_lastUpdateAt = now;
+		SafeUpdateContent();
+	}
+
+	private void SafeUpdateContent()
+	{
+		try
+		{
+			UpdateContent();
+		}
+		catch
+		{
+			// Swallow to keep UI stable; render nothing on failure.
+			Content = null;
+			_lastTemplate = null;
+		}
+	}
+
+	protected override void OnHandlerChanging(HandlerChangingEventArgs args)
+	{
+		base.OnHandlerChanging(args);
+		if (_attachedWindow != null)
+		{
+			_attachedWindow.SizeChanged -= OnWindowSizeChanged;
+			_attachedWindow = null;
+		}
+	}
 
 	/// <summary>
 	/// Returns the best available width to drive responsive decisions.

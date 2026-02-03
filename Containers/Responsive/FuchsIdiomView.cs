@@ -73,7 +73,10 @@ public class FuchsIdiomView : FuchsResponsiveView
 
 	private static void OnTemplateChanged(BindableObject bindable, object oldValue, object newValue)
 	{
+		if (ReferenceEquals(oldValue, newValue))
+			return;
+
 		if (bindable is FuchsIdiomView view)
-			view.UpdateContent();
+			view.RequestUpdate();
 	}
 }

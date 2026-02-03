@@ -120,6 +120,25 @@ public partial class FuchsCard : ContentView
 		set => SetValue(ActionItemsProperty, value);
 	}
 
+	public View TitleActionItems
+	{
+		get => (View)GetValue(TitleActionItemsProperty);
+		set => SetValue(TitleActionItemsProperty, value);
+	}
+
+	public static readonly BindableProperty TitleActionItemsProperty =
+		BindableProperty.Create(nameof(TitleActionItems), typeof(View), typeof(FuchsCard), defaultBindingMode: BindingMode.OneWay,
+			propertyChanged: OnTitleActionItemsChanged);
+
+	private static void OnTitleActionItemsChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (newValue is View newTitleActionItems && bindable is FuchsCard card)
+		{
+			card.TitleActionGrid.Children.Clear();
+			card.TitleActionGrid.Children.Add(newTitleActionItems);
+		}
+	}
+
 	public static readonly BindableProperty BackgroundProperty =
 		BindableProperty.Create(nameof(Background), typeof(Brush), typeof(FuchsCard), default(Brush));
 
