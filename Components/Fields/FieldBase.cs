@@ -1,7 +1,9 @@
 #region Meta
+
 // FuchsControls
 // Created: 23/01/2026
 // Modified: 23/01/2026
+
 #endregion
 
 namespace FuchsControls.Fields;
@@ -140,7 +142,7 @@ public abstract class FieldBase : ContentView, IFieldBase
 
 	protected void ApplyAccessibility(View target)
 	{
-		target.SetBinding(AutomationProperties.HelpTextProperty, new Binding(nameof(HelpText), source: this));
+		target.SetBinding(SemanticProperties.HintProperty, new Binding(nameof(HelpText), source: this));
 		target.SetBinding(SemanticProperties.DescriptionProperty, new Binding(nameof(HelpText), source: this));
 	}
 }
