@@ -1,73 +1,67 @@
 #region Meta
 
 // FuchsControls
-// Created: 29/01/2026
-// Modified: 29/01/2026
+// Created: 03/02/2026
+// Modified: 03/02/2026
 
 #endregion
 
-using Microsoft.Maui.Controls.Shapes;
-using Path = Microsoft.Maui.Controls.Shapes.Path;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics.Converters;
 
 namespace FuchsControls;
 
-public class FuchsIcon : ContentView
+public class FuchsIcon : GraphicsView, IDrawable
 {
-	private readonly Path _path;
+	public static readonly BindableProperty FillColorProperty = BindableProperty.Create(
+		nameof(FillColor),
+		typeof(Color),
+		typeof(FuchsIcon),
+		null,
+		propertyChanged: (bindable, _, _) => ((FuchsIcon)bindable).Invalidate());
+
+	public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create(
+		nameof(StrokeColor),
+		typeof(Color),
+		typeof(FuchsIcon),
+		Colors.Transparent,
+		propertyChanged: (bindable, _, _) => ((FuchsIcon)bindable).Invalidate());
+
+	public static readonly BindableProperty PathDataProperty = BindableProperty.Create(
+		nameof(PathData),
+		typeof(string),
+		typeof(FuchsIcon),
+		string.Empty,
+		propertyChanged: (bindable, _, _) => ((FuchsIcon)bindable).Invalidate());
+
+	public static readonly BindableProperty IconSizeProperty = BindableProperty.Create(
+		nameof(IconSize),
+		typeof(double),
+		typeof(FuchsIcon),
+		24.0,
+		propertyChanged: (bindable, _, _) =>
+		{
+			var icon = (FuchsIcon)bindable;
+			icon.WidthRequest = icon.IconSize;
+			icon.HeightRequest = icon.IconSize;
+			icon.Invalidate();
+		});
 
 	public FuchsIcon()
 	{
-		_path = new Path
-		{
-			Stroke = StrokeColor,
-			Fill = FillColor,
-			HorizontalOptions = LayoutOptions.Center,
-			VerticalOptions = LayoutOptions.Center,
-			StrokeThickness = 1
-		};
+		Drawable = this;
+		WidthRequest = IconSize;
+		HeightRequest = IconSize;
 
-		_path.SetBinding(Shape.StrokeProperty, new Binding(nameof(StrokeColor), source: this));
-		_path.SetBinding(Shape.FillProperty, new Binding(nameof(FillColor), source: this));
-
-		var container = new Grid
-		{
-			HorizontalOptions = LayoutOptions.Center,
-			VerticalOptions = LayoutOptions.Center
-		};
-
-		container.SetBinding(WidthRequestProperty, new Binding(nameof(IconSize), source: this));
-		container.SetBinding(HeightRequestProperty, new Binding(nameof(IconSize), source: this));
-
-		container.Children.Add(_path);
-		Content = container;
-
-		UpdateGeometry(PathData);
+		this.SetDynamicResource(FillColorProperty, "FuchsTextColor");
 	}
 
-	public static readonly BindableProperty PathDataProperty =
-		BindableProperty.Create(
-			nameof(PathData),
-			typeof(string),
-			typeof(FuchsIcon),
-			defaultValue: string.Empty,
-			propertyChanged: (bindable, _, newValue) =>
-			{
-				var control = (FuchsIcon)bindable;
-				control.UpdateGeometry((string)newValue);
-			});
-
-	public string PathData
+	public Color? FillColor
 	{
-		get => (string)GetValue(PathDataProperty);
-		set => SetValue(PathDataProperty, value);
+		get => (Color?)GetValue(FillColorProperty);
+		set => SetValue(FillColorProperty, value);
 	}
-
-	public static readonly BindableProperty StrokeColorProperty =
-		BindableProperty.Create(
-			nameof(StrokeColor),
-			typeof(Color),
-			typeof(FuchsIcon),
-			defaultValue: Colors.Transparent);
 
 	public Color StrokeColor
 	{
@@ -75,25 +69,11 @@ public class FuchsIcon : ContentView
 		set => SetValue(StrokeColorProperty, value);
 	}
 
-	public static readonly BindableProperty FillColorProperty =
-		BindableProperty.Create(
-			nameof(FillColor),
-			typeof(Color),
-			typeof(FuchsIcon),
-			defaultValue: Colors.Gray);
-
-	public Color FillColor
+	public string PathData
 	{
-		get => (Color)GetValue(FillColorProperty);
-		set => SetValue(FillColorProperty, value);
+		get => (string)GetValue(PathDataProperty);
+		set => SetValue(PathDataProperty, value);
 	}
-
-	public static readonly BindableProperty IconSizeProperty =
-		BindableProperty.Create(
-			nameof(IconSize),
-			typeof(double),
-			typeof(FuchsIcon),
-			defaultValue: 48d);
 
 	public double IconSize
 	{
@@ -101,15 +81,43 @@ public class FuchsIcon : ContentView
 		set => SetValue(IconSizeProperty, value);
 	}
 
-	private void UpdateGeometry(string? data)
+	public void Draw(ICanvas canvas, RectF dirtyRect)
 	{
-		if (string.IsNullOrWhiteSpace(data))
-		{
-			_path.Data = null;
+		if (string.IsNullOrEmpty(PathData))
 			return;
-		}
 
-		var converter = new PathGeometryConverter();
-		_path.Data = (Geometry)converter.ConvertFromInvariantString(data);
+		try
+		{
+			var path = PathBuilder.Build(PathData);
+
+			// Scale the path to fit the IconSize
+			// Most Material Icons (like in FuchsIcons.cs) are 960x960 or 24x24 or 48x48.
+			// We should probably normalize it.
+
+			var bounds = path.Bounds;
+			float scale = (float)IconSize / Math.Max(bounds.Width, bounds.Height);
+
+			canvas.SaveState();
+			canvas.Scale(scale, scale);
+			// Translate to center if needed, but usually paths start at 0,0 or have their own offset.
+			// For Material Icons, they often have large coordinates.
+			// Let's translate so the top-left of the bounds is at 0,0
+			canvas.Translate(-bounds.Left, -bounds.Top);
+
+			canvas.FillColor = FillColor ?? Colors.Grey;
+			canvas.StrokeColor = StrokeColor;
+
+			canvas.FillPath(path);
+			if (StrokeColor != Colors.Transparent)
+			{
+				canvas.DrawPath(path);
+			}
+
+			canvas.RestoreState();
+		}
+		catch
+		{
+			// Handle invalid path data gracefully
+		}
 	}
 }

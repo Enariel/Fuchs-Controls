@@ -53,7 +53,7 @@ internal sealed class FuchsLinkBehavior
 			"LinkColor",
 			typeof(Color),
 			typeof(FuchsLinkBehavior),
-			defaultValue: Colors.Blue,
+			defaultValue: null,
 			propertyChanged: (b, _, __) => GetBehavior(b)?.UpdateDecoration());
 
 	// Hidden attached property to find the behavior instance from property-changed callbacks
@@ -96,7 +96,7 @@ internal sealed class FuchsLinkBehavior
 
 	public void UpdateDecoration()
 	{
-		var color = (Color)_owner.GetValue(LinkColorProperty);
+		var color = (Color?)_owner.GetValue(LinkColorProperty) ?? Colors.Blue;
 		_setTextColor(color);
 
 		var underline = (bool)_owner.GetValue(UnderlineProperty);

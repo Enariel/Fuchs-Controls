@@ -27,6 +27,8 @@ public partial class FuchsSpanLink : Span
 
 	public FuchsSpanLink()
 	{
+		this.SetDynamicResource(LinkColorProperty, "FuchsAccentColor");
+
 		_behavior = new FuchsLinkBehavior(
 			this,
 			c => TextColor = c,
@@ -39,11 +41,11 @@ public partial class FuchsSpanLink : Span
 		});
 
 #if WINDOWS || MACCATALYST
-        // Pointer gestures on Span are not guaranteed on all platforms; add where supported
-        var pointer = new PointerGestureRecognizer();
-        pointer.PointerEntered += (_, _) => _behavior.SetHovered(true);
-        pointer.PointerExited += (_, _) => _behavior.SetHovered(false);
-        GestureRecognizers.Add(pointer);
+		// Pointer gestures on Span are not guaranteed on all platforms; add where supported
+		var pointer = new PointerGestureRecognizer();
+		pointer.PointerEntered += (_, _) => _behavior.SetHovered(true);
+		pointer.PointerExited += (_, _) => _behavior.SetHovered(false);
+		GestureRecognizers.Add(pointer);
 #endif
 	}
 

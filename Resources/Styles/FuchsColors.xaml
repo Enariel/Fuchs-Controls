@@ -57,26 +57,31 @@
 
     <!-- Semantic aliases (accent/info/success/warning/danger, light/dark) -->
     <Color x:Key="FuchsAccent">#1CB0F6</Color>
+    <Color x:Key="FuchsAccentColor">#1CB0F6</Color>
     <Color x:Key="FuchsAccentLight">#77D0FA</Color>
     <Color x:Key="FuchsAccentDark">#1896D1</Color>
     <Color x:Key="FuchsAccentDarker">#0E587B</Color>
 
     <Color x:Key="FuchsSuccess">#58CC02</Color>
+    <Color x:Key="FuchsSuccessColor">#58CC02</Color>
     <Color x:Key="FuchsSuccessLight">#9BE067</Color>
     <Color x:Key="FuchsSuccessDark">#4BAD02</Color>
     <Color x:Key="FuchsSuccessDarker">#2C6601</Color>
 
     <Color x:Key="FuchsInfo">#1CB0F6</Color>
+    <Color x:Key="FuchsInfoColor">#1CB0F6</Color>
     <Color x:Key="FuchsInfoLight">#77D0FA</Color>
     <Color x:Key="FuchsInfoDark">#1896D1</Color>
     <Color x:Key="FuchsInfoDarker">#0E587B</Color>
 
     <Color x:Key="FuchsWarning">#FF9600</Color>
+    <Color x:Key="FuchsWarningColor">#FF9600</Color>
     <Color x:Key="FuchsWarningLight">#FFC066</Color>
     <Color x:Key="FuchsWarningDark">#D98000</Color>
     <Color x:Key="FuchsWarningDarker">#804B00</Color>
 
     <Color x:Key="FuchsDanger">#FF4B4B</Color>
+    <Color x:Key="FuchsDangerColor">#FF4B4B</Color>
     <Color x:Key="FuchsDangerLight">#FF9393</Color>
     <Color x:Key="FuchsDangerDark">#D94040</Color>
     <Color x:Key="FuchsDangerDarker">#802626</Color>

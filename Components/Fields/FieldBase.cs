@@ -40,6 +40,18 @@ public abstract class FieldBase : ContentView, IFieldBase
 		typeof(FieldBase),
 		defaultValue: false);
 
+	public static readonly BindableProperty IsBusyProperty = BindableProperty.Create(
+		nameof(IsBusy),
+		typeof(bool),
+		typeof(FieldBase),
+		false);
+
+	public static readonly BindableProperty AccentColorProperty = BindableProperty.Create(
+		nameof(AccentColor),
+		typeof(Color),
+		typeof(FieldBase),
+		null);
+
 	public string Label
 	{
 		get => (string)GetValue(LabelProperty);
@@ -70,10 +82,23 @@ public abstract class FieldBase : ContentView, IFieldBase
 		set => SetValue(IsHelpVisibleProperty, value);
 	}
 
+	public bool IsBusy
+	{
+		get => (bool)GetValue(IsBusyProperty);
+		set => SetValue(IsBusyProperty, value);
+	}
+
+	public Color? AccentColor
+	{
+		get => (Color?)GetValue(AccentColorProperty);
+		set => SetValue(AccentColorProperty, value);
+	}
+
 	protected Label CreateLabel()
 	{
-		var label = new Label { FontSize = 16 };
+		var label = new Label { StyleClass = new[] { "typo-body1" } };
 		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(Label), source: this, mode: BindingMode.OneWay));
+		label.SetDynamicResource(Microsoft.Maui.Controls.Label.TextColorProperty, "FuchsTextColor");
 		return label;
 	}
 
@@ -84,17 +109,12 @@ public abstract class FieldBase : ContentView, IFieldBase
 #if WINDOWS
 		return label;
 #else
-		var helpButton = new Button
-		{
-			Text = "?",
-			FontSize = 12,
-			Padding = new Thickness(4, 0),
-			BackgroundColor = Colors.Transparent
-		};
+		var helpButton = new FuchsLink();
+		helpButton.Text = "?";
 
 		helpButton.SetBinding(IsVisibleProperty,
 			new Binding(nameof(HelpText), source: this, converter: new FuchsControls.StringIsNotNullOrEmptyConverter()));
-		helpButton.Clicked += (_, _) => IsHelpVisible = !IsHelpVisible;
+		helpButton.Command = new Command(() => IsHelpVisible = !IsHelpVisible);
 		AutomationProperties.SetName(helpButton, "Help");
 
 		return new HorizontalStackLayout
@@ -112,8 +132,9 @@ public abstract class FieldBase : ContentView, IFieldBase
 		invisibleHelpLabel.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(HelpText), source: this));
 		return invisibleHelpLabel;
 #else
-		var helpLabel = new Label { FontSize = 12 };
+		var helpLabel = new Label { StyleClass = new[] { "typo-caption" } };
 		helpLabel.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, new Binding(nameof(HelpText), source: this));
+		helpLabel.SetDynamicResource(Microsoft.Maui.Controls.Label.TextColorProperty, "FuchsTextColorLight");
 		helpLabel.SetBinding(VisualElement.IsVisibleProperty,
 			new MultiBinding
 			{

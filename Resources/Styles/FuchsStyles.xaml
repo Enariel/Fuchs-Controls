@@ -93,6 +93,20 @@
         <Setter Property="TextDecorations" Value="None" />
     </Style>
 
+    <!-- Component StyleClass hooks -->
+    <Style Class="style-accent" TargetType="VisualElement">
+        <!-- Default behavior for accent style -->
+    </Style>
+
+    <Style Class="style-success" TargetType="VisualElement">
+    </Style>
+
+    <Style Class="style-warning" TargetType="VisualElement">
+    </Style>
+
+    <Style Class="style-danger" TargetType="VisualElement">
+    </Style>
+
     <!-- Note: Consumers should merge FuchsColors.xaml so keys like FuchsTextColor, FuchsAccent, etc. resolve. -->
 
 </ResourceDictionary>

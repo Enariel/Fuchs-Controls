@@ -28,6 +28,8 @@ public partial class FuchsLink : Label
 
 	public FuchsLink()
 	{
+		this.SetDynamicResource(LinkColorProperty, "FuchsAccentColor");
+
 		_behavior = new FuchsLinkBehavior(
 			this,
 			c => TextColor = c,
@@ -40,10 +42,10 @@ public partial class FuchsLink : Label
 		});
 
 #if WINDOWS || MACCATALYST
-        var pointer = new PointerGestureRecognizer();
-        pointer.PointerEntered += (_, _) => _behavior.SetHovered(true);
-        pointer.PointerExited += (_, _) => _behavior.SetHovered(false);
-        GestureRecognizers.Add(pointer);
+		var pointer = new PointerGestureRecognizer();
+		pointer.PointerEntered += (_, _) => _behavior.SetHovered(true);
+		pointer.PointerExited += (_, _) => _behavior.SetHovered(false);
+		GestureRecognizers.Add(pointer);
 #endif
 	}
 

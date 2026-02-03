@@ -7,6 +7,7 @@
 #endregion
 
 using System.Globalization;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace FuchsControls.Fields;
 
@@ -17,12 +18,34 @@ public class FuchsNumericEntry<TNumber> : NumericFieldBase<TNumber>
 
 	public FuchsNumericEntry()
 	{
-		Margin = new Thickness(2, 5, 2, 5);
+		Margin = new Thickness(0, 5);
 
 		// Create the layout
-		var entry = new Entry() { Keyboard = Keyboard.Numeric };
+		var entry = new Entry()
+		{
+			Keyboard = Keyboard.Numeric,
+			BackgroundColor = Colors.Transparent,
+			Margin = new Thickness(10, 0)
+		};
 		entry.SetBinding(Entry.TextProperty, new Binding(nameof(NumericValue), source: this, mode: BindingMode.TwoWay));
 		entry.TextChanged += OnTextChanged;
+
+		var roundRect = new RoundRectangle { CornerRadius = 8 };
+		roundRect.SetDynamicResource(RoundRectangle.CornerRadiusProperty, "FuchsCornerRadius");
+
+		var border = new Border
+		{
+			Content = entry,
+			Padding = new Thickness(0, 5),
+			StrokeShape = roundRect,
+			StrokeThickness = 1
+		};
+		border.SetDynamicResource(Border.StrokeProperty, "FuchsBgColor3");
+		border.SetDynamicResource(Border.StrokeThicknessProperty, "FuchsBorderWidth");
+		border.SetDynamicResource(VisualElement.BackgroundColorProperty, "FuchsBgColor");
+
+		entry.Focused += (s, e) => border.SetDynamicResource(Border.StrokeProperty, "FuchsAccentColor");
+		entry.Unfocused += (s, e) => border.SetDynamicResource(Border.StrokeProperty, "FuchsBgColor3");
 
 		var labelView = CreateLabelWithHelpToggle();
 		var helpView = CreateHelpText();
@@ -30,7 +53,7 @@ public class FuchsNumericEntry<TNumber> : NumericFieldBase<TNumber>
 		var layout = new StackLayout
 		{
 			Spacing = 5,
-			Children = { labelView, entry, helpView }
+			Children = { labelView, border, helpView }
 		};
 		layout.SetBinding(StackLayout.OrientationProperty, new Binding(nameof(Orientation), source: this));
 

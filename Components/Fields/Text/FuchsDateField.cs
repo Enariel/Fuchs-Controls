@@ -7,6 +7,7 @@
 #endregion
 
 using System.Globalization;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace FuchsControls.Fields;
 
@@ -41,9 +42,12 @@ public class FuchsDateField : FieldBase
 	{
 		Margin = new Thickness(2, 5, 2, 5);
 
-		var datePicker = new DatePicker();
+		var datePicker = new DatePicker
+		{
+			BackgroundColor = Colors.Transparent
+		};
 		datePicker.SetBinding(DatePicker.FormatProperty, new Binding(nameof(Format), source: this));
-		
+
 		// Nullable handling: DatePicker doesn't support null. 
 		// We'll use a Label/Button overlay or just a clear button.
 		var clearButton = new Button { Text = "X", WidthRequest = 40, VerticalOptions = LayoutOptions.Center };
@@ -51,7 +55,7 @@ public class FuchsDateField : FieldBase
 		clearButton.SetBinding(VisualElement.IsVisibleProperty, new Binding(nameof(Date), source: this, converter: new NullToBoolConverter(invert: true)));
 
 		datePicker.DateSelected += (s, e) => Date = e.NewDate;
-		
+
 		// Sync DatePicker with our Date property
 		this.PropertyChanged += (s, e) =>
 		{
@@ -75,6 +79,23 @@ public class FuchsDateField : FieldBase
 			Children = { datePicker, clearButton }
 		};
 
+		var roundRect = new RoundRectangle { CornerRadius = 8 };
+		roundRect.SetDynamicResource(RoundRectangle.CornerRadiusProperty, "FuchsCornerRadius");
+
+		var border = new Border
+		{
+			Content = pickerLayout,
+			Padding = new Thickness(10, 5),
+			StrokeShape = roundRect,
+			StrokeThickness = 1
+		};
+		border.SetDynamicResource(Border.StrokeProperty, "FuchsBgColor3");
+		border.SetDynamicResource(Border.StrokeThicknessProperty, "FuchsBorderWidth");
+		border.SetDynamicResource(VisualElement.BackgroundColorProperty, "FuchsBgColor");
+
+		datePicker.Focused += (s, e) => border.SetDynamicResource(Border.StrokeProperty, "FuchsAccentColor");
+		datePicker.Unfocused += (s, e) => border.SetDynamicResource(Border.StrokeProperty, "FuchsBgColor3");
+
 		var labelView = CreateLabelWithHelpToggle();
 		var helpView = CreateHelpText();
 
@@ -82,7 +103,7 @@ public class FuchsDateField : FieldBase
 		stack.SetBinding(StackLayout.OrientationProperty, new Binding(nameof(Orientation), source: this));
 
 		stack.Children.Add(labelView);
-		stack.Children.Add(pickerLayout);
+		stack.Children.Add(border);
 		stack.Children.Add(helpView);
 
 		ApplyToolTip(stack);

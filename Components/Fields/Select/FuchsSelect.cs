@@ -6,6 +6,8 @@
 
 #endregion
 
+using Microsoft.Maui.Controls.Shapes;
+
 namespace FuchsControls.Fields;
 
 public class FuchsSelect<TValue> : SelectFieldBase<TValue>
@@ -43,10 +45,30 @@ public class FuchsSelect<TValue> : SelectFieldBase<TValue>
 	{
 		Margin = new Thickness(2, 5, 2, 5);
 
-		_picker = new Picker();
+		_picker = new Picker
+		{
+			BackgroundColor = Colors.Transparent
+		};
 		_picker.SetBinding(Picker.ItemsSourceProperty, new Binding(nameof(ItemsSource), source: this));
 		_picker.SetBinding(Picker.SelectedItemProperty, new Binding(nameof(SelectedValue), source: this, mode: BindingMode.TwoWay));
 		_picker.SetBinding(Picker.TitleProperty, new Binding(nameof(Placeholder), source: this));
+
+		var roundRect = new RoundRectangle { CornerRadius = 8 };
+		roundRect.SetDynamicResource(RoundRectangle.CornerRadiusProperty, "FuchsCornerRadius");
+
+		var border = new Border
+		{
+			Content = _picker,
+			Padding = new Thickness(10, 5),
+			StrokeShape = roundRect,
+			StrokeThickness = 1
+		};
+		border.SetDynamicResource(Border.StrokeProperty, "FuchsBgColor3");
+		border.SetDynamicResource(Border.StrokeThicknessProperty, "FuchsBorderWidth");
+		border.SetDynamicResource(VisualElement.BackgroundColorProperty, "FuchsBgColor");
+
+		_picker.Focused += (s, e) => border.SetDynamicResource(Border.StrokeProperty, "FuchsAccentColor");
+		_picker.Unfocused += (s, e) => border.SetDynamicResource(Border.StrokeProperty, "FuchsBgColor3");
 
 		var labelView = CreateLabelWithHelpToggle();
 		var helpView = CreateHelpText();
@@ -55,7 +77,7 @@ public class FuchsSelect<TValue> : SelectFieldBase<TValue>
 		stack.SetBinding(StackLayout.OrientationProperty, new Binding(nameof(Orientation), source: this));
 
 		stack.Children.Add(labelView);
-		stack.Children.Add(_picker);
+		stack.Children.Add(border);
 		stack.Children.Add(helpView);
 
 		ApplyToolTip(stack);
