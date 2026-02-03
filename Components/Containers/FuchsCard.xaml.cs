@@ -20,9 +20,15 @@ namespace FuchsControls.Containers;
 
 public partial class FuchsCard : ContentView
 {
-	public static readonly BindableProperty BodyProperty = BindableProperty.Create(nameof(Body), typeof(string), typeof(FuchsCard), default(string));
-	public static readonly BindableProperty SubtitleProperty = BindableProperty.Create(nameof(Subtitle), typeof(string), typeof(FuchsCard), default(string));
-	public static readonly BindableProperty TitleProperty = BindableProperty.Create(nameof(Title), typeof(string), typeof(FuchsCard), default(string));
+	public static readonly BindableProperty TitleProperty = BindableProperty.Create(nameof(Title), typeof(string), typeof(FuchsCard), string.Empty);
+	public static readonly BindableProperty SubtitleProperty = BindableProperty.Create(nameof(Subtitle), typeof(string), typeof(FuchsCard), string.Empty);
+	public static readonly BindableProperty BodyProperty = BindableProperty.Create(nameof(Body), typeof(string), typeof(FuchsCard), string.Empty);
+
+	public static readonly BindableProperty CornerRadiusProperty =
+		BindableProperty.Create(nameof(CornerRadius), typeof(CornerRadius), typeof(FuchsCard), new CornerRadius(8));
+
+	public static readonly BindableProperty SpacingProperty = BindableProperty.Create(nameof(Spacing), typeof(double), typeof(FuchsCard), 10.0);
+	public static readonly BindableProperty AccentColorProperty = BindableProperty.Create(nameof(AccentColor), typeof(Color), typeof(FuchsCard), null);
 
 	public static readonly BindableProperty FooterItemsProperty =
 		BindableProperty.Create(nameof(FooterItems), typeof(View), typeof(FuchsCard), defaultBindingMode: BindingMode.OneWay,
@@ -57,6 +63,28 @@ public partial class FuchsCard : ContentView
 	public FuchsCard()
 	{
 		InitializeComponent();
+
+		this.SetDynamicResource(CornerRadiusProperty, "FuchsCornerRadius");
+		this.SetDynamicResource(SpacingProperty, "FuchsSpacing");
+		this.SetDynamicResource(AccentColorProperty, "FuchsAccentColor");
+	}
+
+	public CornerRadius CornerRadius
+	{
+		get => (CornerRadius)GetValue(CornerRadiusProperty);
+		set => SetValue(CornerRadiusProperty, value);
+	}
+
+	public double Spacing
+	{
+		get => (double)GetValue(SpacingProperty);
+		set => SetValue(SpacingProperty, value);
+	}
+
+	public Color? AccentColor
+	{
+		get => (Color?)GetValue(AccentColorProperty);
+		set => SetValue(AccentColorProperty, value);
 	}
 
 	public ImageSource ImageSource
@@ -137,23 +165,5 @@ public partial class FuchsCard : ContentView
 			card.TitleActionGrid.Children.Clear();
 			card.TitleActionGrid.Children.Add(newTitleActionItems);
 		}
-	}
-
-	public static readonly BindableProperty BackgroundProperty =
-		BindableProperty.Create(nameof(Background), typeof(Brush), typeof(FuchsCard), default(Brush));
-
-	public Brush Background
-	{
-		get => (Brush)GetValue(BackgroundProperty);
-		set => SetValue(BackgroundProperty, value);
-	}
-
-	public static readonly BindableProperty BackgroundColorProperty =
-		BindableProperty.Create(nameof(BackgroundColor), typeof(Color), typeof(FuchsCard), default(Color));
-
-	public Color BackgroundColor
-	{
-		get => (Color)GetValue(BackgroundColorProperty);
-		set => SetValue(BackgroundColorProperty, value);
 	}
 }

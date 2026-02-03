@@ -3,7 +3,9 @@
              xmlns:local="clr-namespace:FuchsControls.Containers"
              xmlns:controls="clr-namespace:FuchsControls"
              x:Class="FuchsControls.Containers.FuchsCard"
-             x:Name="Root">
+             x:Name="Root"
+             AutomationProperties.Name="{Binding Title, Source={x:Reference Root}}"
+             AutomationProperties.HelpText="{Binding Subtitle, Source={x:Reference Root}}">
     <ContentView.Resources>
         <controls:ListHasItemsConverter x:Key="ListHasItemsConverter" />
         <controls:ObjectIsNotNullConverter x:Key="IsNotNullConverter" />
@@ -12,18 +14,22 @@
 
     <!-- Outer border: rounded corners, subtle inner shadow mimic via extra padding, no color changes -->
     <Border x:Name="CardBorder"
-            Padding="12"
-            StrokeShape="RoundRectangle 16"
+            Padding="{Binding Source={x:Reference Root}, Path=Padding}"
             Background="{Binding Background, Source={x:Reference Root}}"
             BackgroundColor="{Binding BackgroundColor, Source={x:Reference Root}}">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="{Binding CornerRadius, Source={x:Reference Root}}" />
+        </Border.StrokeShape>
         <!-- Vertical card structure similar to .card:not(.horizontal) -->
         <Grid RowDefinitions="Auto,Auto,*,Auto,Auto"
               ColumnDefinitions="*"
-              RowSpacing="10">
+              RowSpacing="{Binding Spacing, Source={x:Reference Root}}">
             <!-- Image (optional) with consistent aspect and rounded corners -->
             <Border Grid.Row="0"
-                    StrokeShape="RoundRectangle 10"
                     IsVisible="{Binding ImageSource, Source={x:Reference Root}, Converter={StaticResource IsNotNullConverter}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="{Binding CornerRadius, Source={x:Reference Root}}" />
+                </Border.StrokeShape>
                 <Image x:Name="CardImage"
                        Aspect="AspectFill"
                        HeightRequest="160"
@@ -40,28 +46,26 @@
                 <Label x:Name="TitleLabel"
                        Grid.Row="0"
                        Grid.Column="0"
-                       FontAttributes="Bold"
-                       Margin="0,6,0,2"
-                       FontSize="{Binding Source={x:Reference Root}, Path=TitleFontSize}"
+                       StyleClass="typo-h6"
+                       VerticalOptions="Center"
                        IsVisible="{Binding Title, Source={x:Reference Root}, Converter={StaticResource StringIsNotNull}}"
-                       Text="{Binding Title, Source={x:Reference Root}, Mode=OneWay}" />
+                       Text="{Binding Title, Source={x:Reference Root}, Mode=OneWay}"
+                       TextColor="{Binding AccentColor, Source={x:Reference Root}}" />
 
                 <!-- Title actions aligned to the end like header badges -->
                 <Grid x:Name="TitleActionGrid"
                       Grid.Row="0"
                       Grid.Column="1"
                       Padding="0"
-                      Margin="6,6,0,0"
+                      Margin="6,0,0,0"
                       IsVisible="{Binding TitleActionItems, Source={x:Reference Root}, Converter={StaticResource IsNotNullConverter}}" />
 
                 <Label x:Name="SubtitleLabel"
                        Grid.Row="1"
                        Grid.Column="0"
                        Grid.ColumnSpan="2"
-                       FontAttributes="Italic"
-                       Opacity="0.9"
-                       Margin="0,0,0,4"
-                       FontSize="{Binding Source={x:Reference Root}, Path=SubTitleFontSize}"
+                       StyleClass="typo-caption"
+                       Opacity="0.8"
                        IsVisible="{Binding Subtitle, Source={x:Reference Root}, Converter={StaticResource StringIsNotNull}}"
                        Text="{Binding Subtitle, Source={x:Reference Root}, Mode=OneWay}" />
             </Grid>
@@ -71,7 +75,7 @@
                 <Label x:Name="BodyLabel"
                        Grid.Row="0"
                        Grid.Column="0"
-                       FontSize="{Binding Source={x:Reference Root}, Path=BodyFontSize}"
+                       StyleClass="typo-body2"
                        LineBreakMode="WordWrap"
                        IsVisible="{Binding Body, Source={x:Reference Root}, Converter={StaticResource StringIsNotNull}}"
                        Text="{Binding Body, Source={x:Reference Root}, Mode=OneWay}" />

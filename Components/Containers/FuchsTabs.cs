@@ -27,6 +27,15 @@ public class FuchsTabs : ContentView
 		BindingMode.TwoWay,
 		propertyChanged: OnSelectedTabChanged);
 
+	public static readonly BindableProperty SpacingProperty = BindableProperty.Create(
+		nameof(Spacing), typeof(double), typeof(FuchsTabs), 10.0);
+
+	public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(
+		nameof(CornerRadius), typeof(CornerRadius), typeof(FuchsTabs), new CornerRadius(0));
+
+	public static readonly BindableProperty AccentColorProperty = BindableProperty.Create(
+		nameof(AccentColor), typeof(Color), typeof(FuchsTabs), null, propertyChanged: (b, o, n) => ((FuchsTabs)b).TabIndicatorColor = (Color?)n);
+
 	public static readonly BindableProperty TabHeaderBackgroundColorProperty = BindableProperty.Create(
 		nameof(TabHeaderBackgroundColor),
 		typeof(Color),
@@ -51,6 +60,24 @@ public class FuchsTabs : ContentView
 		set => SetValue(SelectedTabProperty, value);
 	}
 
+	public double Spacing
+	{
+		get => (double)GetValue(SpacingProperty);
+		set => SetValue(SpacingProperty, value);
+	}
+
+	public CornerRadius CornerRadius
+	{
+		get => (CornerRadius)GetValue(CornerRadiusProperty);
+		set => SetValue(CornerRadiusProperty, value);
+	}
+
+	public Color? AccentColor
+	{
+		get => (Color?)GetValue(AccentColorProperty);
+		set => SetValue(AccentColorProperty, value);
+	}
+
 	public Color TabHeaderBackgroundColor
 	{
 		get => (Color)GetValue(TabHeaderBackgroundColorProperty);
@@ -72,16 +99,17 @@ public class FuchsTabs : ContentView
 	{
 		Tabs.CollectionChanged += (_, _) => RebuildHeaders();
 
-		this.SetDynamicResource(TabIndicatorColorProperty, "FuchsAccentColor");
+		this.SetDynamicResource(AccentColorProperty, "FuchsAccentColor");
+		this.SetDynamicResource(SpacingProperty, "FuchsSpacing");
 
-		_headerContainer = new StackLayout { Orientation = StackOrientation.Horizontal, Spacing = 10 };
+		_headerContainer = new StackLayout { Orientation = StackOrientation.Horizontal };
+		_headerContainer.SetBinding(StackLayout.SpacingProperty, new Binding(nameof(Spacing), source: this));
 
 		_indicator = new BoxView
 		{
 			HeightRequest = 3,
 			HorizontalOptions = LayoutOptions.Start,
-			VerticalOptions = LayoutOptions.End,
-			Color = TabIndicatorColor
+			VerticalOptions = LayoutOptions.End
 		};
 		_indicator.SetBinding(BoxView.ColorProperty, new Binding(nameof(TabIndicatorColor), source: this));
 
@@ -104,16 +132,21 @@ public class FuchsTabs : ContentView
 		_headerContainer.Children.Clear();
 		foreach (var tab in Tabs)
 		{
-			var btn = new Button
+			var label = new Label
 			{
 				Text = tab.Title,
-				BackgroundColor = Colors.Transparent,
-				BorderWidth = 0,
-				Padding = new Thickness(10, 5)
+				VerticalOptions = LayoutOptions.Center,
+				HorizontalOptions = LayoutOptions.Center,
+				Padding = new Thickness(10, 5),
+				StyleClass = new[] { "typo-button" }
 			};
-			btn.SetDynamicResource(Button.TextColorProperty, "FuchsTextColorLight");
-			btn.Clicked += (s, e) => SelectedTab = tab;
-			_headerContainer.Children.Add(btn);
+			label.SetDynamicResource(Label.TextColorProperty, "FuchsTextColorLight");
+
+			var tap = new TapGestureRecognizer();
+			tap.Tapped += (s, e) => SelectedTab = tab;
+			label.GestureRecognizers.Add(tap);
+
+			_headerContainer.Children.Add(label);
 		}
 
 		if (SelectedTab == null && Tabs.Count > 0)
@@ -147,19 +180,19 @@ public class FuchsTabs : ContentView
 		// Update Header appearance
 		for (int i = 0; i < Tabs.Count; i++)
 		{
-			if (_headerContainer.Children[i] is Button btn)
+			if (_headerContainer.Children[i] is Label lbl)
 			{
 				if (Tabs[i] == SelectedTab)
-					btn.SetDynamicResource(Button.TextColorProperty, "FuchsTextColor");
+					lbl.SetDynamicResource(Label.TextColorProperty, "FuchsTextColor");
 				else
-					btn.SetDynamicResource(Button.TextColorProperty, "FuchsTextColorLight");
+					lbl.SetDynamicResource(Label.TextColorProperty, "FuchsTextColorLight");
 
 				if (Tabs[i] == SelectedTab)
 				{
 					if (reduceMotion)
-						MoveIndicatorToInstant(btn);
+						MoveIndicatorToInstant(lbl);
 					else
-						await MoveIndicatorTo(btn).ConfigureAwait(true);
+						await MoveIndicatorTo(lbl).ConfigureAwait(true);
 				}
 			}
 		}
@@ -197,20 +230,20 @@ public class FuchsTabs : ContentView
 		}
 	}
 
-	private void MoveIndicatorToInstant(Button btn)
+	private void MoveIndicatorToInstant(View view)
 	{
-		_indicator.TranslationX = btn.X;
-		_indicator.WidthRequest = btn.Width;
+		_indicator.TranslationX = view.X;
+		_indicator.WidthRequest = view.Width;
 	}
 
-	private async Task MoveIndicatorTo(Button btn)
+	private async Task MoveIndicatorTo(View view)
 	{
 		// Need to wait for layout if it's first time
-		if (btn.Width <= 0)
+		if (view.Width <= 0)
 			await Task.Delay(50).ConfigureAwait(true);
 
-		double targetX = btn.X;
-		double targetWidth = btn.Width;
+		double targetX = view.X;
+		double targetWidth = view.Width;
 
 		var indicatorAnimation = new Animation();
 		indicatorAnimation.WithConcurrent(
