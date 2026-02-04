@@ -31,7 +31,10 @@ hover/active brightness shifts, and accessible contrast).
     - CommunityToolkit.Mvvm
 - Solution:
     - Use FuchsControls.slnx in Rider/Visual Studio.
-
+- Additional Resources:
+  - [MAUI Documentation](https://docs.microsoft.com/en-us/dotnet/maui/)
+  - [CommunityToolkit Documentation](https://docs.microsoft.com/en-us/dotnet/maui/communitytoolkit/)
+  - [MAUI Samples](https://github.com/dotnet/maui-samples)
 ---
 
 ### Code Style

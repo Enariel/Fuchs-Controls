@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:fuchsControls="using:FuchsControls">
     <!--
     Typography styles for FuchsControls
     Fonts are registered in csproj with aliases:
@@ -91,22 +92,47 @@
         <Setter Property="FontSize" Value="14" />
         <Setter Property="CharacterSpacing" Value="0.4" />
         <Setter Property="TextDecorations" Value="None" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+    </Style>
+
+    <!-- Base Button Style -->
+    <Style TargetType="fuchsControls:FuchsButtonBase" x:Key="Test">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsBgColor4}" />
+        <Setter Property="Padding" Value="12,10" />
+    </Style>
+
+    <Style TargetType="fuchsControls:FuchsButton" BasedOn="{StaticResource Test}">
+        <Setter Property="TextColor" Value="{DynamicResource FuchsTextColorInverted}" />
+        <Setter Property="IconColor" Value="{DynamicResource FuchsTextColorInverted}" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+
+    <Style TargetType="fuchsControls:FuchsIconButton" BasedOn="{StaticResource Test}">
+        <Setter Property="IconColor" Value="{DynamicResource FuchsTextColorInverted}" />
+        <Setter Property="WidthRequest" Value="40" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="Padding" Value="8" />
     </Style>
 
     <!-- Component StyleClass hooks -->
-    <Style Class="style-accent" TargetType="VisualElement">
-        <!-- Default behavior for accent style -->
+    <Style Class="style-accent" TargetType="fuchsControls:FuchsButtonBase">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsAccent}" />
     </Style>
-
-    <Style Class="style-success" TargetType="VisualElement">
+    <Style Class="style-success" TargetType="fuchsControls:FuchsButtonBase">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsSuccess}" />
     </Style>
-
-    <Style Class="style-warning" TargetType="VisualElement">
+    <Style Class="style-warning" TargetType="fuchsControls:FuchsButtonBase">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsWarning}" />
     </Style>
-
-    <Style Class="style-danger" TargetType="VisualElement">
+    <Style Class="style-danger" TargetType="fuchsControls:FuchsButtonBase">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsDanger}" />
     </Style>
-
+    <Style Class="style-light" TargetType="fuchsControls:FuchsButtonBase">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsLight}" />
+    </Style>
+    <Style Class="style-dark" TargetType="fuchsControls:FuchsButtonBase">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsDark}" />
+    </Style>
     <!-- Note: Consumers should merge FuchsColors.xaml so keys like FuchsTextColor, FuchsAccent, etc. resolve. -->
-
 </ResourceDictionary>
