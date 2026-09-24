@@ -1,0 +1,656 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <!-- ========================================================= -->
+    <!-- Core design tokens                                        -->
+    <!-- ========================================================= -->
+
+    <Color x:Key="FuchsBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="FuchsBackgroundDarkColor">#F1F4F7</Color>
+    <Color x:Key="FuchsBackgroundDarkerColor">#CED9E3</Color>
+    <Color x:Key="FuchsBackgroundDarkestColor">#809CB6</Color>
+
+    <Color x:Key="FuchsTextColor">#2E4051</Color>
+    <Color x:Key="FuchsTextLightColor">#758696</Color>
+    <Color x:Key="FuchsTextDarkColor">#1E2A35</Color>
+    <Color x:Key="FuchsTextInvertedColor">#FFFFFF</Color>
+
+    <Color x:Key="FuchsAccentColor">#1CB0F6</Color>
+    <Color x:Key="FuchsAccentLightColor">#77D0FA</Color>
+    <Color x:Key="FuchsAccentDarkColor">#1896D1</Color>
+    <Color x:Key="FuchsAccentDarkerColor">#0E587B</Color>
+
+    <Color x:Key="FuchsSuccessColor">#58CC02</Color>
+    <Color x:Key="FuchsSuccessLightColor">#9BEB67</Color>
+    <Color x:Key="FuchsSuccessDarkColor">#4BAE02</Color>
+    <Color x:Key="FuchsSuccessDarkerColor">#2C6601</Color>
+
+    <Color x:Key="FuchsInfoColor">#1CB0F6</Color>
+    <Color x:Key="FuchsWarningColor">#FF9600</Color>
+    <Color x:Key="FuchsDangerColor">#FF4B4B</Color>
+    <Color x:Key="FuchsYellowColor">#FFDE00</Color>
+    <Color x:Key="FuchsPinkColor">#FF86D0</Color>
+    <Color x:Key="FuchsPurpleColor">#C164FF</Color>
+
+    <Color x:Key="FuchsDisabledColor">#CED9E3</Color>
+    <Color x:Key="FuchsBackdropColor">#2E4051</Color>
+
+    <x:Double x:Key="FuchsBorderWidth">2</x:Double>
+    <x:Double x:Key="FuchsCornerRadius">16</x:Double>
+    <x:Double x:Key="FuchsCornerRadiusSmall">8</x:Double>
+    <x:Double x:Key="FuchsCornerRadiusMedium">12</x:Double>
+    <x:Double x:Key="FuchsCornerRadiusLarge">20</x:Double>
+
+    <x:Double x:Key="FuchsFontSizeXs">12</x:Double>
+    <x:Double x:Key="FuchsFontSizeSm">14</x:Double>
+    <x:Double x:Key="FuchsFontSizeMd">16</x:Double>
+    <x:Double x:Key="FuchsFontSizeLg">20</x:Double>
+    <x:Double x:Key="FuchsFontSizeXl">24</x:Double>
+    <x:Double x:Key="FuchsFontSize2Xl">32</x:Double>
+    <x:Double x:Key="FuchsFontSize3Xl">40</x:Double>
+    <x:Double x:Key="FuchsFontSize4Xl">48</x:Double>
+
+    <x:Double x:Key="FuchsFontWeightRegular">400</x:Double>
+    <x:Double x:Key="FuchsFontWeightMedium">600</x:Double>
+    <x:Double x:Key="FuchsFontWeightBold">700</x:Double>
+    <x:Double x:Key="FuchsFontWeightExtraBold">900</x:Double>
+
+    <Thickness x:Key="FuchsControlPadding">14,10</Thickness>
+    <Thickness x:Key="FuchsButtonPadding">14,12,14,8</Thickness>
+    <Thickness x:Key="FuchsCardPadding">12</Thickness>
+    <Thickness x:Key="FuchsPanelPadding">16</Thickness>
+    <Thickness x:Key="FuchsTightPadding">8</Thickness>
+
+    <!-- ========================================================= -->
+    <!-- Shadows                                                   -->
+    <!-- ========================================================= -->
+
+    <Shadow x:Key="FuchsButtonShadow"
+            Brush="{StaticResource FuchsBackgroundDarkerColor}"
+            Offset="0,3"
+            Radius="0"
+            Opacity="1" />
+
+    <Shadow x:Key="FuchsAccentButtonShadow"
+            Brush="{StaticResource FuchsAccentDarkColor}"
+            Offset="0,3"
+            Radius="0"
+            Opacity="1" />
+
+    <Shadow x:Key="FuchsSuccessButtonShadow"
+            Brush="{StaticResource FuchsSuccessDarkColor}"
+            Offset="0,3"
+            Radius="0"
+            Opacity="1" />
+
+    <Shadow x:Key="FuchsDangerButtonShadow"
+            Brush="#D84040"
+            Offset="0,3"
+            Radius="0"
+            Opacity="1" />
+
+    <Shadow x:Key="FuchsPanelInsetShadow"
+            Brush="{StaticResource FuchsBackgroundDarkerColor}"
+            Offset="0,2"
+            Radius="0"
+            Opacity="1" />
+
+    <Shadow x:Key="FuchsFloatingShadow"
+            Brush="#33000000"
+            Offset="0,8"
+            Radius="24"
+            Opacity="0.25" />
+
+    <!-- ========================================================= -->
+    <!-- Base page and layout styles                               -->
+    <!-- ========================================================= -->
+
+    <Style x:Key="FuchsContentPageStyle" TargetType="ContentPage">
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundColor}" />
+        <Setter Property="Padding" Value="16" />
+    </Style>
+
+    <Style x:Key="FuchsVerticalStackLayoutStyle" TargetType="VerticalStackLayout">
+        <Setter Property="Spacing" Value="12" />
+    </Style>
+
+    <Style x:Key="FuchsHorizontalStackLayoutStyle" TargetType="HorizontalStackLayout">
+        <Setter Property="Spacing" Value="8" />
+    </Style>
+
+    <Style x:Key="FuchsFlexLayoutCenterStyle" TargetType="FlexLayout">
+        <Setter Property="JustifyContent" Value="Center" />
+        <Setter Property="AlignItems" Value="Center" />
+    </Style>
+
+    <!-- ========================================================= -->
+    <!-- Typography                                                -->
+    <!-- ========================================================= -->
+
+    <Style x:Key="FuchsLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextColor}" />
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSizeMd}" />
+        <Setter Property="LineHeight" Value="1.5" />
+    </Style>
+
+    <Style x:Key="FuchsMutedLabelStyle" TargetType="Label" BasedOn="{StaticResource FuchsLabelStyle}">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextLightColor}" />
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSizeSm}" />
+    </Style>
+
+    <Style x:Key="FuchsHeading1Style" TargetType="Label" BasedOn="{StaticResource FuchsLabelStyle}">
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSize4Xl}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="LineHeight" Value="1.2" />
+    </Style>
+
+    <Style x:Key="FuchsHeading2Style" TargetType="Label" BasedOn="{StaticResource FuchsLabelStyle}">
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSize3Xl}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="LineHeight" Value="1.2" />
+    </Style>
+
+    <Style x:Key="FuchsHeading3Style" TargetType="Label" BasedOn="{StaticResource FuchsLabelStyle}">
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSize2Xl}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="LineHeight" Value="1.2" />
+    </Style>
+
+    <Style x:Key="FuchsHeading4Style" TargetType="Label" BasedOn="{StaticResource FuchsLabelStyle}">
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSizeXl}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+
+    <Style x:Key="FuchsLinkLabelStyle" TargetType="Label" BasedOn="{StaticResource FuchsLabelStyle}">
+        <Setter Property="TextColor" Value="{StaticResource FuchsAccentColor}" />
+        <Setter Property="TextDecorations" Value="None" />
+    </Style>
+
+    <Style x:Key="FuchsBadgeLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextInvertedColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsAccentColor}" />
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSizeXs}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Padding" Value="10,6" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="LineBreakMode" Value="NoWrap" />
+    </Style>
+
+    <!-- ========================================================= -->
+    <!-- Buttons                                                   -->
+    <!-- ========================================================= -->
+
+    <Style x:Key="FuchsButtonStyle" TargetType="Button">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+        <Setter Property="BorderColor" Value="Transparent" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="Padding" Value="{StaticResource FuchsButtonPadding}" />
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSizeMd}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Shadow" Value="{StaticResource FuchsButtonShadow}" />
+        <Setter Property="MinimumHeightRequest" Value="44" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal" />
+                    <VisualState Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.92" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="TranslationY" Value="3" />
+                            <Setter Property="Shadow" Value="{x:Null}" />
+                            <Setter Property="Opacity" Value="0.92" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource FuchsDisabledColor}" />
+                            <Setter Property="TextColor" Value="{StaticResource FuchsTextLightColor}" />
+                            <Setter Property="Shadow" Value="{x:Null}" />
+                            <Setter Property="TranslationY" Value="3" />
+                            <Setter Property="Opacity" Value="0.7" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FuchsPrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource FuchsButtonStyle}">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextInvertedColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsAccentColor}" />
+        <Setter Property="Shadow" Value="{StaticResource FuchsAccentButtonShadow}" />
+    </Style>
+
+    <Style x:Key="FuchsSuccessButtonStyle" TargetType="Button" BasedOn="{StaticResource FuchsButtonStyle}">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextInvertedColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsSuccessColor}" />
+        <Setter Property="Shadow" Value="{StaticResource FuchsSuccessButtonShadow}" />
+    </Style>
+
+    <Style x:Key="FuchsDangerButtonStyle" TargetType="Button" BasedOn="{StaticResource FuchsButtonStyle}">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextInvertedColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsDangerColor}" />
+        <Setter Property="Shadow" Value="{StaticResource FuchsDangerButtonShadow}" />
+    </Style>
+
+    <Style x:Key="FuchsOutlineButtonStyle" TargetType="Button" BasedOn="{StaticResource FuchsButtonStyle}">
+        <Setter Property="TextColor" Value="{StaticResource FuchsAccentColor}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="{StaticResource FuchsAccentColor}" />
+        <Setter Property="BorderWidth" Value="2" />
+        <Setter Property="Shadow" Value="{StaticResource FuchsAccentButtonShadow}" />
+    </Style>
+
+    <Style x:Key="FuchsLinkButtonStyle" TargetType="Button">
+        <Setter Property="TextColor" Value="{StaticResource FuchsAccentColor}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="Transparent" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Shadow" Value="{x:Null}" />
+    </Style>
+
+    <Style x:Key="FuchsIconButtonStyle" TargetType="ImageButton">
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="HeightRequest" Value="44" />
+        <Setter Property="WidthRequest" Value="44" />
+        <Setter Property="Aspect" Value="AspectFit" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal" />
+                    <VisualState Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="0.85" />
+                            <Setter Property="Opacity" Value="0.9" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.55" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <!-- ========================================================= -->
+    <!-- Inputs                                                    -->
+    <!-- ========================================================= -->
+
+    <Style x:Key="FuchsEntryStyle" TargetType="Entry">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextColor}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource FuchsTextLightColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSizeMd}" />
+        <Setter Property="MinimumHeightRequest" Value="46" />
+        <Setter Property="Margin" Value="0,4" />
+        <Setter Property="ClearButtonVisibility" Value="WhileEditing" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal" />
+                    <VisualState Name="Focused">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="#EAF6FE" />
+                            <Setter Property="TextColor" Value="{StaticResource FuchsTextDarkColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.65" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FuchsEditorStyle" TargetType="Editor">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextColor}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource FuchsTextLightColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSizeMd}" />
+        <Setter Property="MinimumHeightRequest" Value="120" />
+        <Setter Property="AutoSize" Value="TextChanges" />
+        <Setter Property="Margin" Value="0,4" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal" />
+                    <VisualState Name="Focused">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="#EAF6FE" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.65" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FuchsPickerStyle" TargetType="Picker">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextColor}" />
+        <Setter Property="TitleColor" Value="{StaticResource FuchsTextLightColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSizeMd}" />
+        <Setter Property="MinimumHeightRequest" Value="46" />
+        <Setter Property="Margin" Value="0,4" />
+    </Style>
+
+    <Style x:Key="FuchsDatePickerStyle" TargetType="DatePicker">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSizeMd}" />
+        <Setter Property="MinimumHeightRequest" Value="46" />
+        <Setter Property="Margin" Value="0,4" />
+    </Style>
+
+    <Style x:Key="FuchsTimePickerStyle" TargetType="TimePicker">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSizeMd}" />
+        <Setter Property="MinimumHeightRequest" Value="46" />
+        <Setter Property="Margin" Value="0,4" />
+    </Style>
+
+    <Style x:Key="FuchsSearchBarStyle" TargetType="SearchBar">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextColor}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource FuchsTextLightColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+        <Setter Property="CancelButtonColor" Value="{StaticResource FuchsAccentColor}" />
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSizeMd}" />
+        <Setter Property="HeightRequest" Value="48" />
+    </Style>
+
+    <Style x:Key="FuchsCheckBoxStyle" TargetType="CheckBox">
+        <Setter Property="Color" Value="{StaticResource FuchsSuccessColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal" />
+                    <VisualState Name="IsChecked">
+                        <VisualState.Setters>
+                            <Setter Property="Color" Value="{StaticResource FuchsSuccessColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.6" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FuchsRadioButtonStyle" TargetType="RadioButton">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextColor}" />
+        <Setter Property="FontSize" Value="{StaticResource FuchsFontSizeMd}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="{StaticResource FuchsBackgroundDarkerColor}" />
+        <Setter Property="BorderWidth" Value="2" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="10,8" />
+        <Setter Property="Margin" Value="0,4" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CheckedStates">
+                    <VisualState Name="Checked">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor" Value="{StaticResource FuchsAccentDarkerColor}" />
+                            <Setter Property="BackgroundColor" Value="{StaticResource FuchsAccentLightColor}" />
+                            <Setter Property="BorderColor" Value="{StaticResource FuchsAccentColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Unchecked" />
+                </VisualStateGroup>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal" />
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.6" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FuchsSwitchStyle" TargetType="Switch">
+        <Setter Property="OnColor" Value="{StaticResource FuchsAccentColor}" />
+        <Setter Property="ThumbColor" Value="{StaticResource FuchsBackgroundColor}" />
+    </Style>
+
+    <Style x:Key="FuchsSliderStyle" TargetType="Slider">
+        <Setter Property="MinimumTrackColor" Value="{StaticResource FuchsAccentColor}" />
+        <Setter Property="MaximumTrackColor" Value="{StaticResource FuchsBackgroundDarkerColor}" />
+        <Setter Property="ThumbColor" Value="{StaticResource FuchsBackgroundColor}" />
+    </Style>
+
+    <!-- ========================================================= -->
+    <!-- Containers / cards / panels                               -->
+    <!-- ========================================================= -->
+
+    <Style x:Key="FuchsBorderStyle" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundColor}" />
+        <Setter Property="Stroke" Value="{StaticResource FuchsBackgroundDarkerColor}" />
+        <Setter Property="StrokeThickness" Value="2" />
+        <Setter Property="Padding" Value="{StaticResource FuchsPanelPadding}" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="16" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FuchsCardBorderStyle" TargetType="Border" BasedOn="{StaticResource FuchsBorderStyle}">
+        <Setter Property="Padding" Value="{StaticResource FuchsCardPadding}" />
+        <Setter Property="Shadow" Value="{StaticResource FuchsPanelInsetShadow}" />
+    </Style>
+
+    <Style x:Key="FuchsAlertBorderStyle" TargetType="Border" BasedOn="{StaticResource FuchsBorderStyle}">
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+        <Setter Property="Stroke" Value="{StaticResource FuchsBackgroundDarkerColor}" />
+        <Setter Property="Padding" Value="20" />
+    </Style>
+
+    <Style x:Key="FuchsInfoAlertBorderStyle" TargetType="Border" BasedOn="{StaticResource FuchsAlertBorderStyle}">
+        <Setter Property="BackgroundColor" Value="#D2EFFE" />
+        <Setter Property="Stroke" Value="{StaticResource FuchsInfoColor}" />
+    </Style>
+
+    <Style x:Key="FuchsSuccessAlertBorderStyle" TargetType="Border" BasedOn="{StaticResource FuchsAlertBorderStyle}">
+        <Setter Property="BackgroundColor" Value="#DDF5CC" />
+        <Setter Property="Stroke" Value="{StaticResource FuchsSuccessColor}" />
+    </Style>
+
+    <Style x:Key="FuchsWarningAlertBorderStyle" TargetType="Border" BasedOn="{StaticResource FuchsAlertBorderStyle}">
+        <Setter Property="BackgroundColor" Value="#FFEACC" />
+        <Setter Property="Stroke" Value="{StaticResource FuchsWarningColor}" />
+    </Style>
+
+    <Style x:Key="FuchsDangerAlertBorderStyle" TargetType="Border" BasedOn="{StaticResource FuchsAlertBorderStyle}">
+        <Setter Property="BackgroundColor" Value="#FFDADA" />
+        <Setter Property="Stroke" Value="{StaticResource FuchsDangerColor}" />
+    </Style>
+
+    <Style x:Key="FuchsModalBorderStyle" TargetType="Border" BasedOn="{StaticResource FuchsBorderStyle}">
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundColor}" />
+        <Setter Property="Stroke" Value="{StaticResource FuchsBackgroundDarkerColor}" />
+        <Setter Property="Shadow" Value="{StaticResource FuchsFloatingShadow}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="MaximumWidthRequest" Value="512" />
+    </Style>
+
+    <Style x:Key="FuchsToastBorderStyle" TargetType="Border" BasedOn="{StaticResource FuchsBorderStyle}">
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundColor}" />
+        <Setter Property="Stroke" Value="{StaticResource FuchsBackgroundDarkerColor}" />
+        <Setter Property="Shadow" Value="{StaticResource FuchsFloatingShadow}" />
+        <Setter Property="Padding" Value="14" />
+        <Setter Property="MaximumWidthRequest" Value="320" />
+    </Style>
+
+    <Style x:Key="FuchsMenuBorderStyle" TargetType="Border" BasedOn="{StaticResource FuchsBorderStyle}">
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+        <Setter Property="Padding" Value="8" />
+    </Style>
+
+    <Style x:Key="FuchsKbdBorderStyle" TargetType="Border" BasedOn="{StaticResource FuchsBorderStyle}">
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+        <Setter Property="Stroke" Value="{StaticResource FuchsBackgroundDarkerColor}" />
+        <Setter Property="Padding" Value="6,3,6,5" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="8" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Shadow" Value="{StaticResource FuchsPanelInsetShadow}" />
+    </Style>
+
+    <!-- ========================================================= -->
+    <!-- Navigation-like and item styles                            -->
+    <!-- ========================================================= -->
+
+    <Style x:Key="FuchsMenuItemButtonStyle" TargetType="Button" BasedOn="{StaticResource FuchsLinkButtonStyle}">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextColor}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="16,10" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal" />
+                    <VisualState Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkerColor}" />
+                            <Setter Property="Scale" Value="0.98" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.5" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FuchsTabButtonStyle" TargetType="Button" BasedOn="{StaticResource FuchsLinkButtonStyle}">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextColor}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Padding" Value="24,12" />
+        <Setter Property="Opacity" Value="0.65" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+
+    <Style x:Key="FuchsActiveTabButtonStyle" TargetType="Button" BasedOn="{StaticResource FuchsTabButtonStyle}">
+        <Setter Property="TextColor" Value="{StaticResource FuchsAccentColor}" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+
+    <Style x:Key="FuchsAccordionHeaderButtonStyle" TargetType="Button" BasedOn="{StaticResource FuchsLinkButtonStyle}">
+        <Setter Property="TextColor" Value="{StaticResource FuchsTextColor}" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+    </Style>
+
+    <!-- ========================================================= -->
+    <!-- Progress / loading                                        -->
+    <!-- ========================================================= -->
+
+    <Style x:Key="FuchsProgressBarStyle" TargetType="ProgressBar">
+        <Setter Property="ProgressColor" Value="{StaticResource FuchsAccentColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+        <Setter Property="HeightRequest" Value="12" />
+    </Style>
+
+    <Style x:Key="FuchsSuccessProgressBarStyle" TargetType="ProgressBar"
+           BasedOn="{StaticResource FuchsProgressBarStyle}">
+        <Setter Property="ProgressColor" Value="{StaticResource FuchsSuccessColor}" />
+    </Style>
+
+    <Style x:Key="FuchsWarningProgressBarStyle" TargetType="ProgressBar"
+           BasedOn="{StaticResource FuchsProgressBarStyle}">
+        <Setter Property="ProgressColor" Value="{StaticResource FuchsWarningColor}" />
+    </Style>
+
+    <Style x:Key="FuchsDangerProgressBarStyle" TargetType="ProgressBar"
+           BasedOn="{StaticResource FuchsProgressBarStyle}">
+        <Setter Property="ProgressColor" Value="{StaticResource FuchsDangerColor}" />
+    </Style>
+
+    <Style x:Key="FuchsActivityIndicatorStyle" TargetType="ActivityIndicator">
+        <Setter Property="Color" Value="{StaticResource FuchsAccentColor}" />
+        <Setter Property="WidthRequest" Value="32" />
+        <Setter Property="HeightRequest" Value="32" />
+    </Style>
+
+    <!-- ========================================================= -->
+    <!-- Lists / collections                                       -->
+    <!-- ========================================================= -->
+
+    <Style x:Key="FuchsCollectionViewStyle" TargetType="CollectionView">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="SelectionMode" Value="Single" />
+    </Style>
+
+    <Style x:Key="FuchsListItemBorderStyle" TargetType="Border" BasedOn="{StaticResource FuchsBorderStyle}">
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundColor}" />
+        <Setter Property="Stroke" Value="Transparent" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="Margin" Value="0,0,0,8" />
+    </Style>
+
+    <!-- ========================================================= -->
+    <!-- Images / media                                            -->
+    <!-- ========================================================= -->
+
+    <Style x:Key="FuchsCardImageStyle" TargetType="Image">
+        <Setter Property="Aspect" Value="AspectFill" />
+        <Setter Property="HeightRequest" Value="160" />
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
+    </Style>
+
+    <Style x:Key="FuchsAvatarImageStyle" TargetType="Image">
+        <Setter Property="Aspect" Value="AspectFill" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="WidthRequest" Value="48" />
+    </Style>
+
+    <!-- ========================================================= -->
+    <!-- Semantic color helper brushes/styles                       -->
+    <!-- ========================================================= -->
+
+    <SolidColorBrush x:Key="FuchsBackgroundBrush" Color="{StaticResource FuchsBackgroundColor}" />
+    <SolidColorBrush x:Key="FuchsBackgroundDarkBrush" Color="{StaticResource FuchsBackgroundDarkColor}" />
+    <SolidColorBrush x:Key="FuchsBackgroundDarkerBrush" Color="{StaticResource FuchsBackgroundDarkerColor}" />
+    <SolidColorBrush x:Key="FuchsAccentBrush" Color="{StaticResource FuchsAccentColor}" />
+    <SolidColorBrush x:Key="FuchsSuccessBrush" Color="{StaticResource FuchsSuccessColor}" />
+    <SolidColorBrush x:Key="FuchsWarningBrush" Color="{StaticResource FuchsWarningColor}" />
+    <SolidColorBrush x:Key="FuchsDangerBrush" Color="{StaticResource FuchsDangerColor}" />
+
+</ResourceDictionary>

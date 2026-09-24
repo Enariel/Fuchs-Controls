@@ -23,6 +23,12 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+        <Title>FuchsControls</Title>
+        <Authors>FuchsFarbe Studios, Oliver Conover</Authors>
+        <Description>This is a control library for dotnet MAUI applications. It is inspired by FlatifyCSS for flat UI design. </Description>
+        <Copyright>FuchsFarbe Studios</Copyright>
+        <PackageTags>UI, UX, MAUI, dotnet</PackageTags>
+        <Company>FuchsFarbe Studios</Company>
     </PropertyGroup>
 
     <ItemGroup>
@@ -41,10 +47,6 @@
       <Folder Include="Resources\Fonts\" />
       <Folder Include="Resources\Images\" />
       <Folder Include="Theme\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="Reference\Flatify\docs\assets\css\styles.1c2c4ada.css" />
     </ItemGroup>
 
 </Project>
