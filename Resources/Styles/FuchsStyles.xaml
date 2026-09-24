@@ -144,6 +144,44 @@
         </Setter>
     </Style>
 
+    <Style x:Key="FuchsTabsWrapperStyle" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsBackgroundColor}" />
+        <Setter Property="Stroke" Value="{DynamicResource FuchsBackgroundDarkerColor}" />
+        <Setter Property="StrokeThickness" Value="{DynamicResource FuchsBorderWidth}" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="16" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FuchsTabsHeaderStyle" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsBackgroundColor}" />
+        <Setter Property="Stroke" Value="{DynamicResource FuchsBackgroundDarkerColor}" />
+        <Setter Property="StrokeThickness" Value="{DynamicResource FuchsBorderWidth}" />
+    </Style>
+
+    <Style x:Key="FuchsTabsHeaderButtonStyle" TargetType="Grid">
+        <Setter Property="Padding" Value="{DynamicResource FuchsButtonPadding}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+
+    <Style x:Key="FuchsTabsIndicatorStyle" TargetType="BoxView">
+        <Setter Property="Color" Value="{DynamicResource FuchsAccentColor}" />
+        <Setter Property="HeightRequest" Value="{DynamicResource FuchsBorderWidth}" />
+        <Setter Property="CornerRadius" Value="2" />
+    </Style>
+
+    <Style x:Key="FuchsTabsContentStyle" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsBackgroundColor}" />
+        <Setter Property="Stroke" Value="Transparent" />
+        <Setter Property="Padding" Value="{DynamicResource FuchsPanelPadding}" />
+    </Style>
+
+    <Style x:Key="FuchsTabsPanelStyle" TargetType="ContentView">
+        <Setter Property="Padding" Value="{DynamicResource FuchsPanelPadding}" />
+    </Style>
+
     <!-- ========================================================= -->
     <!-- Base page and layout styles                               -->
     <!-- ========================================================= -->
