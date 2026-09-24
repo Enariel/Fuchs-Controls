@@ -41,8 +41,6 @@
       <Folder Include="Controls\Cards\" />
       <Folder Include="Controls\Inputs\" />
       <Folder Include="Controls\Layout\" />
-      <Folder Include="Converters\" />
-      <Folder Include="Handlers\" />
       <Folder Include="Reference\Flatify\" />
       <Folder Include="Resources\Fonts\" />
       <Folder Include="Resources\Images\" />
