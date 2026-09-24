@@ -1,11 +1,14 @@
 namespace FuchsControls.Controls;
 
-public class FuchsEntry : FuchsFieldControl
+public class FuchsEntry : FormFieldControl
 {
-	protected override InputView CreateInput() => new Entry
+	public FuchsEntry()
 	{
-		BackgroundColor = Colors.Transparent, ClearButtonVisibility = ClearButtonVisibility.WhileEditing
-	};
+		InitializeField(new Entry
+		{
+			BackgroundColor = Colors.Transparent, ClearButtonVisibility = ClearButtonVisibility.WhileEditing
+		});
+	}
 }
 
 public class FuchsInput : FuchsEntry { }

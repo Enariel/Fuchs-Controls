@@ -15,22 +15,6 @@ using ThemeColor = FuchsControls.Theme.FuchsColor;
 
 namespace FuchsControls.Controls;
 
-public sealed class FuchsTabChangedEventArgs : EventArgs
-{
-	public FuchsTabChangedEventArgs(int oldIndex, FuchsTab? oldTab, int newIndex, FuchsTab? newTab)
-	{
-		OldIndex = oldIndex;
-		OldTab = oldTab;
-		NewIndex = newIndex;
-		NewTab = newTab;
-	}
-
-	public int OldIndex { get; }
-	public FuchsTab? OldTab { get; }
-	public int NewIndex { get; }
-	public FuchsTab? NewTab { get; }
-}
-
 public sealed class FuchsTabs : FuchsComponent
 {
 	private sealed record HeaderVisual(Grid Root, Label Label, BoxView Indicator);
@@ -342,7 +326,7 @@ public sealed class FuchsTabs : FuchsComponent
 			return;
 
 		CancelTransition();
-		CancellationTokenSource transition = new();
+		CancellationTokenSource transition = new CancellationTokenSource();
 		_transitionCancellation = transition;
 		CancellationToken token = transition.Token;
 		newTab.Opacity = 0;
@@ -351,8 +335,8 @@ public sealed class FuchsTabs : FuchsComponent
 		try
 		{
 			await Task.WhenAll(
-				newTab.FadeTo(1, 180, Easing.CubicOut),
-				newTab.TranslateTo(0, 0, 180, Easing.CubicOut)).WaitAsync(token);
+				newTab.FadeToAsync(1, 180, Easing.CubicOut),
+				newTab.TranslateToAsync(0, 0, 180, Easing.CubicOut)).WaitAsync(token);
 		}
 		catch (OperationCanceledException) { }
 		finally

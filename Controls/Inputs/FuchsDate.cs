@@ -11,13 +11,10 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace FuchsControls.Controls;
 
-public sealed class FuchsDate : FuchsComponent
+public sealed class FuchsDate : FormFieldControl
 {
-	private readonly Border _root;
 	private readonly DatePicker _picker;
 	private readonly Entry _entry;
-	private readonly Label _label;
-	private readonly Label _helperText;
 	private bool _updating;
 
 	public static readonly BindableProperty DateProperty =
@@ -32,14 +29,6 @@ public sealed class FuchsDate : FuchsComponent
 	public static readonly BindableProperty FormatProperty =
 		BindableProperty.Create(nameof(Format), typeof(string), typeof(FuchsDate), "d", propertyChanged: OnVisualPropertyChanged);
 
-	public static readonly BindableProperty LabelProperty =
-		BindableProperty.Create(nameof(Label), typeof(string), typeof(FuchsDate), string.Empty, propertyChanged: OnVisualPropertyChanged);
-
-	public static readonly BindableProperty HelperTextProperty =
-		BindableProperty.Create(nameof(HelperText), typeof(string), typeof(FuchsDate), string.Empty, propertyChanged: OnVisualPropertyChanged);
-
-	public static readonly BindableProperty IsFocusedProperty =
-		BindableProperty.Create(nameof(IsFocused), typeof(bool), typeof(FuchsDate), false, BindingMode.OneWayToSource);
 
 	public DateTime? Date
 	{
@@ -65,63 +54,26 @@ public sealed class FuchsDate : FuchsComponent
 		set => SetValue(FormatProperty, value);
 	}
 
-	public string Label
-	{
-		get => (string)GetValue(LabelProperty);
-		set => SetValue(LabelProperty, value);
-	}
-
-	public string HelperText
-	{
-		get => (string)GetValue(HelperTextProperty);
-		set => SetValue(HelperTextProperty, value);
-	}
-
-	public bool IsFocused
-	{
-		get => (bool)GetValue(IsFocusedProperty);
-		private set => SetValue(IsFocusedProperty, value);
-	}
-
 	public FuchsDate()
 	{
-		_label = new Label();
-		_helperText = new Label();
 		_picker = new DatePicker();
 		_entry = new Entry { ClearButtonVisibility = ClearButtonVisibility.WhileEditing };
-		_picker.DateSelected += OnPickerDateSelected;
-		_entry.TextChanged += OnEntryTextChanged;
-		_picker.Focused += OnFocused;
-		_picker.Unfocused += OnUnfocused;
-		_entry.Focused += OnFocused;
-		_entry.Unfocused += OnUnfocused;
-
 		Grid input = new() { ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) } };
 		input.Add(_entry, 0, 0);
 		input.Add(_picker, 1, 0);
-		_root = new Border { Content = input };
-		Grid layout = new()
-		{
-			RowDefinitions = { new RowDefinition(GridLength.Auto), new RowDefinition(GridLength.Auto), new RowDefinition(GridLength.Auto) }, RowSpacing = 4
-		};
-		layout.Add(_label, 0, 0);
-		layout.Add(_root, 0, 1);
-		layout.Add(_helperText, 0, 2);
-		Content = layout;
+		InitializeField(input);
+		AttachFocusTarget(_picker);
+		AttachFocusTarget(_entry);
+		_picker.DateSelected += OnPickerDateSelected;
+		_entry.TextChanged += OnEntryTextChanged;
+
 		ApplyTheme();
 	}
 
 	protected override void ApplyTheme()
 	{
+		base.ApplyTheme();
 		FuchsTheme theme = FuchsThemeProvider.Current;
-		_label.Text = Label;
-		_label.IsVisible = !string.IsNullOrWhiteSpace(Label);
-		_label.TextColor = theme.Text;
-		_label.FontSize = theme.FontSizeSm;
-		_helperText.Text = HelperText;
-		_helperText.IsVisible = !string.IsNullOrWhiteSpace(HelperText);
-		_helperText.TextColor = theme.TextLight;
-		_helperText.FontSize = theme.FontSizeSm;
 		_picker.Date = Date ?? DateTime.Today;
 		_picker.MinimumDate = MinimumDate;
 		_picker.MaximumDate = MaximumDate;
@@ -133,12 +85,6 @@ public sealed class FuchsDate : FuchsComponent
 		_picker.FontSize = ResolveFontSize();
 		_entry.IsEnabled = !IsDisabled;
 		_picker.IsEnabled = !IsDisabled;
-		_root.BackgroundColor = theme.BackgroundDark;
-		_root.Stroke = IsFocused ? new SolidColorBrush(theme.Primary) : new SolidColorBrush(theme.BackgroundDarker);
-		_root.StrokeThickness = theme.BorderWidth;
-		_root.StrokeShape = new RoundRectangle { CornerRadius = theme.CornerRadius };
-		_root.Padding = ResolvePadding();
-		_root.Opacity = IsDisabled ? 0.65 : 1;
 	}
 
 	private void OnPickerDateSelected(object? sender, DateChangedEventArgs e)
@@ -155,17 +101,6 @@ public sealed class FuchsDate : FuchsComponent
 		Date = date;
 	}
 
-	private void OnFocused(object? sender, FocusEventArgs e)
-	{
-		IsFocused = true;
-		ApplyTheme();
-	}
-
-	private void OnUnfocused(object? sender, FocusEventArgs e)
-	{
-		IsFocused = false;
-		ApplyTheme();
-	}
 
 	private static void OnDateChanged(BindableObject bindable, object oldValue, object newValue)
 	{

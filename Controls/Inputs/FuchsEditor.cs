@@ -22,13 +22,12 @@ public class FuchsEditor : FuchsFieldControl
 
 	public FuchsEditor()
 	{
+		InitializeField(new Editor
+		{
+			BackgroundColor = Colors.Transparent
+		});
 		ApplyEditorHeight();
 	}
-
-	protected override InputView CreateInput() => new Editor
-	{
-		BackgroundColor = Colors.Transparent, HeightRequest = 200
-	};
 
 	protected override void OnTextChanged(string text)
 	{
@@ -56,6 +55,9 @@ public class FuchsEditor : FuchsFieldControl
 
 	private void ApplyEditorHeight()
 	{
+		if (Input is Editor editor)
+			editor.HeightRequest = EditorHeight;
+
 		if (!AutoExpand)
 			HeightRequest = EditorHeight;
 	}

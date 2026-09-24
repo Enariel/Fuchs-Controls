@@ -56,7 +56,7 @@ public sealed class FuchsAccordionItem : FuchsComponent
 		_toggleLabel = new Label { Text = "+", FontSize = 22, HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center };
 		_headerBorder = new Border();
 		_bodyHost = new Grid { IsVisible = false, Opacity = 0, ScaleY = 0.96, TranslationY = -8 };
-		Grid header = new() { ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) } };
+		Grid header = new Grid { ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) } };
 		header.Add(_headerLabel, 0, 0);
 		header.Add(_toggleLabel, 1, 0);
 		_headerBorder.Content = header;
@@ -124,9 +124,9 @@ public sealed class FuchsAccordionItem : FuchsComponent
 
 		try
 		{
-			Task opacity = _bodyHost.FadeTo(expanded ? 1 : 0, 180, Easing.CubicInOut);
-			Task scale = _bodyHost.ScaleTo(expanded ? 1 : 0.96, 180, Easing.CubicInOut);
-			Task translation = _bodyHost.TranslateTo(0, expanded ? 0 : -8, 180, Easing.CubicInOut);
+			Task opacity = _bodyHost.FadeToAsync(expanded ? 1 : 0, 180, Easing.CubicInOut);
+			Task scale = _bodyHost.ScaleToAsync(expanded ? 1 : 0.96, 180, Easing.CubicInOut);
+			Task translation = _bodyHost.TranslateToAsync(0, expanded ? 0 : -8, 180, Easing.CubicInOut);
 			await Task.WhenAll(opacity, scale, translation).WaitAsync(token);
 			if (!expanded)
 				_bodyHost.IsVisible = false;

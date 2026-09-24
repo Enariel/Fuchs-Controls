@@ -7,15 +7,12 @@
 #endregion
 
 using FuchsControls.Theme;
-using Microsoft.Maui.Controls.Shapes;
 
 namespace FuchsControls.Controls;
 
-public sealed class FuchsCheck : FuchsComponent
+public sealed class FuchsCheck : FuchsBoolControl
 {
-	private readonly Border _root;
 	private readonly CheckBox _checkBox;
-	private readonly Label _label;
 	private bool _updating;
 
 	public static readonly BindableProperty IsCheckedProperty =
@@ -24,11 +21,6 @@ public sealed class FuchsCheck : FuchsComponent
 	public static readonly BindableProperty IsThreeStateProperty =
 		BindableProperty.Create(nameof(IsThreeState), typeof(bool), typeof(FuchsCheck), false, propertyChanged: OnVisualPropertyChanged);
 
-	public static readonly BindableProperty LabelProperty =
-		BindableProperty.Create(nameof(Label), typeof(string), typeof(FuchsCheck), string.Empty, propertyChanged: OnVisualPropertyChanged);
-
-	public static readonly BindableProperty IsFocusedProperty =
-		BindableProperty.Create(nameof(IsFocused), typeof(bool), typeof(FuchsCheck), false, BindingMode.OneWayToSource);
 
 	public bool? IsChecked
 	{
@@ -42,46 +34,20 @@ public sealed class FuchsCheck : FuchsComponent
 		set => SetValue(IsThreeStateProperty, value);
 	}
 
-	public string Label
-	{
-		get => (string)GetValue(LabelProperty);
-		set => SetValue(LabelProperty, value);
-	}
-
-	public bool IsFocused
-	{
-		get => (bool)GetValue(IsFocusedProperty);
-		private set => SetValue(IsFocusedProperty, value);
-	}
-
 	public FuchsCheck()
 	{
 		_checkBox = new CheckBox();
-		_label = new Label { VerticalTextAlignment = TextAlignment.Center };
+		InitializeBoolControl(_checkBox);
 		_checkBox.CheckedChanged += OnCheckedChanged;
-		_checkBox.Focused += OnFocused;
-		_checkBox.Unfocused += OnUnfocused;
-		HorizontalStackLayout content = new() { Spacing = 10, Children = { _checkBox, _label } };
-		_root = new Border { Content = content };
-		_root.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(CycleState) });
-		Content = _root;
+		ControlBorder.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(CycleState) });
 		ApplyTheme();
 	}
 
-	protected override void ApplyTheme()
+	protected override void ApplyInputTheme(FuchsTheme theme)
 	{
-		FuchsTheme theme = FuchsThemeProvider.Current;
-		_label.Text = Label;
-		_label.TextColor = theme.Text;
-		_label.FontSize = ResolveFontSize();
 		_checkBox.IsChecked = IsChecked == true;
 		_checkBox.IsEnabled = !IsDisabled && !IsThreeState;
-		_root.BackgroundColor = Variant == FuchsVariant.Text ? Colors.Transparent : theme.BackgroundDark;
-		_root.Stroke = IsFocused ? new SolidColorBrush(theme.Primary) : new SolidColorBrush(theme.BackgroundDarker);
-		_root.StrokeThickness = IsFocused || Variant != FuchsVariant.Filled ? theme.BorderWidth : 0;
-		_root.StrokeShape = new RoundRectangle { CornerRadius = theme.CornerRadius };
-		_root.Padding = ResolvePadding();
-		_root.Opacity = IsDisabled ? 0.65 : 1;
+		_checkBox.Color = State == FuchsInputState.Valid ? theme.Success : theme.Primary;
 	}
 
 	private void CycleState()
@@ -101,17 +67,6 @@ public sealed class FuchsCheck : FuchsComponent
 			IsChecked = e.Value;
 	}
 
-	private void OnFocused(object? sender, FocusEventArgs e)
-	{
-		IsFocused = true;
-		ApplyTheme();
-	}
-
-	private void OnUnfocused(object? sender, FocusEventArgs e)
-	{
-		IsFocused = false;
-		ApplyTheme();
-	}
 
 	private static void OnCheckedChanged(BindableObject bindable, object oldValue, object newValue)
 	{

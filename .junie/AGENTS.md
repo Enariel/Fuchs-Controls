@@ -24,31 +24,8 @@ dotnet build .\FuchsControls.csproj --configuration Release --framework net10.0-
 
 ## Testing
 
-- There is currently no committed test project in this repository. For reusable automated coverage, add a separate test project outside the library's source glob (normally as a sibling project in the solution), reference the target framework under test, and use the repository's existing .NET/MAUI version.
-- A simple converter smoke test was verified on Windows by referencing `FuchsControls.csproj`, targeting `net10.0-windows10.0.19041.0`, and asserting both directions of `IntToBoolConverter`:
-
-```csharp
-using System.Globalization;
-using FuchsControls.Converters;
-
-var converter = new IntToBoolConverter();
-if (!Equals(converter.Convert(1, typeof(bool), null!, CultureInfo.InvariantCulture), true))
-    throw new Exception("1 should convert to true.");
-if (!Equals(converter.ConvertBack(false, typeof(int), null!, CultureInfo.InvariantCulture), 0))
-    throw new Exception("false should convert to 0.");
-```
-
-- The temporary executable was run successfully with:
-
-```powershell
-dotnet run --project .\tmp-smoke\SmokeTest.csproj --configuration Release
-```
-
-  It printed `Smoke test passed.`. The temporary project and source were deleted afterward and must not be committed.
-- For converter tests, cover valid input, null/wrong-type input, and `ConvertBack` behavior. Pass `CultureInfo.InvariantCulture` unless culture-specific behavior is the subject of the test.
-- For controls and handlers, prefer tests in a MAUI-capable host or platform test environment; verify bindings, visual states, resource lookup, and platform-specific behavior rather than only object construction.
-- Existing builds currently report nullable warnings (`CS8767`) because several `IValueConverter` implementations use non-nullable `parameter` parameters while the MAUI interface declares them nullable. Treat these as an existing warning baseline; do not hide new warnings or errors.
-
+- There is currently no committed test project in this repository. 
+ 
 ## Source and style conventions
 
 - Match the surrounding C# style: file-scoped namespaces, tabs for indentation in the existing converter files, `PascalCase` for public types and members, and nullable annotations consistent with the project.
