@@ -27,7 +27,7 @@
         <Authors>FuchsFarbe Studios, Oliver Conover</Authors>
         <Description>This is a control library for dotnet MAUI applications. It is inspired by FlatifyCSS for flat UI design. </Description>
         <Copyright>FuchsFarbe Studios</Copyright>
-        <PackageTags>UI, UX, MAUI, dotnet</PackageTags>
+        <PackageTags>UI, UX, MAUI, dotnet, Flatify, FuchsFarbe, Controls, Library</PackageTags>
         <Company>FuchsFarbe Studios</Company>
     </PropertyGroup>
 
@@ -39,6 +39,7 @@
       <Folder Include="Behaviours\" />
       <Folder Include="Controls\Buttons\" />
       <Folder Include="Controls\Cards\" />
+      <Folder Include="Controls\Page\" />
       <Folder Include="Controls\Typography\" />
       <Folder Include="Reference\Flatify\" />
       <Folder Include="Resources\Fonts\" />

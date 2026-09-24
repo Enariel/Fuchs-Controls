@@ -10,7 +10,7 @@ using FuchsControls.Theme;
 
 namespace FuchsControls.Controls;
 
-public sealed class FuchsSwitch : FuchsBoolControl
+public sealed class FuchsSwitch : FuchsBoolBase
 {
 	private readonly Switch _switch;
 

@@ -11,7 +11,7 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace FuchsControls.Controls;
 
-public sealed class FuchsColor : FormFieldControl
+public sealed class FuchsColor : FormField
 {
 	private readonly Entry _entry;
 	private readonly BoxView _preview;

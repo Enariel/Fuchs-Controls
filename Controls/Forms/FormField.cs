@@ -4,7 +4,7 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace FuchsControls.Controls;
 
-public abstract class FormFieldControl : FuchsComponent
+public abstract class FormField : FuchsComponent
 {
 	private readonly List<FocusHighlightBehavior> _focusBehaviors = [];
 	private View? _input;
@@ -13,33 +13,33 @@ public abstract class FormFieldControl : FuchsComponent
 	private Label _helpText = null!;
 
 	public static readonly BindableProperty LabelProperty =
-		BindableProperty.Create(nameof(Label), typeof(string), typeof(FormFieldControl), string.Empty, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(Label), typeof(string), typeof(FormField), string.Empty, propertyChanged: OnVisualPropertyChanged);
 
 	public static readonly BindableProperty HelpTextProperty =
-		BindableProperty.Create(nameof(HelpText), typeof(string), typeof(FormFieldControl), string.Empty, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(HelpText), typeof(string), typeof(FormField), string.Empty, propertyChanged: OnVisualPropertyChanged);
 
 	public static readonly BindableProperty TextProperty =
-		BindableProperty.Create(nameof(Text), typeof(string), typeof(FormFieldControl), string.Empty, BindingMode.TwoWay
+		BindableProperty.Create(nameof(Text), typeof(string), typeof(FormField), string.Empty, BindingMode.TwoWay
 			, propertyChanged: OnTextPropertyChanged);
 
 	public static readonly BindableProperty PlaceholderProperty =
-		BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(FormFieldControl), string.Empty, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(FormField), string.Empty, propertyChanged: OnVisualPropertyChanged);
 
 	public static readonly BindableProperty StateProperty =
-		BindableProperty.Create(nameof(State), typeof(FuchsInputState), typeof(FormFieldControl), FuchsInputState.Normal
+		BindableProperty.Create(nameof(State), typeof(FuchsInputState), typeof(FormField), FuchsInputState.Normal
 			, propertyChanged: OnVisualPropertyChanged);
 
 	public static readonly BindableProperty IsPasswordProperty =
-		BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(FormFieldControl), false, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(FormField), false, propertyChanged: OnVisualPropertyChanged);
 
 	public static readonly BindableProperty KeyboardProperty =
-		BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(FormFieldControl), Keyboard.Default, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(FormField), Keyboard.Default, propertyChanged: OnVisualPropertyChanged);
 
 	public static readonly BindableProperty MaxLengthProperty =
-		BindableProperty.Create(nameof(MaxLength), typeof(int), typeof(FormFieldControl), -1, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(MaxLength), typeof(int), typeof(FormField), -1, propertyChanged: OnVisualPropertyChanged);
 
 	public new static readonly BindableProperty IsFocusedProperty =
-		BindableProperty.Create(nameof(IsFocused), typeof(bool), typeof(FormFieldControl), false, BindingMode.OneWayToSource);
+		BindableProperty.Create(nameof(IsFocused), typeof(bool), typeof(FormField), false, BindingMode.OneWayToSource);
 
 	public static readonly BindableProperty HelperTextProperty = HelpTextProperty;
 
@@ -117,7 +117,7 @@ public abstract class FormFieldControl : FuchsComponent
 		_helpText = new Label();
 		_root = new Border { Content = input };
 
-		VerticalStackLayout layout = new() { Spacing = 4 };
+		VerticalStackLayout layout = new VerticalStackLayout { Spacing = 4 };
 		layout.Children.Add(_label);
 		layout.Children.Add(_root);
 		layout.Children.Add(_helpText);
@@ -214,13 +214,13 @@ public abstract class FormFieldControl : FuchsComponent
 
 	private static void OnVisualPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is FormFieldControl field)
+		if (bindable is FormField field)
 			field.ApplyTheme();
 	}
 
 	private static void OnTextPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is FormFieldControl field)
+		if (bindable is FormField field)
 		{
 			field.ApplyTheme();
 			field.OnTextChanged(field.Text);

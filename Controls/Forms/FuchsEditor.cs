@@ -1,6 +1,6 @@
 namespace FuchsControls.Controls;
 
-public class FuchsEditor : FuchsFieldControl
+public class FuchsEditor : FuchsField
 {
 	public static readonly BindableProperty EditorHeightProperty =
 		BindableProperty.Create(nameof(EditorHeight), typeof(double), typeof(FuchsEditor), -1d, propertyChanged: OnEditorVisualPropertyChanged);

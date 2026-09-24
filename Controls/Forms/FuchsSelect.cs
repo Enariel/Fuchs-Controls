@@ -13,7 +13,7 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace FuchsControls.Controls;
 
-public sealed class FuchsSelect : FormFieldControl
+public sealed class FuchsSelect : FormField
 {
 	private readonly Picker _picker;
 	private readonly CollectionView _multiPicker;
@@ -95,7 +95,7 @@ public sealed class FuchsSelect : FormFieldControl
 
 	private DataTemplate CreateItemTemplate(FuchsTheme theme) => new(() =>
 	{
-		Label label = new() { TextColor = theme.Text, FontSize = ResolveFontSize(), Padding = new Thickness(4, 8) };
+		Label label = new Label { TextColor = theme.Text, FontSize = ResolveFontSize(), Padding = new Thickness(4, 8) };
 		label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, string.IsNullOrWhiteSpace(DisplayMemberPath) ? "." : DisplayMemberPath);
 		return label;
 	});

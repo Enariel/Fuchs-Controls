@@ -4,7 +4,7 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace FuchsControls.Controls;
 
-public abstract class FuchsBoolControl : FormFieldControl
+public abstract class FuchsBoolBase : FormField
 {
 	private readonly List<FocusHighlightBehavior> _focusBehaviors = [];
 	private View? _input;
@@ -13,17 +13,17 @@ public abstract class FuchsBoolControl : FormFieldControl
 	private Label _helpText = null!;
 
 	public new static readonly BindableProperty LabelProperty =
-		BindableProperty.Create(nameof(Label), typeof(string), typeof(FuchsBoolControl), string.Empty, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(Label), typeof(string), typeof(FuchsBoolBase), string.Empty, propertyChanged: OnVisualPropertyChanged);
 
 	public new static readonly BindableProperty HelpTextProperty =
-		BindableProperty.Create(nameof(HelpText), typeof(string), typeof(FuchsBoolControl), string.Empty, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(HelpText), typeof(string), typeof(FuchsBoolBase), string.Empty, propertyChanged: OnVisualPropertyChanged);
 
 	public new static readonly BindableProperty StateProperty =
-		BindableProperty.Create(nameof(State), typeof(FuchsInputState), typeof(FuchsBoolControl), FuchsInputState.Normal
+		BindableProperty.Create(nameof(State), typeof(FuchsInputState), typeof(FuchsBoolBase), FuchsInputState.Normal
 			, propertyChanged: OnVisualPropertyChanged);
 
 	public new static readonly BindableProperty IsFocusedProperty =
-		BindableProperty.Create(nameof(IsFocused), typeof(bool), typeof(FuchsBoolControl), false, BindingMode.OneWayToSource);
+		BindableProperty.Create(nameof(IsFocused), typeof(bool), typeof(FuchsBoolBase), false, BindingMode.OneWayToSource);
 
 	public new string Label
 	{
@@ -135,7 +135,7 @@ public abstract class FuchsBoolControl : FormFieldControl
 
 	private static void OnVisualPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is FuchsBoolControl control)
+		if (bindable is FuchsBoolBase control)
 			control.ApplyTheme();
 	}
 }

@@ -10,7 +10,7 @@ using FuchsControls.Theme;
 
 namespace FuchsControls.Controls;
 
-public sealed class FuchsCheck : FuchsBoolControl
+public sealed class FuchsCheck : FuchsBoolBase
 {
 	private readonly CheckBox _checkBox;
 	private bool _updating;

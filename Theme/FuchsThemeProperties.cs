@@ -46,7 +46,7 @@ public sealed class FuchsTheme
 	public double FontSize3Xl { get; set; } = 40;
 	public double FontSize4Xl { get; set; } = 48;
 
-	public static FuchsTheme Default { get; } = new();
+	public static FuchsTheme Default { get; } = new FuchsTheme();
 
 	public Color GetMainColor(FuchsColor color) =>
 		color switch

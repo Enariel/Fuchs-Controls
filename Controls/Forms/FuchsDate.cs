@@ -11,7 +11,7 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace FuchsControls.Controls;
 
-public sealed class FuchsDate : FormFieldControl
+public sealed class FuchsDate : FormField
 {
 	private readonly DatePicker _picker;
 	private readonly Entry _entry;

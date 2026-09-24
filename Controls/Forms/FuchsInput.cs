@@ -1,6 +1,6 @@
 namespace FuchsControls.Controls;
 
-public class FuchsEntry : FormFieldControl
+public class FuchsEntry : FormField
 {
 	public FuchsEntry()
 	{
