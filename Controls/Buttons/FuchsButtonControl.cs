@@ -8,6 +8,7 @@ namespace FuchsControls.Controls;
 public class FuchsButton : FuchsComponent
 {
 	private readonly Border _root;
+	private readonly HorizontalStackLayout _layout;
 	private readonly Label _label;
 	private readonly ActivityIndicator _loader;
 
@@ -51,32 +52,25 @@ public class FuchsButton : FuchsComponent
 	{
 		_label = new Label
 		{
-			HorizontalTextAlignment = TextAlignment.Center,
-			VerticalTextAlignment = TextAlignment.Center,
-			FontAttributes = FontAttributes.Bold
+			HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center, FontAttributes = FontAttributes.Bold
 		};
 
 		_loader = new ActivityIndicator
 		{
-			IsVisible = false,
-			IsRunning = false,
-			WidthRequest = 18,
-			HeightRequest = 18
+			IsVisible = false, IsRunning = false, WidthRequest = 18, HeightRequest = 18
+		};
+
+		_layout = new HorizontalStackLayout
+		{
+			Spacing = 8, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center, Children =
+			{
+				_loader, _label
+			}
 		};
 
 		_root = new Border
 		{
-			Content = new HorizontalStackLayout
-			{
-				Spacing = 8,
-				HorizontalOptions = LayoutOptions.Center,
-				VerticalOptions = LayoutOptions.Center,
-				Children =
-				{
-					_loader,
-					_label
-				}
-			}
+			Content = _layout
 		};
 
 		Content = _root;
@@ -98,6 +92,10 @@ public class FuchsButton : FuchsComponent
 		ApplyTheme();
 	}
 
+	protected Border ButtonRoot => _root;
+
+	protected HorizontalStackLayout ButtonLayout => _layout;
+
 	protected override void ApplyTheme()
 	{
 		FuchsTheme theme = FuchsThemeProvider.Current;
@@ -116,14 +114,12 @@ public class FuchsButton : FuchsComponent
 
 		_root.BackgroundColor = Variant switch
 		{
-			FuchsVariant.Text or FuchsVariant.Outlined => Colors.Transparent,
-			_ => background
+			FuchsVariant.Text or FuchsVariant.Outlined => Colors.Transparent, _ => background
 		};
 
 		_root.Stroke = Variant switch
 		{
-			FuchsVariant.Outlined => new SolidColorBrush(border),
-			_ => Brush.Transparent
+			FuchsVariant.Outlined => new SolidColorBrush(border), _ => Brush.Transparent
 		};
 
 		_label.Text = Text;
@@ -135,7 +131,10 @@ public class FuchsButton : FuchsComponent
 		_loader.IsRunning = IsLoading;
 
 		IsEnabled = !IsDisabled;
+		OnButtonThemeApplied();
 	}
+
+	protected virtual void OnButtonThemeApplied() { }
 
 	private static void OnVisualPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 	{
