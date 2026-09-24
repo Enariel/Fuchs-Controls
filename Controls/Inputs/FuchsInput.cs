@@ -7,6 +7,3 @@ public class FuchsInput : FuchsFieldControl
 		BackgroundColor = Colors.Transparent, ClearButtonVisibility = ClearButtonVisibility.WhileEditing
 	};
 }
-
-[Obsolete("Use FuchsInput instead.")]
-public sealed class FuchsField : FuchsInput { }
