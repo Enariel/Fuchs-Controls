@@ -3,30 +3,38 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace FuchsControls.Controls;
 
-public class FuchsField : FuchsComponent
+public abstract class FuchsFieldControl : FuchsComponent
 {
 	private readonly Border _root;
-	private readonly Entry _entry;
+	private readonly InputView _input;
 	private readonly Label _label;
 	private readonly Label _helperText;
 
 	public static readonly BindableProperty LabelProperty =
-		BindableProperty.Create(nameof(Label), typeof(string), typeof(FuchsField), string.Empty, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(Label), typeof(string), typeof(FuchsFieldControl), string.Empty, propertyChanged: OnVisualPropertyChanged);
 
 	public static readonly BindableProperty TextProperty =
-		BindableProperty.Create(nameof(Text), typeof(string), typeof(FuchsField), string.Empty, BindingMode.TwoWay, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(Text), typeof(string), typeof(FuchsFieldControl), string.Empty, BindingMode.TwoWay
+			, propertyChanged: OnTextPropertyChanged);
 
 	public static readonly BindableProperty PlaceholderProperty =
-		BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(FuchsField), string.Empty, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(FuchsFieldControl), string.Empty, propertyChanged: OnVisualPropertyChanged);
 
 	public static readonly BindableProperty HelperTextProperty =
-		BindableProperty.Create(nameof(HelperText), typeof(string), typeof(FuchsField), string.Empty, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(HelperText), typeof(string), typeof(FuchsFieldControl), string.Empty, propertyChanged: OnVisualPropertyChanged);
 
 	public static readonly BindableProperty StateProperty =
-		BindableProperty.Create(nameof(State), typeof(FuchsInputState), typeof(FuchsField), FuchsInputState.Normal, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(State), typeof(FuchsInputState), typeof(FuchsFieldControl), FuchsInputState.Normal
+			, propertyChanged: OnVisualPropertyChanged);
 
 	public static readonly BindableProperty IsPasswordProperty =
-		BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(FuchsField), false, propertyChanged: OnVisualPropertyChanged);
+		BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(FuchsFieldControl), false, propertyChanged: OnVisualPropertyChanged);
+
+	public static readonly BindableProperty KeyboardProperty =
+		BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(FuchsFieldControl), Keyboard.Default, propertyChanged: OnVisualPropertyChanged);
+
+	public static readonly BindableProperty MaxLengthProperty =
+		BindableProperty.Create(nameof(MaxLength), typeof(int), typeof(FuchsFieldControl), -1, propertyChanged: OnVisualPropertyChanged);
 
 	public string Label
 	{
@@ -64,34 +72,57 @@ public class FuchsField : FuchsComponent
 		set => SetValue(IsPasswordProperty, value);
 	}
 
-	public FuchsField()
+	public Keyboard Keyboard
+	{
+		get => (Keyboard)GetValue(KeyboardProperty);
+		set => SetValue(KeyboardProperty, value);
+	}
+
+	public int MaxLength
+	{
+		get => (int)GetValue(MaxLengthProperty);
+		set => SetValue(MaxLengthProperty, value);
+	}
+
+	protected FuchsFieldControl()
 	{
 		_label = new Label();
-
-		_entry = new Entry
-		{
-			BackgroundColor = Colors.Transparent,
-			ClearButtonVisibility = ClearButtonVisibility.WhileEditing
-		};
-
-		_entry.SetBinding(Entry.TextProperty, new Binding(nameof(Text), source: this, mode: BindingMode.TwoWay));
+		_input = CreateInput();
+		_input.SetBinding(InputView.TextProperty, new Binding(nameof(Text), source: this, mode: BindingMode.TwoWay));
 
 		_helperText = new Label();
 
 		_root = new Border
 		{
-			Content = _entry
+			Content = _input
 		};
+
+		Grid layout = new()
+		{
+			ColumnDefinitions =
+			{
+				new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto)
+			}
+			, RowDefinitions =
+			{
+				new RowDefinition(GridLength.Auto), new RowDefinition(GridLength.Auto)
+			}
+			, ColumnSpacing = 12, RowSpacing = 4
+		};
+		layout.Add(_label, 0, 0);
+		layout.Add(_root, 0, 1);
+		if (DeviceInfo.Current.Idiom == DeviceIdiom.Phone || DeviceInfo.Current.Idiom == DeviceIdiom.Tablet)
+		{
+			layout.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
+			layout.Add(_helperText, 0, 2);
+			Grid.SetColumnSpan(_helperText, 2);
+		}
+		else
+			layout.Add(_helperText, 1, 1);
 
 		Content = new VerticalStackLayout
 		{
-			Spacing = 4,
-			Children =
-			{
-				_label,
-				_root,
-				_helperText
-			}
+			Children = { layout }
 		};
 
 		ApplyTheme();
@@ -103,10 +134,8 @@ public class FuchsField : FuchsComponent
 
 		Color border = State switch
 		{
-			FuchsInputState.Valid => theme.Success,
-			FuchsInputState.Warning => theme.Warning,
-			FuchsInputState.Invalid => theme.Danger,
-			_ => theme.BackgroundDarker
+			FuchsInputState.Valid => theme.Success, FuchsInputState.Warning => theme.Warning, FuchsInputState.Invalid => theme.Danger
+			, _ => theme.BackgroundDarker
 		};
 
 		_label.Text = Label;
@@ -114,18 +143,21 @@ public class FuchsField : FuchsComponent
 		_label.TextColor = theme.Text;
 		_label.FontSize = theme.FontSizeSm;
 
-		_entry.Placeholder = Placeholder;
-		_entry.TextColor = theme.Text;
-		_entry.PlaceholderColor = theme.TextLight;
-		_entry.FontSize = ResolveFontSize();
-		_entry.IsPassword = IsPassword;
-		_entry.IsEnabled = !IsDisabled;
+		_input.Placeholder = Placeholder;
+		_input.TextColor = theme.Text;
+		_input.PlaceholderColor = theme.TextLight;
+		_input.FontSize = ResolveFontSize();
+		if (_input is Entry entry)
+			entry.IsPassword = IsPassword;
+		_input.Keyboard = Keyboard;
+		_input.MaxLength = MaxLength;
+		_input.IsEnabled = !IsDisabled;
 
-		_root.BackgroundColor = theme.BackgroundDark;
-		_root.Stroke = new SolidColorBrush(border);
-		_root.StrokeThickness = theme.BorderWidth;
+		_root.BackgroundColor = Variant == FuchsVariant.Text ? Colors.Transparent : theme.BackgroundDark;
+		_root.Stroke = Variant == FuchsVariant.Filled ? new SolidColorBrush(Colors.Transparent) : new SolidColorBrush(border);
+		_root.StrokeThickness = Variant == FuchsVariant.Filled ? 0 : theme.BorderWidth;
 		_root.StrokeShape = new RoundRectangle { CornerRadius = theme.CornerRadius };
-		_root.Padding = theme.ControlPadding;
+		_root.Padding = ResolvePadding();
 		_root.Opacity = IsDisabled ? 0.65 : 1;
 
 		_helperText.Text = HelperText;
@@ -133,16 +165,26 @@ public class FuchsField : FuchsComponent
 		_helperText.FontSize = theme.FontSizeSm;
 		_helperText.TextColor = State switch
 		{
-			FuchsInputState.Valid => theme.Success,
-			FuchsInputState.Warning => theme.Warning,
-			FuchsInputState.Invalid => theme.Danger,
-			_ => theme.TextLight
+			FuchsInputState.Valid => theme.Success, FuchsInputState.Warning => theme.Warning, FuchsInputState.Invalid => theme.Danger, _ => theme.TextLight
 		};
 	}
 
+	protected abstract InputView CreateInput();
+
+	protected virtual void OnTextChanged(string text) { }
+
 	private static void OnVisualPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is FuchsField field)
+		if (bindable is FuchsFieldControl field)
 			field.ApplyTheme();
+	}
+
+	private static void OnTextPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is FuchsFieldControl field)
+		{
+			field.ApplyTheme();
+			field.OnTextChanged(field.Text);
+		}
 	}
 }

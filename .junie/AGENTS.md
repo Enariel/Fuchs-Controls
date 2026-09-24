@@ -4,7 +4,7 @@
 
 - `FuchsControls` is a .NET MAUI control library inspired by FlatifyCSS. The main source areas are `Controls`, `Behaviours`, `Converters`, `Handlers`, `Theme`, `Resources`, and platform-specific code under `Platforms`.
 - The project uses SDK-style MSBuild with `<UseMaui>true</UseMaui>`, `<SingleProject>true</SingleProject>`, nullable reference types, and implicit usings enabled.
-- XAML uses MAUI namespaces and the project enables source-generated XAML with `<MauiXamlInflator>SourceGen</MauiXamlInflator>`. Keep XAML compatible with source generation unless a file explicitly needs runtime inflation.
+- XAML uses MAUI namespaces, and the project enables source-generated XAML with `<MauiXamlInflator>SourceGen</MauiXamlInflator>`. Keep XAML compatible with source generation unless a file explicitly needs runtime inflation.
 
 ## Build and configuration
 
@@ -56,6 +56,7 @@ dotnet run --project .\tmp-smoke\SmokeTest.csproj --configuration Release
 - Preserve the metadata region used by the converter files when adding or changing files, including created/modified dates if the project convention requires them.
 - Keep XAML resources in `Resources/Styles/FuchsStyles.xaml` organized by section. Reuse existing `Fuchs*` design tokens and styles instead of introducing duplicate colors, dimensions, shadows, or control states.
 - Resource keys use the `Fuchs` prefix and descriptive PascalCase names, such as `FuchsAccentColor`, `FuchsCornerRadius`, and `FuchsButtonShadow`. Maintain this naming scheme for new resources.
+- Components also use the `Fuchs` prefix and descriptive PascalCase names for their components.
 - Keep platform-specific implementations in their corresponding `Platforms/<Platform>` directory. Avoid adding platform conditionals to shared controls when a platform handler or partial implementation is more appropriate.
 - Follow the existing project and Rider formatting settings. Reformat changed C# and XAML files before review, and keep changes focused; do not reformat unrelated files.
 
