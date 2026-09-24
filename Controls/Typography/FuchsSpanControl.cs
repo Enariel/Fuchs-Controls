@@ -1,18 +1,19 @@
 using FuchsControls.Theme;
+using ThemeColor = FuchsControls.Theme.FuchsColor;
 
 namespace FuchsControls.Controls;
 
 public class FuchsSpan : Span
 {
 	public static readonly BindableProperty ColorProperty =
-		BindableProperty.Create(nameof(Color), typeof(FuchsColor), typeof(FuchsSpan), FuchsColor.Default, propertyChanged: OnThemePropertyChanged);
+		BindableProperty.Create(nameof(Color), typeof(ThemeColor), typeof(FuchsSpan), ThemeColor.Default, propertyChanged: OnThemePropertyChanged);
 
 	public static readonly BindableProperty TypoProperty =
 		BindableProperty.Create(nameof(Typo), typeof(FuchsTextTypo), typeof(FuchsSpan), FuchsTextTypo.Body, propertyChanged: OnThemePropertyChanged);
 
-	public FuchsColor Color
+	public ThemeColor Color
 	{
-		get => (FuchsColor)GetValue(ColorProperty);
+		get => (ThemeColor)GetValue(ColorProperty);
 		set => SetValue(ColorProperty, value);
 	}
 
@@ -32,19 +33,13 @@ public class FuchsSpan : Span
 	{
 		FuchsTheme theme = FuchsThemeProvider.Current;
 
-		TextColor = Color == FuchsColor.Default ? theme.Text : theme.GetBorderColor(Color);
+		TextColor = Color == ThemeColor.Default ? theme.Text : theme.GetBorderColor(Color);
 
 		FontSize = Typo switch
 		{
-			FuchsTextTypo.Caption => theme.FontSizeSm,
-			FuchsTextTypo.Subtitle => theme.FontSizeLg,
-			FuchsTextTypo.H1 => theme.FontSize4Xl,
-			FuchsTextTypo.H2 => theme.FontSize3Xl,
-			FuchsTextTypo.H3 => theme.FontSize2Xl,
-			FuchsTextTypo.H4 => theme.FontSizeXl,
-			FuchsTextTypo.H5 => theme.FontSizeLg,
-			FuchsTextTypo.H6 => theme.FontSizeMd,
-			_ => theme.FontSizeMd
+			FuchsTextTypo.Caption => theme.FontSizeSm, FuchsTextTypo.Subtitle => theme.FontSizeLg, FuchsTextTypo.H1 => theme.FontSize4Xl
+			, FuchsTextTypo.H2 => theme.FontSize3Xl, FuchsTextTypo.H3 => theme.FontSize2Xl, FuchsTextTypo.H4 => theme.FontSizeXl
+			, FuchsTextTypo.H5 => theme.FontSizeLg, FuchsTextTypo.H6 => theme.FontSizeMd, _ => theme.FontSizeMd
 		};
 
 		FontAttributes = Typo.ToString().StartsWith("H", StringComparison.Ordinal)

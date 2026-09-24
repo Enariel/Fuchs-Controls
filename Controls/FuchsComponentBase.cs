@@ -1,11 +1,12 @@
 using FuchsControls.Theme;
+using ThemeColor = FuchsControls.Theme.FuchsColor;
 
 namespace FuchsControls.Controls;
 
 public abstract class FuchsComponent : ContentView
 {
 	public static readonly BindableProperty ColorProperty =
-		BindableProperty.Create(nameof(Color), typeof(FuchsColor), typeof(FuchsComponent), FuchsColor.Default, propertyChanged: OnThemePropertyChanged);
+		BindableProperty.Create(nameof(Color), typeof(ThemeColor), typeof(FuchsComponent), ThemeColor.Default, propertyChanged: OnThemePropertyChanged);
 
 	public static readonly BindableProperty VariantProperty =
 		BindableProperty.Create(nameof(Variant), typeof(FuchsVariant), typeof(FuchsComponent), FuchsVariant.Filled, propertyChanged: OnThemePropertyChanged);
@@ -16,9 +17,9 @@ public abstract class FuchsComponent : ContentView
 	public static readonly BindableProperty IsDisabledProperty =
 		BindableProperty.Create(nameof(IsDisabled), typeof(bool), typeof(FuchsComponent), false, propertyChanged: OnThemePropertyChanged);
 
-	public FuchsColor Color
+	public ThemeColor Color
 	{
-		get => (FuchsColor)GetValue(ColorProperty);
+		get => (ThemeColor)GetValue(ColorProperty);
 		set => SetValue(ColorProperty, value);
 	}
 
@@ -53,9 +54,7 @@ public abstract class FuchsComponent : ContentView
 			FuchsThemeProvider.ThemeChanged -= OnThemeChanged;
 	}
 
-	protected virtual void ApplyTheme()
-	{
-	}
+	protected virtual void ApplyTheme() { }
 
 	protected double ResolveFontSize()
 	{
@@ -63,9 +62,7 @@ public abstract class FuchsComponent : ContentView
 
 		return Size switch
 		{
-			FuchsSize.Small => theme.FontSizeSm,
-			FuchsSize.Large => theme.FontSizeLg,
-			_ => theme.FontSizeMd
+			FuchsSize.Small => theme.FontSizeSm, FuchsSize.Large => theme.FontSizeLg, _ => theme.FontSizeMd
 		};
 	}
 
@@ -75,9 +72,7 @@ public abstract class FuchsComponent : ContentView
 
 		return Size switch
 		{
-			FuchsSize.Small => new Thickness(10, 8, 10, 6),
-			FuchsSize.Large => new Thickness(18, 14, 18, 10),
-			_ => theme.ButtonPadding
+			FuchsSize.Small => new Thickness(10, 8, 10, 6), FuchsSize.Large => new Thickness(18, 14, 18, 10), _ => theme.ButtonPadding
 		};
 	}
 

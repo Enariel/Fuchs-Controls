@@ -60,6 +60,10 @@
     <Thickness x:Key="FuchsPanelPadding">16</Thickness>
     <Thickness x:Key="FuchsTightPadding">8</Thickness>
 
+    <x:Double x:Key="FuchsFormTransitionDuration">180</x:Double>
+    <x:Double x:Key="FuchsTabTransitionDuration">180</x:Double>
+    <x:Double x:Key="FuchsAccordionTransitionDuration">180</x:Double>
+
     <!-- ========================================================= -->
     <!-- Shadows                                                   -->
     <!-- ========================================================= -->
@@ -142,6 +146,62 @@
                 <RoundRectangle CornerRadius="16" />
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Key="FuchsFormInputStyle" TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
+        <Setter Property="PlaceholderColor" Value="{DynamicResource FuchsTextLightColor}" />
+        <Setter Property="FontSize" Value="{DynamicResource FuchsFontSizeMd}" />
+    </Style>
+
+    <Style x:Key="FuchsFormEditorStyle" TargetType="Editor">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
+        <Setter Property="FontSize" Value="{DynamicResource FuchsFontSizeMd}" />
+        <Setter Property="HeightRequest" Value="200" />
+        <Setter Property="AutoSize" Value="Disabled" />
+    </Style>
+
+    <Style x:Key="FuchsFormPickerStyle" TargetType="Picker">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
+        <Setter Property="FontSize" Value="{DynamicResource FuchsFontSizeMd}" />
+        <Setter Property="TitleColor" Value="{DynamicResource FuchsTextLightColor}" />
+    </Style>
+
+    <Style x:Key="FuchsFormSwitchStyle" TargetType="Switch">
+        <Setter Property="OnColor" Value="{DynamicResource FuchsAccentColor}" />
+        <Setter Property="ThumbColor" Value="{DynamicResource FuchsTextInvertedColor}" />
+    </Style>
+
+    <Style x:Key="FuchsFormCheckStyle" TargetType="CheckBox">
+        <Setter Property="Color" Value="{DynamicResource FuchsAccentColor}" />
+    </Style>
+
+    <Style x:Key="FuchsAccordionItemStyle" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsBackgroundColor}" />
+        <Setter Property="Stroke" Value="{DynamicResource FuchsBackgroundDarkerColor}" />
+        <Setter Property="StrokeThickness" Value="{DynamicResource FuchsBorderWidth}" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="8" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FuchsAccordionHeaderStyle" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsBackgroundColor}" />
+        <Setter Property="Padding" Value="{DynamicResource FuchsPanelPadding}" />
+    </Style>
+
+    <Style x:Key="FuchsAccordionBodyStyle" TargetType="Grid">
+        <Setter Property="Padding" Value="{DynamicResource FuchsPanelPadding}" />
+    </Style>
+
+    <Style x:Key="FuchsAccordionToggleStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource FuchsAccentColor}" />
+        <Setter Property="FontSize" Value="{DynamicResource FuchsFontSizeLg}" />
     </Style>
 
     <Style x:Key="FuchsTabsWrapperStyle" TargetType="Border">

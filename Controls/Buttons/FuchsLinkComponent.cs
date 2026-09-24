@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using FuchsControls.Theme;
+using ThemeColor = FuchsControls.Theme.FuchsColor;
 
 namespace FuchsControls.Controls;
 
@@ -87,7 +88,7 @@ public class FuchsLink : FuchsComponent
 		FuchsTheme theme = FuchsThemeProvider.Current;
 
 		_label.Text = Text;
-		_label.TextColor = Color == FuchsColor.Default ? theme.Primary : theme.GetBorderColor(Color);
+		_label.TextColor = Color == ThemeColor.Default ? theme.Primary : theme.GetBorderColor(Color);
 		_label.FontSize = ResolveFontSize();
 		_label.TextDecorations = Underline ? TextDecorations.Underline : TextDecorations.None;
 		_label.Opacity = IsDisabled ? 0.55 : 1;

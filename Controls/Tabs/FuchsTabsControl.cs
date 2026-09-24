@@ -11,6 +11,7 @@ using System.Collections.Specialized;
 using FuchsControls.Theme;
 using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Layouts;
+using ThemeColor = FuchsControls.Theme.FuchsColor;
 
 namespace FuchsControls.Controls;
 
@@ -44,6 +45,7 @@ public sealed class FuchsTabs : FuchsComponent
 	private readonly List<HeaderVisual> _headerVisuals = [];
 	private readonly List<FuchsTab> _renderedTabs = [];
 	private INotifyCollectionChanged? _observedCollection;
+	private CancellationTokenSource? _transitionCancellation;
 	private bool _isSynchronizing;
 
 	public static readonly BindableProperty TabsProperty =
@@ -146,7 +148,10 @@ public sealed class FuchsTabs : FuchsComponent
 	protected override void OnHandlerChanging(HandlerChangingEventArgs args)
 	{
 		if (args.NewHandler is null)
+		{
+			CancelTransition();
 			StopObservingTabs();
+		}
 		else if (args.OldHandler is null)
 			ObserveTabs(Tabs);
 
@@ -156,8 +161,8 @@ public sealed class FuchsTabs : FuchsComponent
 	protected override void ApplyTheme()
 	{
 		FuchsTheme theme = FuchsThemeProvider.Current;
-		Color background = Color == FuchsColor.Default ? theme.Background : theme.GetMainColor(Color);
-		Color border = Color == FuchsColor.Default ? theme.BackgroundDarker : theme.GetBorderColor(Color);
+		Color background = Color == ThemeColor.Default ? theme.Background : theme.GetMainColor(Color);
+		Color border = Color == ThemeColor.Default ? theme.BackgroundDarker : theme.GetBorderColor(Color);
 		Color text = theme.GetTextColor(Color, Variant);
 
 		_root.BackgroundColor = background;
@@ -209,6 +214,7 @@ public sealed class FuchsTabs : FuchsComponent
 
 	private void RebuildVisualTree()
 	{
+		CancelTransition();
 		foreach (FuchsTab tab in _renderedTabs)
 			tab.PropertyChanged -= OnTabPropertyChanged;
 
@@ -326,7 +332,44 @@ public sealed class FuchsTabs : FuchsComponent
 		{
 			OnPropertyChanged(nameof(SelectedTab));
 			SelectedTabChanged?.Invoke(this, new FuchsTabChangedEventArgs(oldIndex, oldTab, SelectedIndex, SelectedTab));
+			_ = AnimateSelectionAsync(oldTab, SelectedTab, oldIndex, SelectedIndex);
 		}
+	}
+
+	private async Task AnimateSelectionAsync(FuchsTab? oldTab, FuchsTab? newTab, int oldIndex, int newIndex)
+	{
+		if (newTab is null || oldIndex < 0 || newIndex < 0 || oldIndex == newIndex)
+			return;
+
+		CancelTransition();
+		CancellationTokenSource transition = new();
+		_transitionCancellation = transition;
+		CancellationToken token = transition.Token;
+		newTab.Opacity = 0;
+		newTab.TranslationX = newIndex > oldIndex ? 24 : -24;
+
+		try
+		{
+			await Task.WhenAll(
+				newTab.FadeTo(1, 180, Easing.CubicOut),
+				newTab.TranslateTo(0, 0, 180, Easing.CubicOut)).WaitAsync(token);
+		}
+		catch (OperationCanceledException) { }
+		finally
+		{
+			if (ReferenceEquals(_transitionCancellation, transition))
+			{
+				transition.Dispose();
+				_transitionCancellation = null;
+			}
+		}
+	}
+
+	private void CancelTransition()
+	{
+		_transitionCancellation?.Cancel();
+		_transitionCancellation?.Dispose();
+		_transitionCancellation = null;
 	}
 
 	private void UpdateSelectionVisuals()
@@ -374,6 +417,8 @@ public sealed class FuchsTabs : FuchsComponent
 		visual.Root.Opacity = IsDisabled || tab.IsDisabled ? 0.65 : 1;
 		visual.Indicator.Color = active ? theme.Primary : border;
 		visual.Indicator.HeightRequest = active ? theme.BorderWidth * 1.5 : 0;
+		visual.Indicator.Opacity = active ? 1 : 0.6;
+		visual.Indicator.ScaleX = active ? 1 : 0.7;
 		visual.Indicator.VerticalOptions = LineAtTop ? LayoutOptions.Start : LayoutOptions.End;
 		Grid.SetRow(visual.Label, LineAtTop ? 1 : 0);
 		Grid.SetRow(visual.Indicator, LineAtTop ? 0 : 1);

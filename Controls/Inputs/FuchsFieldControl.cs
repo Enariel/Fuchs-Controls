@@ -36,6 +36,9 @@ public abstract class FuchsFieldControl : FuchsComponent
 	public static readonly BindableProperty MaxLengthProperty =
 		BindableProperty.Create(nameof(MaxLength), typeof(int), typeof(FuchsFieldControl), -1, propertyChanged: OnVisualPropertyChanged);
 
+	public static readonly BindableProperty IsFocusedProperty =
+		BindableProperty.Create(nameof(IsFocused), typeof(bool), typeof(FuchsFieldControl), false, BindingMode.OneWayToSource);
+
 	public string Label
 	{
 		get => (string)GetValue(LabelProperty);
@@ -84,11 +87,19 @@ public abstract class FuchsFieldControl : FuchsComponent
 		set => SetValue(MaxLengthProperty, value);
 	}
 
+	public bool IsFocused
+	{
+		get => (bool)GetValue(IsFocusedProperty);
+		private set => SetValue(IsFocusedProperty, value);
+	}
+
 	protected FuchsFieldControl()
 	{
 		_label = new Label();
 		_input = CreateInput();
 		_input.SetBinding(InputView.TextProperty, new Binding(nameof(Text), source: this, mode: BindingMode.TwoWay));
+		_input.Focused += OnInputFocused;
+		_input.Unfocused += OnInputUnfocused;
 
 		_helperText = new Label();
 
@@ -159,6 +170,12 @@ public abstract class FuchsFieldControl : FuchsComponent
 		_root.StrokeShape = new RoundRectangle { CornerRadius = theme.CornerRadius };
 		_root.Padding = ResolvePadding();
 		_root.Opacity = IsDisabled ? 0.65 : 1;
+		_root.Stroke = IsFocused
+			? new SolidColorBrush(theme.Primary)
+			: Variant == FuchsVariant.Filled
+				? new SolidColorBrush(Colors.Transparent)
+				: new SolidColorBrush(border);
+		_root.StrokeThickness = Variant == FuchsVariant.Filled && !IsFocused ? 0 : theme.BorderWidth;
 
 		_helperText.Text = HelperText;
 		_helperText.IsVisible = !string.IsNullOrWhiteSpace(HelperText);
@@ -186,5 +203,17 @@ public abstract class FuchsFieldControl : FuchsComponent
 			field.ApplyTheme();
 			field.OnTextChanged(field.Text);
 		}
+	}
+
+	private void OnInputFocused(object? sender, FocusEventArgs args)
+	{
+		IsFocused = true;
+		ApplyTheme();
+	}
+
+	private void OnInputUnfocused(object? sender, FocusEventArgs args)
+	{
+		IsFocused = false;
+		ApplyTheme();
 	}
 }

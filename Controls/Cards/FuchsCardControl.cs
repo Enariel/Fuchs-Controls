@@ -1,5 +1,6 @@
 using FuchsControls.Theme;
 using Microsoft.Maui.Controls.Shapes;
+using ThemeColor = FuchsControls.Theme.FuchsColor;
 
 namespace FuchsControls.Controls;
 
@@ -55,8 +56,7 @@ public class FuchsCard : FuchsComponent
 
 		_layout = new Grid
 		{
-			RowSpacing = 10,
-			ColumnSpacing = 16
+			RowSpacing = 10, ColumnSpacing = 16
 		};
 
 		_root = new Border
@@ -73,8 +73,8 @@ public class FuchsCard : FuchsComponent
 	{
 		FuchsTheme theme = FuchsThemeProvider.Current;
 
-		Color background = Color == FuchsColor.Default ? theme.Background : theme.GetMainColor(Color);
-		Color border = Color == FuchsColor.Default ? theme.BackgroundDarker : theme.GetBorderColor(Color);
+		Color background = Color == ThemeColor.Default ? theme.Background : theme.GetMainColor(Color);
+		Color border = Color == ThemeColor.Default ? theme.BackgroundDarker : theme.GetBorderColor(Color);
 		Color text = theme.GetTextColor(Color, Variant);
 
 		_root.BackgroundColor = Variant == FuchsVariant.Text ? Colors.Transparent : background;
@@ -106,11 +106,9 @@ public class FuchsCard : FuchsComponent
 
 			VerticalStackLayout right = new()
 			{
-				Spacing = 10,
-				Children =
+				Spacing = 10, Children =
 				{
-					_bodyPresenter,
-					_footerPresenter
+					_bodyPresenter, _footerPresenter
 				}
 			};
 
