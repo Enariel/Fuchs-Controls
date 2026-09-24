@@ -63,6 +63,8 @@
 
     <x:Double x:Key="FuchsIconButtonSize">40</x:Double>
 
+    <Thickness x:Key="FuchsTableCellPadding">16,12</Thickness>
+
     <x:Double x:Key="FuchsFormTransitionDuration">180</x:Double>
     <x:Double x:Key="FuchsTabTransitionDuration">180</x:Double>
     <x:Double x:Key="FuchsAccordionTransitionDuration">180</x:Double>
@@ -775,6 +777,21 @@
     <Style x:Key="FuchsCollectionViewStyle" TargetType="CollectionView">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="SelectionMode" Value="Single" />
+    </Style>
+
+    <Style x:Key="FuchsTableStyle" TargetType="ContentView">
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundColor}" />
+    </Style>
+
+    <Style x:Key="FuchsTableCellStyle" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundColor}" />
+        <Setter Property="Padding" Value="{StaticResource FuchsTableCellPadding}" />
+        <Setter Property="Stroke" Value="{StaticResource FuchsBackgroundDarkerColor}" />
+        <Setter Property="StrokeThickness" Value="{StaticResource FuchsBorderWidth}" />
+    </Style>
+
+    <Style x:Key="FuchsTableHeaderCellStyle" TargetType="Border" BasedOn="{StaticResource FuchsTableCellStyle}">
+        <Setter Property="BackgroundColor" Value="{StaticResource FuchsBackgroundDarkColor}" />
     </Style>
 
     <Style x:Key="FuchsListItemBorderStyle" TargetType="Border" BasedOn="{StaticResource FuchsBorderStyle}">
