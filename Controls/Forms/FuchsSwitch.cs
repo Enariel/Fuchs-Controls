@@ -35,8 +35,10 @@ public sealed class FuchsSwitch : FuchsBoolControl
 	protected override void ApplyInputTheme(FuchsTheme theme)
 	{
 		_switch.IsToggled = IsOn;
+		_switch.WidthRequest = theme.FontSizeMd * 3;
+		_switch.HeightRequest = theme.FontSizeMd * 1.5;
 		_switch.OnColor = theme.Primary;
-		_switch.ThumbColor = theme.TextInverted;
+		_switch.ThumbColor = IsOn ? theme.TextInverted : theme.BackgroundDarker;
 		_switch.IsEnabled = !IsDisabled;
 	}
 

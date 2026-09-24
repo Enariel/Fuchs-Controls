@@ -3,7 +3,7 @@ namespace FuchsControls.Controls;
 public class FuchsEditor : FuchsFieldControl
 {
 	public static readonly BindableProperty EditorHeightProperty =
-		BindableProperty.Create(nameof(EditorHeight), typeof(double), typeof(FuchsEditor), 200d, propertyChanged: OnEditorVisualPropertyChanged);
+		BindableProperty.Create(nameof(EditorHeight), typeof(double), typeof(FuchsEditor), -1d, propertyChanged: OnEditorVisualPropertyChanged);
 
 	public static readonly BindableProperty AutoExpandProperty =
 		BindableProperty.Create(nameof(AutoExpand), typeof(bool), typeof(FuchsEditor), false, propertyChanged: OnEditorVisualPropertyChanged);
@@ -58,7 +58,9 @@ public class FuchsEditor : FuchsFieldControl
 		if (Input is Editor editor)
 			editor.HeightRequest = EditorHeight;
 
-		if (!AutoExpand)
+		if (AutoExpand)
+			OnTextChanged(Text);
+		else
 			HeightRequest = EditorHeight;
 	}
 }

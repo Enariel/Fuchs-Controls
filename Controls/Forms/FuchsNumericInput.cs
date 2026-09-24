@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 
 namespace FuchsControls.Controls;
 
@@ -12,6 +13,7 @@ public enum FuchsNumericType
 public sealed class FuchsNumericInput : FuchsInput
 {
 	private bool _updatingValue;
+	private bool _updatingText;
 
 	public static readonly BindableProperty NumericTypeProperty =
 		BindableProperty.Create(nameof(NumericType), typeof(FuchsNumericType), typeof(FuchsNumericInput), FuchsNumericType.Double
@@ -48,12 +50,38 @@ public sealed class FuchsNumericInput : FuchsInput
 
 	protected override void OnTextChanged(string text)
 	{
-		if (_updatingValue || !TryParse(text, ValueType ?? GetTypeForNumericType(NumericType), out object? value))
+		if (_updatingText)
+			return;
+
+		Type targetType = ValueType ?? GetTypeForNumericType(NumericType);
+		string numericText = FilterNumericText(text, targetType);
+		if (!string.Equals(text, numericText, StringComparison.Ordinal))
+		{
+			_updatingText = true;
+			try
+			{
+				Text = numericText;
+			}
+			finally
+			{
+				_updatingText = false;
+			}
+
+			text = numericText;
+		}
+
+		if (_updatingValue || !TryParse(text, targetType, out object? value))
 			return;
 
 		_updatingValue = true;
-		Value = value;
-		_updatingValue = false;
+		try
+		{
+			Value = value;
+		}
+		finally
+		{
+			_updatingValue = false;
+		}
 	}
 
 	private static void OnNumericTypeChanged(BindableObject bindable, object oldValue, object newValue)
@@ -91,7 +119,7 @@ public sealed class FuchsNumericInput : FuchsInput
 	private static bool TryParse(string text, Type type, out object? value)
 	{
 		Type targetType = Nullable.GetUnderlyingType(type) ?? type;
-		if (!targetType.IsPrimitive && targetType != typeof(decimal))
+		if (!IsNumericType(targetType))
 		{
 			value = null;
 			return false;
@@ -113,6 +141,41 @@ public sealed class FuchsNumericInput : FuchsInput
 			return false;
 		}
 	}
+
+	private static string FilterNumericText(string text, Type type)
+	{
+		Type targetType = Nullable.GetUnderlyingType(type) ?? type;
+		bool allowsDecimal = Type.GetTypeCode(targetType) is TypeCode.Decimal or TypeCode.Double or TypeCode.Single;
+		bool hasDecimal = false;
+		StringBuilder filtered = new();
+
+		foreach (char character in text)
+		{
+			if (char.IsDigit(character))
+			{
+				filtered.Append(character);
+				continue;
+			}
+
+			if (character is '+' or '-' && filtered.Length == 0)
+			{
+				filtered.Append(character);
+				continue;
+			}
+
+			if (allowsDecimal && character == '.' && !hasDecimal)
+			{
+				filtered.Append(character);
+				hasDecimal = true;
+			}
+		}
+
+		return filtered.ToString();
+	}
+
+	private static bool IsNumericType(Type type) => Type.GetTypeCode(type) is TypeCode.Byte or TypeCode.Decimal or TypeCode.Double
+		or TypeCode.Int16 or TypeCode.Int32 or TypeCode.Int64 or TypeCode.SByte or TypeCode.Single or TypeCode.UInt16
+		or TypeCode.UInt32 or TypeCode.UInt64;
 
 	private static Type GetTypeForNumericType(FuchsNumericType type) => type switch
 	{

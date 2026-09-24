@@ -178,7 +178,6 @@
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
         <Setter Property="FontSize" Value="{DynamicResource FuchsFontSizeMd}" />
-        <Setter Property="HeightRequest" Value="200" />
         <Setter Property="AutoSize" Value="Disabled" />
     </Style>
 
@@ -190,6 +189,8 @@
     </Style>
 
     <Style x:Key="FuchsFormSwitchStyle" TargetType="Switch">
+        <Setter Property="WidthRequest" Value="48" />
+        <Setter Property="HeightRequest" Value="24" />
         <Setter Property="OnColor" Value="{DynamicResource FuchsAccentColor}" />
         <Setter Property="ThumbColor" Value="{DynamicResource FuchsTextInvertedColor}" />
     </Style>

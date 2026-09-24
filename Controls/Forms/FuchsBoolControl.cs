@@ -4,7 +4,7 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace FuchsControls.Controls;
 
-public abstract class FuchsBoolControl : FuchsComponent
+public abstract class FuchsBoolControl : FormFieldControl
 {
 	private readonly List<FocusHighlightBehavior> _focusBehaviors = [];
 	private View? _input;
@@ -12,32 +12,32 @@ public abstract class FuchsBoolControl : FuchsComponent
 	private Label _label = null!;
 	private Label _helpText = null!;
 
-	public static readonly BindableProperty LabelProperty =
+	public new static readonly BindableProperty LabelProperty =
 		BindableProperty.Create(nameof(Label), typeof(string), typeof(FuchsBoolControl), string.Empty, propertyChanged: OnVisualPropertyChanged);
 
-	public static readonly BindableProperty HelpTextProperty =
+	public new static readonly BindableProperty HelpTextProperty =
 		BindableProperty.Create(nameof(HelpText), typeof(string), typeof(FuchsBoolControl), string.Empty, propertyChanged: OnVisualPropertyChanged);
 
-	public static readonly BindableProperty StateProperty =
+	public new static readonly BindableProperty StateProperty =
 		BindableProperty.Create(nameof(State), typeof(FuchsInputState), typeof(FuchsBoolControl), FuchsInputState.Normal
 			, propertyChanged: OnVisualPropertyChanged);
 
 	public new static readonly BindableProperty IsFocusedProperty =
 		BindableProperty.Create(nameof(IsFocused), typeof(bool), typeof(FuchsBoolControl), false, BindingMode.OneWayToSource);
 
-	public string Label
+	public new string Label
 	{
 		get => (string)GetValue(LabelProperty);
 		set => SetValue(LabelProperty, value);
 	}
 
-	public string HelpText
+	public new string HelpText
 	{
 		get => (string)GetValue(HelpTextProperty);
 		set => SetValue(HelpTextProperty, value);
 	}
 
-	public FuchsInputState State
+	public new FuchsInputState State
 	{
 		get => (FuchsInputState)GetValue(StateProperty);
 		set => SetValue(StateProperty, value);
@@ -49,7 +49,7 @@ public abstract class FuchsBoolControl : FuchsComponent
 		private set => SetValue(IsFocusedProperty, value);
 	}
 
-	protected View Input => _input ?? throw new InvalidOperationException("The boolean control has not been initialized.");
+	protected new View Input => _input ?? throw new InvalidOperationException("The boolean control has not been initialized.");
 
 	protected Border ControlBorder => _root;
 
