@@ -2,7 +2,7 @@ namespace FuchsControls;
 
 public sealed class FuchsEntry : FuchsFieldBase
 {
-	private readonly Entry _entry = new();
+	private readonly Entry _entry = new Entry();
 
 	public static readonly BindableProperty ValueProperty = BindableProperty.Create(
 		nameof(Value), typeof(string), typeof(FuchsEntry), string.Empty, BindingMode.TwoWay, propertyChanged: OnValueChanged);

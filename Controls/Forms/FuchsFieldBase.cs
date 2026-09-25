@@ -111,11 +111,3 @@ public abstract class FuchsFieldBase : ContentView
 			: new SolidColorBrush(InputState == FuchsInputState.Invalid ? Colors.IndianRed : _isInputFocused ? Colors.DodgerBlue : Colors.SlateGray);
 	}
 }
-
-public sealed class FuchsForm : VerticalStackLayout
-{
-	public FuchsForm()
-	{
-		Spacing = 12;
-	}
-}

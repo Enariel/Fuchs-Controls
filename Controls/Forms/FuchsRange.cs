@@ -2,7 +2,7 @@ namespace FuchsControls;
 
 public sealed class FuchsRange : FuchsNumericFieldBase
 {
-	private readonly Slider _slider = new();
+	private readonly Slider _slider = new Slider();
 	private bool _isUpdating;
 
 	public FuchsRange()
