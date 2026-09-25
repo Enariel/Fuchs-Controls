@@ -18,6 +18,7 @@ public static class MauiAppBuilderExtensions
 			FormHandler.RemoveBorders();
 		});
 
+		
 		return builder;
 	}
 }
