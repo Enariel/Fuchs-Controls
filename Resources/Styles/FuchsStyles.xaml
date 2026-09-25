@@ -22,6 +22,162 @@
     <x:Double x:Key="FuchsBorderWidth">1</x:Double>
     <CornerRadius x:Key="FuchsCornerRadius">4</CornerRadius>
 
+    <!-- Flatify typography tokens translated to MAUI values. -->
+    <x:Double x:Key="FuchsBodyFontSize">16</x:Double>
+    <x:Double x:Key="FuchsCaptionFontSize">12</x:Double>
+    <x:Double x:Key="FuchsSubtitleFontSize">20</x:Double>
+    <x:Double x:Key="FuchsH1FontSize">56</x:Double>
+    <x:Double x:Key="FuchsH2FontSize">48</x:Double>
+    <x:Double x:Key="FuchsH3FontSize">37.6</x:Double>
+    <x:Double x:Key="FuchsH4FontSize">32</x:Double>
+    <x:Double x:Key="FuchsH5FontSize">26.4</x:Double>
+    <x:Double x:Key="FuchsH6FontSize">21.6</x:Double>
+    <x:Double x:Key="FuchsBodyLineHeight">1.8</x:Double>
+    <x:Double x:Key="FuchsSmallLineHeight">1.2</x:Double>
+    <x:Double x:Key="FuchsBaseLineHeight">1.5</x:Double>
+
+    <Style x:Key="FuchsTypoBodyStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
+        <Setter Property="FontSize" Value="{DynamicResource FuchsBodyFontSize}" />
+        <Setter Property="LineHeight" Value="{DynamicResource FuchsBodyLineHeight}" />
+    </Style>
+    <Style x:Key="FuchsTypoCaptionStyle" TargetType="Label" BasedOn="{StaticResource FuchsTypoBodyStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsCaptionFontSize}" />
+        <Setter Property="LineHeight" Value="{DynamicResource FuchsSmallLineHeight}" />
+    </Style>
+    <Style x:Key="FuchsTypoSubtitleStyle" TargetType="Label" BasedOn="{StaticResource FuchsTypoBodyStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsSubtitleFontSize}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="LineHeight" Value="{DynamicResource FuchsBaseLineHeight}" />
+    </Style>
+    <Style x:Key="FuchsTypoH1Style" TargetType="Label" BasedOn="{StaticResource FuchsTypoBodyStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsH1FontSize}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="LineHeight" Value="{DynamicResource FuchsSmallLineHeight}" />
+    </Style>
+    <Style x:Key="FuchsTypoH2Style" TargetType="Label" BasedOn="{StaticResource FuchsTypoH1Style}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsH2FontSize}" />
+    </Style>
+    <Style x:Key="FuchsTypoH3Style" TargetType="Label" BasedOn="{StaticResource FuchsTypoH1Style}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsH3FontSize}" />
+    </Style>
+    <Style x:Key="FuchsTypoH4Style" TargetType="Label" BasedOn="{StaticResource FuchsTypoBodyStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsH4FontSize}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="LineHeight" Value="{DynamicResource FuchsBaseLineHeight}" />
+    </Style>
+    <Style x:Key="FuchsTypoH5Style" TargetType="Label" BasedOn="{StaticResource FuchsTypoH4Style}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsH5FontSize}" />
+    </Style>
+    <Style x:Key="FuchsTypoH6Style" TargetType="Label" BasedOn="{StaticResource FuchsTypoH4Style}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsH6FontSize}" />
+    </Style>
+
+    <Style x:Key="FuchsSpanBodyStyle" TargetType="Span">
+        <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
+        <Setter Property="FontSize" Value="{DynamicResource FuchsBodyFontSize}" />
+    </Style>
+    <Style x:Key="FuchsSpanCaptionStyle" TargetType="Span" BasedOn="{StaticResource FuchsSpanBodyStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsCaptionFontSize}" />
+    </Style>
+    <Style x:Key="FuchsSpanSubtitleStyle" TargetType="Span" BasedOn="{StaticResource FuchsSpanBodyStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsSubtitleFontSize}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+    <Style x:Key="FuchsSpanH1Style" TargetType="Span" BasedOn="{StaticResource FuchsSpanBodyStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsH1FontSize}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+    <Style x:Key="FuchsSpanH2Style" TargetType="Span" BasedOn="{StaticResource FuchsSpanH1Style}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsH2FontSize}" />
+    </Style>
+    <Style x:Key="FuchsSpanH3Style" TargetType="Span" BasedOn="{StaticResource FuchsSpanH1Style}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsH3FontSize}" />
+    </Style>
+    <Style x:Key="FuchsSpanH4Style" TargetType="Span" BasedOn="{StaticResource FuchsSpanBodyStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsH4FontSize}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+    <Style x:Key="FuchsSpanH5Style" TargetType="Span" BasedOn="{StaticResource FuchsSpanH4Style}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsH5FontSize}" />
+    </Style>
+    <Style x:Key="FuchsSpanH6Style" TargetType="Span" BasedOn="{StaticResource FuchsSpanH4Style}">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsH6FontSize}" />
+    </Style>
+
+    <!-- Flatify-inspired tab resources. The controls apply these by DynamicResource so theme changes flow through. -->
+    <RoundRectangle x:Key="FuchsTabsShape" CornerRadius="{DynamicResource FuchsCornerRadius}" />
+    <Style x:Key="FuchsTabsStyle" TargetType="ContentView">
+        <Setter Property="Margin" Value="0,10" />
+    </Style>
+    <Style x:Key="FuchsTabsBorderStyle" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource FuchsBackgroundColor}" />
+        <Setter Property="Stroke" Value="{DynamicResource FuchsFieldBorderColor}" />
+        <Setter Property="StrokeThickness" Value="{DynamicResource FuchsBorderWidth}" />
+        <Setter Property="StrokeShape" Value="{StaticResource FuchsTabsShape}" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+    <Style x:Key="FuchsTabsPlainStyle" TargetType="Border" BasedOn="{StaticResource FuchsTabsBorderStyle}">
+        <Setter Property="Stroke" Value="Transparent" />
+        <Setter Property="StrokeThickness" Value="0" />
+    </Style>
+    <Style x:Key="FuchsTabsHeaderStyle" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource FuchsBackgroundColor}" />
+        <Setter Property="Padding" Value="16,0" />
+    </Style>
+    <Style x:Key="FuchsTabsHeaderItemsStyle" TargetType="FlexLayout">
+        <Setter Property="Direction" Value="Row" />
+        <Setter Property="AlignItems" Value="Center" />
+        <Setter Property="Wrap" Value="Wrap" />
+    </Style>
+    <Style x:Key="FuchsTabsHeaderDividerStyle" TargetType="BoxView">
+        <Setter Property="Color" Value="{DynamicResource FuchsFieldBorderColor}" />
+        <Setter Property="HeightRequest" Value="{DynamicResource FuchsBorderWidth}" />
+    </Style>
+    <Style x:Key="FuchsTabHeaderStyle" TargetType="Border">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="Padding" Value="12,10" />
+    </Style>
+    <Style x:Key="FuchsTabDisabledHeaderStyle" TargetType="Border" BasedOn="{StaticResource FuchsTabHeaderStyle}">
+        <Setter Property="Opacity" Value="0.45" />
+    </Style>
+    <Style x:Key="FuchsTabTextStyle" TargetType="Label" BasedOn="{StaticResource FuchsTypoBodyStyle}">
+        <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
+        <Setter Property="Opacity" Value="0.6" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="FuchsTabActiveTextStyle" TargetType="Label" BasedOn="{StaticResource FuchsTabTextStyle}">
+        <Setter Property="TextColor" Value="{DynamicResource FuchsPrimaryColor}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style x:Key="FuchsTabIndicatorStyle" TargetType="BoxView">
+        <Setter Property="Color" Value="{DynamicResource FuchsFieldBorderColor}" />
+        <Setter Property="HeightRequest" Value="2" />
+        <Setter Property="Opacity" Value="0" />
+    </Style>
+    <Style x:Key="FuchsTabActiveIndicatorStyle" TargetType="BoxView" BasedOn="{StaticResource FuchsTabIndicatorStyle}">
+        <Setter Property="Color" Value="{DynamicResource FuchsPrimaryColor}" />
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style x:Key="FuchsTabDisabledIndicatorStyle" TargetType="BoxView"
+           BasedOn="{StaticResource FuchsTabIndicatorStyle}">
+        <Setter Property="Opacity" Value="0" />
+    </Style>
+    <Style x:Key="FuchsTabsContentStyle" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource FuchsBackgroundColor}" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+    <Style x:Key="FuchsTabPanelsStyle" TargetType="Grid">
+        <Setter Property="Padding" Value="0" />
+    </Style>
+    <Style x:Key="FuchsTabPanelStyle" TargetType="ContentView">
+        <Setter Property="Padding" Value="16" />
+    </Style>
+
     <Style x:Key="FuchsFieldLabelStyle" TargetType="Label">
         <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
         <Setter Property="FontAttributes" Value="Bold" />

@@ -5,6 +5,7 @@
 #endregion
 
 using FuchsControls.Handlers;
+using Microsoft.Maui.Hosting;
 
 namespace FuchsControls;
 
