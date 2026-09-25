@@ -2,8 +2,8 @@ namespace FuchsControls;
 
 public sealed class FuchsRadioButton : FuchsFieldBase
 {
-	private readonly RadioButton _radioButton = new();
-	private readonly Label _textLabel = new() { VerticalOptions = LayoutOptions.Center };
+	private readonly RadioButton _radioButton = new RadioButton().ApplyFuchsRadioButtonStyle();
+	private readonly FuchsTypo _textLabel = new FuchsTypo { Type = FuchsTypoType.Body, VerticalOptions = LayoutOptions.Center };
 
 	public static readonly BindableProperty ValueProperty = BindableProperty.Create(nameof(Value), typeof(object), typeof(FuchsRadioButton), null);
 
@@ -18,7 +18,6 @@ public sealed class FuchsRadioButton : FuchsFieldBase
 
 	public FuchsRadioButton()
 	{
-		_radioButton.SetDynamicResource(StyleProperty, "FuchsRadioButtonStyle");
 		_radioButton.CheckedChanged += (_, e) => SetValue(IsSelectedProperty, e.Value);
 		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _radioButton, _textLabel } });
 	}

@@ -3,14 +3,18 @@ namespace FuchsControls;
 public sealed class FuchsButton : Button
 {
 	public static readonly BindableProperty VariantProperty = BindableProperty.Create(
-		nameof(Variant), typeof(FuchsVariant), typeof(FuchsButton), FuchsVariant.Filled, propertyChanged: OnStyleChanged);
+		nameof(Variant), typeof(FuchsVariant), typeof(FuchsButton), FuchsVariant.Filled, BindingMode.TwoWay, propertyChanged: OnStyleChanged);
 
 	public static readonly BindableProperty ColorProperty = BindableProperty.Create(
-		nameof(Color), typeof(FuchsThemeColor), typeof(FuchsButton), FuchsThemeColor.Default, propertyChanged: OnStyleChanged);
+		nameof(Color), typeof(FuchsThemeColor), typeof(FuchsButton), FuchsThemeColor.Default, BindingMode.TwoWay, propertyChanged: OnStyleChanged);
 
 	public FuchsButton()
 	{
-		SetDynamicResource(StyleProperty, "FuchsButtonStyle");
+		Padding = new Thickness(14, 10, 14, 8);
+		Margin = new Thickness(5);
+		CornerRadius = 4;
+		FontAttributes = FontAttributes.Bold;
+		FuchsThemeManager.ThemeChanged += (_, _) => ApplyTheme();
 		ApplyTheme();
 	}
 
@@ -31,7 +35,7 @@ public sealed class FuchsButton : Button
 	private void ApplyTheme()
 	{
 		var color = FuchsThemeResourceLookup.GetColor(Color);
-		var foreground = Color is FuchsThemeColor.Light ? Colors.Black : Colors.White;
+		var foreground = Color is FuchsThemeColor.Light ? FuchsThemeManager.Current.TextColor : FuchsThemeManager.Current.LightColor;
 		BackgroundColor = Variant == FuchsVariant.Filled ? color : Colors.Transparent;
 		TextColor = Variant == FuchsVariant.Filled ? foreground : color;
 		BorderColor = color;

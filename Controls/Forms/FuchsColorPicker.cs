@@ -2,7 +2,7 @@ namespace FuchsControls;
 
 public sealed class FuchsColorPicker : FuchsFieldBase
 {
-	private readonly Entry _entry = new() { Placeholder = "#RRGGBB" };
+	private readonly Entry _entry = new Entry { Placeholder = "#RRGGBB" }.ApplyFuchsEntryStyle();
 	private readonly BoxView _preview = new() { WidthRequest = 28, HeightRequest = 28, CornerRadius = 3, VerticalOptions = LayoutOptions.Center };
 	private bool _isUpdating;
 
@@ -11,7 +11,6 @@ public sealed class FuchsColorPicker : FuchsFieldBase
 
 	public FuchsColorPicker()
 	{
-		_entry.SetDynamicResource(StyleProperty, "FuchsEntryStyle");
 		_entry.TextChanged += OnTextChanged;
 		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _preview, _entry } });
 		UpdateColor();

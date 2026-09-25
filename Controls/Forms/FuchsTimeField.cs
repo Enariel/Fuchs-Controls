@@ -2,7 +2,7 @@ namespace FuchsControls;
 
 public sealed class FuchsTimeField : FuchsFieldBase
 {
-	private readonly TimePicker _picker = new TimePicker();
+	private readonly TimePicker _picker = new TimePicker().ApplyFuchsTimePickerStyle();
 	private bool _isUpdating;
 
 	public static readonly BindableProperty ValueProperty = BindableProperty.Create(nameof(Value), typeof(TimeSpan), typeof(FuchsTimeField), TimeSpan.Zero
@@ -10,7 +10,6 @@ public sealed class FuchsTimeField : FuchsFieldBase
 
 	public FuchsTimeField()
 	{
-		_picker.SetDynamicResource(StyleProperty, "FuchsTimePickerStyle");
 		_picker.PropertyChanged += (_, e) =>
 		{
 			if (!_isUpdating && e.PropertyName == nameof(TimePicker.Time)) SetValue(ValueProperty, _picker.Time);

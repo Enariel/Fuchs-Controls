@@ -2,7 +2,7 @@ namespace FuchsControls;
 
 public sealed class FuchsEntry : FuchsFieldBase
 {
-	private readonly Entry _entry = new Entry();
+	private readonly Entry _entry = new Entry().ApplyFuchsEntryStyle();
 
 	public static readonly BindableProperty ValueProperty = BindableProperty.Create(
 		nameof(Value), typeof(string), typeof(FuchsEntry), string.Empty, BindingMode.TwoWay, propertyChanged: OnValueChanged);
@@ -21,7 +21,6 @@ public sealed class FuchsEntry : FuchsFieldBase
 
 	public FuchsEntry()
 	{
-		_entry.SetDynamicResource(StyleProperty, "FuchsEntryStyle");
 		_entry.TextChanged += OnTextChanged;
 		SetInput(_entry);
 		UpdateEntry();

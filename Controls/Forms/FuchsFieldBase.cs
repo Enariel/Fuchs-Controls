@@ -4,8 +4,8 @@ namespace FuchsControls;
 
 public abstract class FuchsFieldBase : ContentView
 {
-	private readonly Label _label;
-	private readonly Label _helpText;
+	private readonly FuchsTypo _label;
+	private readonly FuchsTypo _helpText;
 	private readonly Border _inputBorder;
 	private View? _input;
 	private bool _isInputFocused;
@@ -26,10 +26,8 @@ public abstract class FuchsFieldBase : ContentView
 
 	protected FuchsFieldBase()
 	{
-		_label = new Label();
-		_label.SetDynamicResource(StyleProperty, "FuchsFieldLabelStyle");
-		_helpText = new Label();
-		_helpText.SetDynamicResource(StyleProperty, "FuchsFieldHelpTextStyle");
+		_label = new FuchsTypo().ApplyFuchsFieldLabelStyle();
+		_helpText = new FuchsTypo().ApplyFuchsFieldHelpTextStyle();
 		_inputBorder = new Border
 					   {
 						   Padding = 0, StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(4) }, Content = InputContainer
@@ -37,10 +35,7 @@ public abstract class FuchsFieldBase : ContentView
 		_inputBorder.SetDynamicResource(Border.StrokeProperty, "FuchsFieldBorderColor");
 		_inputBorder.SetDynamicResource(BackgroundColorProperty, "FuchsFieldBackgroundColor");
 
-		Content = new VerticalStackLayout
-				  {
-					  Spacing = 4, Children = { _label, _inputBorder, _helpText }
-				  };
+		Content = new VerticalStackLayout { Spacing = 4, Children = { _label, _inputBorder, _helpText } };
 		UpdatePresentation();
 	}
 

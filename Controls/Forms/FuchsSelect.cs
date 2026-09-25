@@ -4,7 +4,7 @@ namespace FuchsControls;
 
 public sealed class FuchsSelect : FuchsFieldBase
 {
-	private readonly Picker _picker = new();
+	private readonly Picker _picker = new Picker().ApplyFuchsPickerStyle();
 	private bool _isUpdating;
 
 	public static readonly BindableProperty ItemsSourceProperty =
@@ -18,7 +18,6 @@ public sealed class FuchsSelect : FuchsFieldBase
 
 	public FuchsSelect()
 	{
-		_picker.SetDynamicResource(StyleProperty, "FuchsPickerStyle");
 		_picker.SelectedIndexChanged += (_, _) =>
 		{
 			if (!_isUpdating) SetValue(SelectedItemProperty, _picker.SelectedItem);

@@ -2,18 +2,15 @@ namespace FuchsControls;
 
 public sealed class FuchsTicker : FuchsNumericFieldBase
 {
-	private readonly Entry _entry = new Entry { Keyboard = Keyboard.Numeric };
+	private readonly Entry _entry = new Entry { Keyboard = Keyboard.Numeric }.ApplyFuchsEntryStyle();
 	private bool _isUpdatingText;
 
 	public FuchsTicker()
 	{
-		_entry.SetDynamicResource(StyleProperty, "FuchsEntryStyle");
 		_entry.TextChanged += OnTextChanged;
-		var decrement = new Button { Text = "−", WidthRequest = 40 };
-		decrement.SetDynamicResource(StyleProperty, "FuchsTickerButtonStyle");
+		var decrement = new Button { Text = "−", WidthRequest = 40 }.ApplyFuchsCheckboxStyle();
 		decrement.Clicked += (_, _) => ChangeByStep(-1);
-		var increment = new Button { Text = "+", WidthRequest = 40 };
-		increment.SetDynamicResource(StyleProperty, "FuchsTickerButtonStyle");
+		var increment = new Button { Text = "+", WidthRequest = 40 }.ApplyFuchsCheckboxStyle();
 		increment.Clicked += (_, _) => ChangeByStep(1);
 		var inputGrid = new Grid
 						{

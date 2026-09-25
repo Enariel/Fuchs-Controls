@@ -2,7 +2,7 @@ namespace FuchsControls;
 
 public sealed class FuchsDateField : FuchsFieldBase
 {
-	private readonly DatePicker _picker = new DatePicker();
+	private readonly DatePicker _picker = new DatePicker().ApplyFuchsDatePickerStyle();
 	private bool _isUpdating;
 
 	public static readonly BindableProperty ValueProperty = BindableProperty.Create(nameof(Value), typeof(DateTime), typeof(FuchsDateField), DateTime.Today
@@ -16,7 +16,6 @@ public sealed class FuchsDateField : FuchsFieldBase
 
 	public FuchsDateField()
 	{
-		_picker.SetDynamicResource(StyleProperty, "FuchsDatePickerStyle");
 		_picker.DateSelected += (_, e) =>
 		{
 			if (!_isUpdating) SetValue(ValueProperty, e.NewDate);

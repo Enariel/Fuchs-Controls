@@ -2,8 +2,8 @@ namespace FuchsControls;
 
 public sealed class FuchsSwitch : FuchsFieldBase
 {
-	private readonly Switch _switch = new();
-	private readonly Label _valueLabel = new() { VerticalOptions = LayoutOptions.Center };
+	private readonly Switch _switch = new Switch().ApplyFuchsSwitchStyle();
+	private readonly FuchsTypo _valueLabel = new FuchsTypo { Type = FuchsTypoType.Body, VerticalOptions = LayoutOptions.Center };
 	private bool _isUpdating;
 
 	public static readonly BindableProperty ValueProperty =
@@ -14,7 +14,6 @@ public sealed class FuchsSwitch : FuchsFieldBase
 
 	public FuchsSwitch()
 	{
-		_switch.SetDynamicResource(StyleProperty, "FuchsSwitchStyle");
 		_switch.Toggled += OnToggled;
 		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _switch, _valueLabel } });
 		UpdateValue();

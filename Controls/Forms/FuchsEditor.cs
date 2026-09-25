@@ -2,7 +2,7 @@ namespace FuchsControls;
 
 public sealed class FuchsEditor : FuchsFieldBase
 {
-	private readonly Editor _editor = new Editor { AutoSize = EditorAutoSizeOption.TextChanges };
+	private readonly Editor _editor = new Editor().ApplyFuchsEditorStyle();
 
 	public static readonly BindableProperty ValueProperty = BindableProperty.Create(
 		nameof(Value), typeof(string), typeof(FuchsEditor), string.Empty, BindingMode.TwoWay, propertyChanged: OnValueChanged);
@@ -21,7 +21,6 @@ public sealed class FuchsEditor : FuchsFieldBase
 
 	public FuchsEditor()
 	{
-		_editor.SetDynamicResource(StyleProperty, "FuchsEditorStyle");
 		_editor.TextChanged += OnTextChanged;
 		SetInput(_editor);
 		UpdateEditor();

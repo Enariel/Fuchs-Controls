@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <TargetFrameworks>net10.0-android</TargetFrameworks>
-        <TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
 
         <UseMaui>true</UseMaui>
         <SingleProject>true</SingleProject>
@@ -32,6 +31,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
+        <PackageReference Include="CommunityToolkit.Maui.Markup" Version="8.0.0" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />
     </ItemGroup>
 
@@ -39,6 +40,7 @@
       <Folder Include="Reference\Flatify\" />
       <Folder Include="Resources\Fonts\" />
       <Folder Include="Resources\Images\" />
+      <Folder Include="Resources\Styles\" />
     </ItemGroup>
 
 </Project>

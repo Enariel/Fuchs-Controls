@@ -4,7 +4,7 @@ namespace FuchsControls;
 
 public class FuchsNumericField : FuchsNumericFieldBase
 {
-	protected readonly Entry NumericEntry = new() { Keyboard = Keyboard.Numeric };
+	protected readonly Entry NumericEntry = new Entry { Keyboard = Keyboard.Numeric }.ApplyFuchsEntryStyle();
 	private bool _isUpdatingText;
 
 	public static readonly BindableProperty PlaceholderProperty = BindableProperty.Create(
@@ -12,7 +12,6 @@ public class FuchsNumericField : FuchsNumericFieldBase
 
 	public FuchsNumericField()
 	{
-		NumericEntry.SetDynamicResource(StyleProperty, "FuchsEntryStyle");
 		NumericEntry.TextChanged += OnTextChanged;
 		SetInput(NumericEntry);
 	}

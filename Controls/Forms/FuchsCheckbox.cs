@@ -2,8 +2,8 @@ namespace FuchsControls;
 
 public sealed class FuchsCheckbox : FuchsFieldBase
 {
-	private readonly Button _button = new() { WidthRequest = 32, HeightRequest = 32, Padding = 0 };
-	private readonly Label _textLabel = new() { VerticalOptions = LayoutOptions.Center };
+	private readonly Button _button = new Button { WidthRequest = 32, HeightRequest = 32, Padding = 0 }.ApplyFuchsCheckboxStyle();
+	private readonly FuchsTypo _textLabel = new FuchsTypo { Type = FuchsTypoType.Body, VerticalOptions = LayoutOptions.Center };
 
 	public static readonly BindableProperty ValueProperty = BindableProperty.Create(nameof(Value), typeof(bool?), typeof(FuchsCheckbox), null
 		, BindingMode.TwoWay, propertyChanged: OnValueChanged);
@@ -15,7 +15,6 @@ public sealed class FuchsCheckbox : FuchsFieldBase
 
 	public FuchsCheckbox()
 	{
-		_button.SetDynamicResource(StyleProperty, "FuchsCheckboxStyle");
 		_button.Clicked += (_, _) => SetValue(ValueProperty, IsThreeState ? Value switch { null => true, true => false, _ => null } : !(Value ?? false));
 		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _button, _textLabel } });
 		UpdateValue();

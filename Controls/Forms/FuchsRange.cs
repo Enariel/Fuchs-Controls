@@ -2,12 +2,11 @@ namespace FuchsControls;
 
 public sealed class FuchsRange : FuchsNumericFieldBase
 {
-	private readonly Slider _slider = new Slider();
+	private readonly Slider _slider = new Slider().ApplyFuchsRangeStyle();
 	private bool _isUpdating;
 
 	public FuchsRange()
 	{
-		_slider.SetDynamicResource(StyleProperty, "FuchsRangeStyle");
 		_slider.ValueChanged += OnValueChanged;
 		SetInput(_slider);
 		UpdateSlider();

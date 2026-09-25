@@ -10,11 +10,13 @@ internal static class FuchsThemeResourceLookup
 			return resourceColor;
 		}
 
+		var theme = FuchsThemeManager.Current;
 		return color switch
 			   {
-				   FuchsThemeColor.Primary => Colors.DodgerBlue, FuchsThemeColor.Secondary => Colors.SlateGray, FuchsThemeColor.Success => Colors.SeaGreen
-				   , FuchsThemeColor.Info => Colors.DeepSkyBlue, FuchsThemeColor.Warning => Colors.DarkOrange, FuchsThemeColor.Danger => Colors.IndianRed
-				   , FuchsThemeColor.Light => Colors.WhiteSmoke, FuchsThemeColor.Dark => Colors.DarkSlateGray, _ => Colors.SlateGray
+				   FuchsThemeColor.Primary => light ? theme.PrimaryLight : theme.PrimaryColor, FuchsThemeColor.Secondary => theme.SecondaryColor
+				   , FuchsThemeColor.Success => theme.SuccessColor, FuchsThemeColor.Info => theme.InfoColor, FuchsThemeColor.Warning => theme.WarningColor
+				   , FuchsThemeColor.Danger => theme.DangerColor, FuchsThemeColor.Light => theme.LightColor, FuchsThemeColor.Dark => theme.DarkColor
+				   , _ => theme.DefaultColor
 			   };
 	}
 }

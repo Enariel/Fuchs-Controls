@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Input;
+using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Controls.Xaml;
 using Microsoft.Maui.Layouts;
 
@@ -25,17 +26,17 @@ public sealed partial class FuchsTabs : ContentView
 	public static readonly BindableProperty TabAnimationProperty = BindableProperty.Create(
 		nameof(TabAnimation), typeof(FuchsTabAnimation), typeof(FuchsTabs), FuchsTabAnimation.Fade);
 
-	private readonly ObservableCollection<FuchsTab> tabs = new();
-	private readonly Border tabsBorder = new();
-	private readonly Border tabsHeader = new();
-	private readonly Grid tabsHeaderGrid = new();
-	private readonly FlexLayout tabHeaders = new();
-	private readonly ScrollView tabHeadersScroll = new();
-	private readonly ContentView tabHeadersHost = new();
-	private readonly Border tabsContent = new();
-	private readonly Grid tabPanels = new();
-	private readonly BoxView tabHeaderDivider = new();
-	private readonly List<PanelEntry> panelEntries = new();
+	private readonly ObservableCollection<FuchsTab> tabs = new ObservableCollection<FuchsTab>();
+	private readonly Border tabsBorder = new Border();
+	private readonly Border tabsHeader = new Border();
+	private readonly Grid tabsHeaderGrid = new Grid();
+	private readonly FlexLayout tabHeaders = new FlexLayout();
+	private readonly ScrollView tabHeadersScroll = new ScrollView();
+	private readonly ContentView tabHeadersHost = new ContentView();
+	private readonly Border tabsContent = new Border();
+	private readonly Grid tabPanels = new Grid();
+	private readonly BoxView tabHeaderDivider = new BoxView();
+	private readonly List<PanelEntry> panelEntries = new List<PanelEntry>();
 	private readonly ICommand selectTabCommand;
 	private int selectionVersion;
 	private int previousSelectedIndex = -1;
@@ -45,14 +46,8 @@ public sealed partial class FuchsTabs : ContentView
 	{
 		tabs.CollectionChanged += OnTabsChanged;
 		selectTabCommand = new Command<int>(index => SelectedIndex = index);
-
-		SetDynamicResource(StyleProperty, "FuchsTabsStyle");
-		tabsBorder.SetDynamicResource(StyleProperty, "FuchsTabsBorderStyle");
-		tabsHeader.SetDynamicResource(StyleProperty, "FuchsTabsHeaderStyle");
-		tabHeaders.SetDynamicResource(StyleProperty, "FuchsTabsHeaderItemsStyle");
-		tabHeaderDivider.SetDynamicResource(StyleProperty, "FuchsTabsHeaderDividerStyle");
-		tabsContent.SetDynamicResource(StyleProperty, "FuchsTabsContentStyle");
-		tabPanels.SetDynamicResource(StyleProperty, "FuchsTabPanelsStyle");
+		FuchsThemeManager.ThemeChanged += OnThemeChanged;
+		ApplyThemeStyles();
 
 		tabHeadersScroll.Orientation = ScrollOrientation.Horizontal;
 		tabHeadersScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Never;
@@ -78,6 +73,33 @@ public sealed partial class FuchsTabs : ContentView
 		tabsBorder.Content = tabsLayout;
 		Content = tabsBorder;
 		ApplyHeaderLayout();
+	}
+
+	private void OnThemeChanged(object? sender, EventArgs e)
+	{
+		ApplyThemeStyles();
+		RebuildHeaders();
+	}
+
+	private void ApplyThemeStyles()
+	{
+		Margin = new Thickness(0, 10);
+		BackgroundColor = FuchsThemeManager.Current.BackgroundColor;
+		tabsBorder.Background = new SolidColorBrush(FuchsThemeManager.Current.BackgroundColor);
+		tabsBorder.Stroke = new SolidColorBrush(FuchsThemeManager.Current.FieldBorderColor);
+		tabsBorder.StrokeThickness = FuchsThemeManager.Current.BorderWidth;
+		tabsBorder.StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(FuchsThemeManager.Current.CornerRadius) };
+		tabsBorder.Padding = 0;
+		tabsHeader.Background = new SolidColorBrush(FuchsThemeManager.Current.BackgroundColor);
+		tabsHeader.Padding = new Thickness(16, 0);
+		tabHeaders.Direction = FlexDirection.Row;
+		tabHeaders.AlignItems = FlexAlignItems.Center;
+		tabHeaderDivider.Color = FuchsThemeManager.Current.FieldBorderColor;
+		tabHeaderDivider.HeightRequest = FuchsThemeManager.Current.BorderWidth;
+		tabsContent.Background = new SolidColorBrush(FuchsThemeManager.Current.BackgroundColor);
+		tabsContent.StrokeThickness = 0;
+		tabsContent.Padding = 0;
+		tabPanels.Padding = 0;
 	}
 
 	public ObservableCollection<FuchsTab> Tabs => tabs;
@@ -248,17 +270,20 @@ public sealed partial class FuchsTabs : ContentView
 	private Border CreateTabHeader(FuchsTab tab, int index)
 	{
 		var header = new Border();
-		header.SetDynamicResource(StyleProperty, tab.IsEnabled ? "FuchsTabHeaderStyle" : "FuchsTabDisabledHeaderStyle");
+		header.Background = Brush.Transparent;
+		header.StrokeThickness = 0;
+		header.Padding = new Thickness(12, 10);
+		header.Opacity = tab.IsEnabled ? 1 : 0.45;
 		header.GestureRecognizers.Add(new TapGestureRecognizer
-		{
-			Command = new Command(() =>
-			{
-				if (tab.IsEnabled)
-				{
-					SelectedIndex = index;
-				}
-			})
-		});
+									  {
+										  Command = new Command(() =>
+										  {
+											  if (tab.IsEnabled)
+											  {
+												  SelectedIndex = index;
+											  }
+										  })
+									  });
 		header.AutomationId = $"FuchsTabHeader{index}";
 		SemanticProperties.SetDescription(header, tab.Header);
 		SemanticProperties.SetHint(header, tab.IsEnabled ? "Select tab" : "Disabled tab");
@@ -269,9 +294,9 @@ public sealed partial class FuchsTabs : ContentView
 
 		var headerContent = CreateHeaderContent(tab);
 		var indicator = new BoxView();
-		indicator.SetDynamicResource(
-			StyleProperty,
-			tab.IsSelected ? "FuchsTabActiveIndicatorStyle" : tab.IsEnabled ? "FuchsTabIndicatorStyle" : "FuchsTabDisabledIndicatorStyle");
+		indicator.Color = tab.IsSelected ? FuchsThemeManager.Current.PrimaryColor : FuchsThemeManager.Current.FieldBorderColor;
+		indicator.HeightRequest = 2;
+		indicator.Opacity = tab.IsSelected && tab.IsEnabled ? 1 : 0;
 		Grid.SetRow(headerContent, LineAtTop ? 1 : 0);
 		Grid.SetRow(indicator, LineAtTop ? 0 : 1);
 		headerLayout.Add(headerContent);
@@ -288,18 +313,16 @@ public sealed partial class FuchsTabs : ContentView
 		}
 
 		var header = new FuchsTypo
-		{
-			Text = tab.Header,
-			Type = FuchsTypoType.Body,
-			HorizontalTextAlignment = TextAlignment.Center,
-			VerticalTextAlignment = TextAlignment.Center
-		};
+					 {
+						 Text = tab.Header, Type = FuchsTypoType.Body, HorizontalTextAlignment = TextAlignment.Center
+						 , VerticalTextAlignment = TextAlignment.Center
+					 };
 		if (tab.HeaderFormattedText is not null)
 		{
 			header.FormattedText = tab.HeaderFormattedText;
 		}
 
-		header.SetDynamicResource(StyleProperty, tab.IsSelected ? "FuchsTabActiveTextStyle" : "FuchsTabTextStyle");
+		header.ApplyFuchsTabTextStyle(tab.IsSelected && tab.IsEnabled);
 		return header;
 	}
 
@@ -318,8 +341,11 @@ public sealed partial class FuchsTabs : ContentView
 		}
 	}
 
-	private void ApplyBorderStyle() => tabsBorder.SetDynamicResource(
-		StyleProperty, IsBordered ? "FuchsTabsBorderStyle" : "FuchsTabsPlainStyle");
+	private void ApplyBorderStyle()
+	{
+		tabsBorder.Stroke = IsBordered ? new SolidColorBrush(FuchsThemeManager.Current.FieldBorderColor) : Brush.Transparent;
+		tabsBorder.StrokeThickness = IsBordered ? FuchsThemeManager.Current.BorderWidth : 0;
+	}
 
 	private void RebuildPanels()
 	{
@@ -334,7 +360,7 @@ public sealed partial class FuchsTabs : ContentView
 			if (entry is null)
 			{
 				var host = new ContentView();
-				host.SetDynamicResource(StyleProperty, "FuchsTabPanelStyle");
+				host.Padding = new Thickness(16);
 				entry = new PanelEntry(tab, host);
 			}
 

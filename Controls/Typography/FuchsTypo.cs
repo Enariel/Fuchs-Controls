@@ -3,11 +3,12 @@ namespace FuchsControls;
 public sealed partial class FuchsTypo : Label
 {
 	public static readonly BindableProperty TypeProperty = BindableProperty.Create(
-		nameof(Type), typeof(FuchsTypoType), typeof(FuchsTypo), FuchsTypoType.Body, propertyChanged: OnTypeChanged);
+		nameof(Type), typeof(FuchsTypoType), typeof(FuchsTypo), FuchsTypoType.Body, BindingMode.TwoWay, propertyChanged: OnTypeChanged);
 
 	public FuchsTypo()
 	{
 		ApplyStyle();
+		FuchsThemeManager.ThemeChanged += OnThemeChanged;
 	}
 
 	public FuchsTypoType Type
@@ -18,5 +19,17 @@ public sealed partial class FuchsTypo : Label
 
 	private static void OnTypeChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsTypo)bindable).ApplyStyle();
 
-	private void ApplyStyle() => SetDynamicResource(StyleProperty, $"FuchsTypo{Type}Style");
+	private void ApplyStyle()
+	{
+		TextColor = FuchsThemeManager.Current.TextColor;
+		SetDynamicResource(Label.TextColorProperty, FuchsThemeResourceKeys.TextColor);
+		SetDynamicResource(Label.FontSizeProperty, Type switch
+												   {
+													   FuchsTypoType.Caption => FuchsThemeResourceKeys.CaptionFontSize
+													   , FuchsTypoType.Subtitle => FuchsThemeResourceKeys.SubtitleFontSize
+													   , _ => FuchsThemeResourceKeys.BodyFontSize
+												   });
+	}
+
+	private void OnThemeChanged(object? sender, EventArgs e) => ApplyStyle();
 }
