@@ -1,144 +1,48 @@
-using System.Windows.Input;
-using FuchsControls.Behaviours;
-using FuchsControls.Theme;
-using Microsoft.Maui.Controls.Shapes;
+namespace FuchsControls;
 
-namespace FuchsControls.Controls;
-
-public class FuchsButton : FuchsComponent
+public sealed class FuchsButton : Button
 {
-	private readonly Border _root;
-	private readonly HorizontalStackLayout _layout;
-	private readonly Label _label;
-	private readonly ActivityIndicator _loader;
+	public static readonly BindableProperty VariantProperty = BindableProperty.Create(
+		nameof(Variant), typeof(FuchsVariant), typeof(FuchsButton), FuchsVariant.Filled, propertyChanged: OnStyleChanged);
 
-	public static readonly BindableProperty TextProperty =
-		BindableProperty.Create(nameof(Text), typeof(string), typeof(FuchsButton), string.Empty, propertyChanged: OnVisualPropertyChanged);
-
-	public static readonly BindableProperty CommandProperty =
-		BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(FuchsButton));
-
-	public static readonly BindableProperty CommandParameterProperty =
-		BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(FuchsButton));
-
-	public static readonly BindableProperty IsLoadingProperty =
-		BindableProperty.Create(nameof(IsLoading), typeof(bool), typeof(FuchsButton), false, propertyChanged: OnVisualPropertyChanged);
-
-	public string Text
-	{
-		get => (string)GetValue(TextProperty);
-		set => SetValue(TextProperty, value);
-	}
-
-	public ICommand? Command
-	{
-		get => (ICommand?)GetValue(CommandProperty);
-		set => SetValue(CommandProperty, value);
-	}
-
-	public object? CommandParameter
-	{
-		get => GetValue(CommandParameterProperty);
-		set => SetValue(CommandParameterProperty, value);
-	}
-
-	public bool IsLoading
-	{
-		get => (bool)GetValue(IsLoadingProperty);
-		set => SetValue(IsLoadingProperty, value);
-	}
+	public static readonly BindableProperty ColorProperty = BindableProperty.Create(
+		nameof(Color), typeof(FuchsThemeColor), typeof(FuchsButton), FuchsThemeColor.Default, propertyChanged: OnStyleChanged);
 
 	public FuchsButton()
 	{
-		_label = new Label
-		{
-			HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center, FontAttributes = FontAttributes.Bold
-		};
-
-		_loader = new ActivityIndicator
-		{
-			IsVisible = false, IsRunning = false, WidthRequest = 18, HeightRequest = 18
-		};
-
-		_layout = new HorizontalStackLayout
-		{
-			Spacing = 8, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center, Children =
-			{
-				_loader, _label
-			}
-		};
-
-		_root = new Border
-		{
-			Content = _layout
-		};
-
-		Content = _root;
-
-		GestureRecognizers.Add(new TapGestureRecognizer
-		{
-			Command = new Command(() =>
-			{
-				if (IsDisabled || IsLoading)
-					return;
-
-				if (Command?.CanExecute(CommandParameter) == true)
-					Command.Execute(CommandParameter);
-			})
-		});
-
-		Behaviors.Add(new PressedScaleBehavior { PressedScale = 0.98, PressedTranslationY = 3 });
-
+		SetDynamicResource(StyleProperty, "FuchsButtonStyle");
 		ApplyTheme();
 	}
 
-	protected Border ButtonRoot => _root;
-
-	protected HorizontalStackLayout ButtonLayout => _layout;
-
-	protected override void ApplyTheme()
+	public FuchsVariant Variant
 	{
-		FuchsTheme theme = FuchsThemeProvider.Current;
-
-		Color background = theme.GetMainColor(Color);
-		Color border = theme.GetBorderColor(Color);
-		Color text = theme.GetTextColor(Color, Variant);
-
-		_root.Padding = ResolvePadding();
-		_root.StrokeThickness = Variant == FuchsVariant.Text ? 0 : theme.BorderWidth;
-		_root.StrokeShape = new RoundRectangle { CornerRadius = theme.CornerRadius };
-		_root.Opacity = IsDisabled ? 0.65 : 1;
-		_root.Shadow = (Variant == FuchsVariant.Filled && !IsDisabled
-			? new Shadow { Brush = new SolidColorBrush(border), Offset = new Point(0, 3), Radius = 0, Opacity = 1 }
-			: null)!;
-
-		_root.BackgroundColor = Variant switch
-		{
-			FuchsVariant.Text or FuchsVariant.Outlined => Colors.Transparent, _ => background
-		};
-
-		_root.Stroke = Variant switch
-		{
-			FuchsVariant.Outlined => new SolidColorBrush(border), _ => Brush.Transparent
-		};
-
-		_label.Text = Text;
-		_label.TextColor = text;
-		_label.FontSize = ResolveFontSize();
-
-		_loader.Color = text;
-		_loader.IsVisible = IsLoading;
-		_loader.IsRunning = IsLoading;
-
-		IsEnabled = !IsDisabled;
-		OnButtonThemeApplied();
+		get => (FuchsVariant)GetValue(VariantProperty);
+		set => SetValue(VariantProperty, value);
 	}
 
-	protected virtual void OnButtonThemeApplied() { }
-
-	private static void OnVisualPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+	public FuchsThemeColor Color
 	{
-		if (bindable is FuchsButton button)
-			button.ApplyTheme();
+		get => (FuchsThemeColor)GetValue(ColorProperty);
+		set => SetValue(ColorProperty, value);
+	}
+
+	private static void OnStyleChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsButton)bindable).ApplyTheme();
+
+	private void ApplyTheme()
+	{
+		var color = FuchsThemeResourceLookup.GetColor(Color);
+		var foreground = Color is FuchsThemeColor.Light ? Colors.Black : Colors.White;
+		BackgroundColor = Variant == FuchsVariant.Filled ? color : Colors.Transparent;
+		TextColor = Variant == FuchsVariant.Filled ? foreground : color;
+		BorderColor = color;
+		BorderWidth = Variant == FuchsVariant.Outlined ? 1 : 0;
+		if (Variant == FuchsVariant.Filled)
+		{
+			Shadow = new Shadow { Brush = new SolidColorBrush(color), Offset = new Point(0, 2), Radius = 0, Opacity = 0.85f };
+		}
+		else
+		{
+			ClearValue(ShadowProperty);
+		}
 	}
 }

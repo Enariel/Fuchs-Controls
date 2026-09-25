@@ -1,4 +1,4 @@
-namespace FuchsControls.Theme;
+namespace FuchsControls;
 
 public enum FuchsVariant
 {

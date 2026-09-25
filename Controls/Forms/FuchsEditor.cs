@@ -1,66 +1,72 @@
-namespace FuchsControls.Controls;
+namespace FuchsControls;
 
-public class FuchsEditor : FuchsField
+public sealed class FuchsEditor : FuchsFieldBase
 {
-	public static readonly BindableProperty EditorHeightProperty =
-		BindableProperty.Create(nameof(EditorHeight), typeof(double), typeof(FuchsEditor), -1d, propertyChanged: OnEditorVisualPropertyChanged);
+	private readonly Editor _editor = new() { AutoSize = EditorAutoSizeOption.TextChanges };
 
-	public static readonly BindableProperty AutoExpandProperty =
-		BindableProperty.Create(nameof(AutoExpand), typeof(bool), typeof(FuchsEditor), false, propertyChanged: OnEditorVisualPropertyChanged);
+	public static readonly BindableProperty ValueProperty = BindableProperty.Create(
+		nameof(Value), typeof(string), typeof(FuchsEditor), string.Empty, BindingMode.TwoWay, propertyChanged: OnValueChanged);
 
-	public double EditorHeight
-	{
-		get => (double)GetValue(EditorHeightProperty);
-		set => SetValue(EditorHeightProperty, value);
-	}
+	public static readonly BindableProperty PlaceholderProperty = BindableProperty.Create(
+		nameof(Placeholder), typeof(string), typeof(FuchsEditor), string.Empty, propertyChanged: OnEditorPropertyChanged);
 
-	public bool AutoExpand
-	{
-		get => (bool)GetValue(AutoExpandProperty);
-		set => SetValue(AutoExpandProperty, value);
-	}
+	public static readonly BindableProperty KeyboardProperty = BindableProperty.Create(
+		nameof(Keyboard), typeof(Keyboard), typeof(FuchsEditor), Keyboard.Default, propertyChanged: OnEditorPropertyChanged);
+
+	public static readonly BindableProperty MaxLengthProperty = BindableProperty.Create(
+		nameof(MaxLength), typeof(int), typeof(FuchsEditor), int.MaxValue, propertyChanged: OnEditorPropertyChanged);
+
+	public static readonly BindableProperty IsReadOnlyProperty = BindableProperty.Create(
+		nameof(IsReadOnly), typeof(bool), typeof(FuchsEditor), false, propertyChanged: OnEditorPropertyChanged);
 
 	public FuchsEditor()
 	{
-		InitializeField(new Editor
-		{
-			BackgroundColor = Colors.Transparent
-		});
-		ApplyEditorHeight();
+		_editor.SetDynamicResource(StyleProperty, "FuchsEditorStyle");
+		_editor.TextChanged += OnTextChanged;
+		SetInput(_editor);
+		UpdateEditor();
 	}
 
-	protected override void OnTextChanged(string text)
+	public string Value
 	{
-		if (AutoExpand)
-		{
-			int lineCount = Math.Max(1, text.Split('\n').Length);
-			HeightRequest = Math.Max(EditorHeight, lineCount * 24 + 28);
-		}
+		get => (string)GetValue(ValueProperty);
+		set => SetValue(ValueProperty, value);
 	}
 
-	protected override void ApplyTheme()
+	public string Placeholder
 	{
-		base.ApplyTheme();
-		ApplyEditorHeight();
+		get => (string)GetValue(PlaceholderProperty);
+		set => SetValue(PlaceholderProperty, value);
 	}
 
-	private static void OnEditorVisualPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+	public Keyboard Keyboard
 	{
-		if (bindable is FuchsEditor editor)
-		{
-			editor.ApplyTheme();
-			editor.ApplyEditorHeight();
-		}
+		get => (Keyboard)GetValue(KeyboardProperty);
+		set => SetValue(KeyboardProperty, value);
 	}
 
-	private void ApplyEditorHeight()
+	public int MaxLength
 	{
-		if (Input is Editor editor)
-			editor.HeightRequest = EditorHeight;
+		get => (int)GetValue(MaxLengthProperty);
+		set => SetValue(MaxLengthProperty, value);
+	}
 
-		if (AutoExpand)
-			OnTextChanged(Text);
-		else
-			HeightRequest = EditorHeight;
+	public bool IsReadOnly
+	{
+		get => (bool)GetValue(IsReadOnlyProperty);
+		set => SetValue(IsReadOnlyProperty, value);
+	}
+
+	private static void OnValueChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsEditor)bindable)._editor.Text = (string)newValue;
+	private static void OnEditorPropertyChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsEditor)bindable).UpdateEditor();
+	private void OnTextChanged(object? sender, TextChangedEventArgs e) => SetValue(ValueProperty, e.NewTextValue ?? string.Empty);
+
+	private void UpdateEditor()
+	{
+		_editor.Text = Value;
+		_editor.Placeholder = Placeholder;
+		_editor.Keyboard = Keyboard;
+		_editor.MaxLength = MaxLength;
+		_editor.IsReadOnly = IsReadOnly;
 	}
 }

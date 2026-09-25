@@ -1,6 +1,6 @@
-namespace FuchsControls.Theme;
+namespace FuchsControls;
 
-public enum FuchsColor
+public enum FuchsThemeColor
 {
 	Default,
 	Primary,

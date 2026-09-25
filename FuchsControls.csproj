@@ -36,11 +36,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Behaviours\" />
-      <Folder Include="Controls\Buttons\" />
-      <Folder Include="Controls\Cards\" />
-      <Folder Include="Controls\Page\" />
-      <Folder Include="Controls\Typography\" />
       <Folder Include="Reference\Flatify\" />
       <Folder Include="Resources\Fonts\" />
       <Folder Include="Resources\Images\" />

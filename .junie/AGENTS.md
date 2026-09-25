@@ -2,9 +2,30 @@
 
 ## Project overview
 
-- `FuchsControls` is a .NET MAUI control library inspired by FlatifyCSS. The main source areas are `Controls`, `Behaviours`, `Converters`, `Handlers`, `Theme`, `Resources`, and platform-specific code under `Platforms`.
+- `FuchsControls` is a .NET MAUI control library inspired by FlatifyCSS. 
+  - The main source areas are: 
+    - `Controls` : Contains custom controls.
+      - `Controls/Forms` : Form and Input related field controls. 
+      - `Controls/Buttons` : Button and button group controls.
+      - `Controls/Layout` : Layout controls.
+      - `Controls/Other` : Other controls.
+    - `Behaviours` : Implementation of custom control behaviors.
+    - `Converters` : Binding converters.
+    - `Handlers` : Application handlers.
+    - `Theme` : Application theming.
+    - `Resources` : Application resources and styles.
+    - `Platforms` : Platform-specific code.
 - The project uses SDK-style MSBuild with `<UseMaui>true</UseMaui>`, `<SingleProject>true</SingleProject>`, nullable reference types, and implicit usings enabled.
 - XAML uses MAUI namespaces, and the project enables source-generated XAML with `<MauiXamlInflator>SourceGen</MauiXamlInflator>`. Keep XAML compatible with source generation unless a file explicitly needs runtime inflation.
+
+## C# / .NET
+
+- Use C#/.NET 10, nullable reference types, standard naming, and `var` when the type is obvious.
+- Prefer focused classes and methods, `readonly`, compile-time safety, and `async`/`await`; never block async code with `.Wait()` or `.Result`.
+  - Always wait Tasks asynchronously.
+- Prefer composition over inheritance.
+- Do not use obsolete APIs. Use asynchronous APIs when available as an alternative to obsolete ones.
+- Wrap asynchronous code in try/catch blocks and handle exceptions appropriately, especially async void methods.
 
 ## Build and configuration
 
@@ -22,24 +43,17 @@ dotnet build .\FuchsControls.csproj --configuration Release --framework net10.0-
 - The project is a library, not an executable. It does not have an application startup target to run directly; consume it from a MAUI host application when validating UI behavior.
 - The default SDK compile glob includes nested `*.cs` files. Do not place temporary C# programs or test sources under the repository tree unless they are intentionally part of the library or explicitly excluded.
 
-## Testing
-
-- There is currently no committed test project in this repository. 
- 
 ## Source and style conventions
 
 - Match the surrounding C# style: file-scoped namespaces, tabs for indentation in the existing converter files, `PascalCase` for public types and members, and nullable annotations consistent with the project.
 - Converter implementations are small `IValueConverter` classes under `FuchsControls.Converters`. Keep `Convert` and `ConvertBack` behavior explicit and provide safe fallback values for unsupported input where that is the established class behavior.
-- Preserve the metadata region used by the converter files when adding or changing files, including created/modified dates if the project convention requires them.
 - Keep XAML resources in `Resources/Styles/FuchsStyles.xaml` organized by section. Reuse existing `Fuchs*` design tokens and styles instead of introducing duplicate colors, dimensions, shadows, or control states.
 - Resource keys use the `Fuchs` prefix and descriptive PascalCase names, such as `FuchsAccentColor`, `FuchsCornerRadius`, and `FuchsButtonShadow`. Maintain this naming scheme for new resources.
 - Components also use the `Fuchs` prefix and descriptive PascalCase names for their components.
 - Keep platform-specific implementations in their corresponding `Platforms/<Platform>` directory. Avoid adding platform conditionals to shared controls when a platform handler or partial implementation is more appropriate.
-- Follow the existing project and Rider formatting settings. Reformat changed C# and XAML files before review, and keep changes focused; do not reformat unrelated files.
 
 ## Debugging and review guidance
 
 - When a build fails, first identify the target framework in the MSBuild output; a failure may be platform-workload-specific rather than shared-library code.
 - For XAML failures, check source-generation diagnostics, resource-key spelling, target types, and whether a referenced `StaticResource` is defined before use or otherwise available in the merged dictionaries.
 - For binding/converter issues, inspect the runtime value type and nullability before changing conversion logic. Add a focused regression test for each newly discovered input shape.
-- Check `git status` before and after work. Existing changes may be in progress; do not overwrite or revert unrelated modified/staged files. Keep generated `bin`/`obj` output and temporary smoke-test files out of commits.

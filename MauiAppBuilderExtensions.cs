@@ -5,23 +5,17 @@
 #endregion
 
 using FuchsControls.Handlers;
-using FuchsControls.Theme;
 
 namespace FuchsControls;
 
 public static class MauiAppBuilderExtensions
 {
-	public static MauiAppBuilder UseFuchsControls(this MauiAppBuilder builder, FuchsTheme? theme = null)
+	public static MauiAppBuilder UseFuchsControls(this MauiAppBuilder builder)
 	{
-		FormHandler.RemoveBorders();
-
 		builder.ConfigureMauiHandlers(handlers =>
 		{
-			FuchsEntryHandler.Register();
+			FormHandler.RemoveBorders();
 		});
-
-		if (Application.Current is not null)
-			FuchsThemeProvider.ApplyTo(Application.Current, theme);
 
 		return builder;
 	}

@@ -1,60 +1,50 @@
-#region Meta
+namespace FuchsControls;
 
-// FuchsControls
-// Created: 24/09/2026
-// Modified: 24/09/2026
-
-#endregion
-
-using FuchsControls.Theme;
-
-namespace FuchsControls.Controls;
-
-public sealed class FuchsSwitch : FuchsBoolBase
+public sealed class FuchsSwitch : FuchsFieldBase
 {
-	private readonly Switch _switch;
+	private readonly Switch _switch = new();
+	private readonly Label _valueLabel = new() { VerticalOptions = LayoutOptions.Center };
+	private bool _isUpdating;
 
-	public static readonly BindableProperty IsOnProperty =
-		BindableProperty.Create(nameof(IsOn), typeof(bool), typeof(FuchsSwitch), false, BindingMode.TwoWay, propertyChanged: OnIsOnChanged);
+	public static readonly BindableProperty ValueProperty =
+		BindableProperty.Create(nameof(Value), typeof(bool), typeof(FuchsSwitch), false, BindingMode.TwoWay, propertyChanged: OnValueChanged);
 
-
-	public bool IsOn
-	{
-		get => (bool)GetValue(IsOnProperty);
-		set => SetValue(IsOnProperty, value);
-	}
+	public static readonly BindableProperty TextProperty =
+		BindableProperty.Create(nameof(Text), typeof(string), typeof(FuchsSwitch), string.Empty, propertyChanged: OnTextChanged);
 
 	public FuchsSwitch()
 	{
-		_switch = new Switch();
-		InitializeBoolControl(_switch);
+		_switch.SetDynamicResource(StyleProperty, "FuchsSwitchStyle");
 		_switch.Toggled += OnToggled;
-		ApplyTheme();
+		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _switch, _valueLabel } });
+		UpdateValue();
 	}
 
-	protected override void ApplyInputTheme(FuchsTheme theme)
+	public bool Value
 	{
-		_switch.IsToggled = IsOn;
-		_switch.WidthRequest = theme.FontSizeMd * 3;
-		_switch.HeightRequest = theme.FontSizeMd * 1.5;
-		_switch.OnColor = theme.Primary;
-		_switch.ThumbColor = IsOn ? theme.TextInverted : theme.BackgroundDarker;
-		_switch.IsEnabled = !IsDisabled;
+		get => (bool)GetValue(ValueProperty);
+		set => SetValue(ValueProperty, value);
 	}
+
+	public string Text
+	{
+		get => (string)GetValue(TextProperty);
+		set => SetValue(TextProperty, value);
+	}
+
+	private static void OnValueChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsSwitch)bindable).UpdateValue();
+	private static void OnTextChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsSwitch)bindable)._valueLabel.Text = (string)newValue;
 
 	private void OnToggled(object? sender, ToggledEventArgs e)
 	{
-		if (IsOn != e.Value)
-			IsOn = e.Value;
+		if (!_isUpdating) SetValue(ValueProperty, e.Value);
 	}
 
-
-	private static void OnIsOnChanged(BindableObject bindable, object oldValue, object newValue)
+	private void UpdateValue()
 	{
-		if (bindable is FuchsSwitch control)
-		{
-			control._switch.IsToggled = (bool)newValue;
-			control.ApplyTheme();
-		}
+		_isUpdating = true;
+		_switch.IsToggled = Value;
+		_valueLabel.Text = Text;
+		_isUpdating = false;
 	}
 }

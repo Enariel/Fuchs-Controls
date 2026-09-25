@@ -1,6 +1,6 @@
-namespace FuchsControls.Theme;
+namespace FuchsControls;
 
-public enum FuchsTextTypo
+public enum FuchsTypoType
 {
 	Body,
 	Caption,
