@@ -1,4 +1,4 @@
-namespace FuchsControls;
+namespace FuchsControls.Behaviours;
 
 public sealed class FocusHighlightBehavior : Behavior<VisualElement>
 {

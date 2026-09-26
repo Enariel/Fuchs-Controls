@@ -1,3 +1,4 @@
+using FuchsControls.Behaviours;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace FuchsControls;
