@@ -12,7 +12,7 @@ public sealed class FuchsColorPicker : FuchsFieldBase
 	public FuchsColorPicker()
 	{
 		_entry.TextChanged += OnTextChanged;
-		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _preview, _entry } });
+		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _preview, _entry } }, _entry);
 		UpdateColor();
 	}
 

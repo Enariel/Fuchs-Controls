@@ -19,7 +19,7 @@ public sealed class FuchsRadioButton : FuchsFieldBase
 	public FuchsRadioButton()
 	{
 		_radioButton.CheckedChanged += (_, e) => SetValue(IsSelectedProperty, e.Value);
-		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _radioButton, _textLabel } });
+		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _radioButton, _textLabel } }, _radioButton);
 	}
 
 	public object? Value

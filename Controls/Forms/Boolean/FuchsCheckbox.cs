@@ -16,7 +16,7 @@ public sealed class FuchsCheckbox : FuchsFieldBase
 	public FuchsCheckbox()
 	{
 		_button.Clicked += (_, _) => SetValue(ValueProperty, IsThreeState ? Value switch { null => true, true => false, _ => null } : !(Value ?? false));
-		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _button, _textLabel } });
+		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _button, _textLabel } }, _button);
 		UpdateValue();
 	}
 

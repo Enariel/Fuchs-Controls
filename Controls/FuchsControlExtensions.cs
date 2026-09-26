@@ -32,8 +32,9 @@ public static class FuchsControlExtensions
 		input.BackgroundColor = Colors.Transparent;
 		input.TextColor = FuchsThemeManager.Current.TextColor;
 		input.Margin = new Thickness(10, 0);
-		input.HeightRequest = 42;
+		input.HeightRequest = FuchsThemeManager.Current.FieldHeight;
 		input.SetDynamicResource(InputView.TextColorProperty, FuchsThemeResourceKeys.TextColor);
+		input.SetDynamicResource(VisualElement.HeightRequestProperty, FuchsThemeResourceKeys.FieldHeight);
 		return input;
 	}
 
@@ -50,8 +51,9 @@ public static class FuchsControlExtensions
 		editor.ApplyFuchsInputStyle();
 		editor.PlaceholderColor = FuchsThemeManager.Current.MutedTextColor;
 		editor.AutoSize = EditorAutoSizeOption.TextChanges;
-		editor.MinimumHeightRequest = 88;
+		editor.MinimumHeightRequest = FuchsThemeManager.Current.MultilineFieldMinimumHeight;
 		editor.SetDynamicResource(Editor.PlaceholderColorProperty, FuchsThemeResourceKeys.MutedTextColor);
+		editor.SetDynamicResource(VisualElement.MinimumHeightRequestProperty, FuchsThemeResourceKeys.MultilineFieldMinimumHeight);
 		return editor;
 	}
 
@@ -60,8 +62,9 @@ public static class FuchsControlExtensions
 		picker.BackgroundColor = Colors.Transparent;
 		picker.TextColor = FuchsThemeManager.Current.TextColor;
 		picker.Margin = new Thickness(10, 0);
-		picker.HeightRequest = 42;
+		picker.HeightRequest = FuchsThemeManager.Current.FieldHeight;
 		picker.SetDynamicResource(Picker.TextColorProperty, FuchsThemeResourceKeys.TextColor);
+		picker.SetDynamicResource(VisualElement.HeightRequestProperty, FuchsThemeResourceKeys.FieldHeight);
 		return picker;
 	}
 
@@ -70,8 +73,9 @@ public static class FuchsControlExtensions
 		picker.BackgroundColor = Colors.Transparent;
 		picker.TextColor = FuchsThemeManager.Current.TextColor;
 		picker.Margin = new Thickness(10, 0);
-		picker.HeightRequest = 42;
+		picker.HeightRequest = FuchsThemeManager.Current.FieldHeight;
 		picker.SetDynamicResource(DatePicker.TextColorProperty, FuchsThemeResourceKeys.TextColor);
+		picker.SetDynamicResource(VisualElement.HeightRequestProperty, FuchsThemeResourceKeys.FieldHeight);
 		return picker;
 	}
 
@@ -80,8 +84,9 @@ public static class FuchsControlExtensions
 		picker.BackgroundColor = Colors.Transparent;
 		picker.TextColor = FuchsThemeManager.Current.TextColor;
 		picker.Margin = new Thickness(10, 0);
-		picker.HeightRequest = 42;
+		picker.HeightRequest = FuchsThemeManager.Current.FieldHeight;
 		picker.SetDynamicResource(TimePicker.TextColorProperty, FuchsThemeResourceKeys.TextColor);
+		picker.SetDynamicResource(VisualElement.HeightRequestProperty, FuchsThemeResourceKeys.FieldHeight);
 		return picker;
 	}
 

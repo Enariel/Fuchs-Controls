@@ -15,7 +15,7 @@ public sealed class FuchsSwitch : FuchsFieldBase
 	public FuchsSwitch()
 	{
 		_switch.Toggled += OnToggled;
-		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _switch, _valueLabel } });
+		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _switch, _valueLabel } }, _switch);
 		UpdateValue();
 	}
 

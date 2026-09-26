@@ -21,7 +21,7 @@ public sealed class FuchsTicker : FuchsNumericFieldBase
 		inputGrid.Add(decrement, 0);
 		inputGrid.Add(_entry, 1);
 		inputGrid.Add(increment, 2);
-		SetInput(inputGrid);
+		SetInput(inputGrid, _entry);
 	}
 
 	protected override void OnNumericValueChanged() =>

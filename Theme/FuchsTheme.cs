@@ -23,6 +23,11 @@ public sealed class FuchsTheme : BindableObject
 	public static readonly BindableProperty PrimaryLightProperty = CreateColorProperty(nameof(PrimaryLight));
 	public static readonly BindableProperty BorderWidthProperty = BindableProperty.Create(nameof(BorderWidth), typeof(double), typeof(FuchsTheme), 1d);
 	public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(double), typeof(FuchsTheme), 4d);
+	public static readonly BindableProperty FieldHeightProperty = BindableProperty.Create(nameof(FieldHeight), typeof(double), typeof(FuchsTheme), 42d);
+
+	public static readonly BindableProperty MultilineFieldMinimumHeightProperty =
+		BindableProperty.Create(nameof(MultilineFieldMinimumHeight), typeof(double), typeof(FuchsTheme), 88d);
+
 	public static readonly BindableProperty BodyFontSizeProperty = BindableProperty.Create(nameof(BodyFontSize), typeof(double), typeof(FuchsTheme), 16d);
 	public static readonly BindableProperty CaptionFontSizeProperty = BindableProperty.Create(nameof(CaptionFontSize), typeof(double), typeof(FuchsTheme), 12d);
 
@@ -160,6 +165,18 @@ public sealed class FuchsTheme : BindableObject
 	{
 		get => (double)GetValue(CornerRadiusProperty);
 		set => SetValue(CornerRadiusProperty, value);
+	}
+
+	public double FieldHeight
+	{
+		get => (double)GetValue(FieldHeightProperty);
+		set => SetValue(FieldHeightProperty, value);
+	}
+
+	public double MultilineFieldMinimumHeight
+	{
+		get => (double)GetValue(MultilineFieldMinimumHeightProperty);
+		set => SetValue(MultilineFieldMinimumHeightProperty, value);
 	}
 
 	public double BodyFontSize

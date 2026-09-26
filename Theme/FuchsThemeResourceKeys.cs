@@ -23,6 +23,8 @@ public static class FuchsThemeResourceKeys
 	public const string PrimaryLight = "FuchsPrimaryLight";
 	public const string BorderWidth = "FuchsBorderWidth";
 	public const string CornerRadius = "FuchsCornerRadius";
+	public const string FieldHeight = "FuchsFieldHeight";
+	public const string MultilineFieldMinimumHeight = "FuchsMultilineFieldMinimumHeight";
 	public const string BodyFontSize = "FuchsBodyFontSize";
 	public const string CaptionFontSize = "FuchsCaptionFontSize";
 	public const string SubtitleFontSize = "FuchsSubtitleFontSize";
