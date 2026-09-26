@@ -38,10 +38,14 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Controls\Containers\Tabs\" />
         <Folder Include="Reference\Flatify\"/>
         <Folder Include="Resources\Fonts\"/>
         <Folder Include="Resources\Images\"/>
-        <Folder Include="Resources\Styles\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Resources\Styles\FuchsStyles.xaml" />
     </ItemGroup>
 
 </Project>

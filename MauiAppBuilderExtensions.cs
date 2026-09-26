@@ -13,9 +13,10 @@ public static class MauiAppBuilderExtensions
 {
 	public static MauiAppBuilder UseFuchsControls(this MauiAppBuilder builder)
 	{
+		FormHandler.RemoveBorders();
+
 		builder.ConfigureMauiHandlers(handlers =>
 		{
-			FormHandler.RemoveBorders();
 		});
 
 		
