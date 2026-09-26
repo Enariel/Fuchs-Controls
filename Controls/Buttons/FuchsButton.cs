@@ -1,22 +1,9 @@
 namespace FuchsControls;
 
-public sealed class FuchsButton : Button
+public sealed class FuchsButton : FuchsButtonBase
 {
 	public static readonly BindableProperty VariantProperty = BindableProperty.Create(
-		nameof(Variant), typeof(FuchsVariant), typeof(FuchsButton), FuchsVariant.Filled, BindingMode.TwoWay, propertyChanged: OnStyleChanged);
-
-	public static readonly BindableProperty ColorProperty = BindableProperty.Create(
-		nameof(Color), typeof(FuchsThemeColor), typeof(FuchsButton), FuchsThemeColor.Default, BindingMode.TwoWay, propertyChanged: OnStyleChanged);
-
-	public FuchsButton()
-	{
-		Padding = new Thickness(14, 10, 14, 8);
-		Margin = new Thickness(5);
-		CornerRadius = 4;
-		FontAttributes = FontAttributes.Bold;
-		FuchsThemeManager.ThemeChanged += (_, _) => ApplyTheme();
-		ApplyTheme();
-	}
+		nameof(Variant), typeof(FuchsVariant), typeof(FuchsButton), FuchsVariant.Filled, BindingMode.TwoWay, propertyChanged: OnVariantChanged);
 
 	public FuchsVariant Variant
 	{
@@ -24,23 +11,14 @@ public sealed class FuchsButton : Button
 		set => SetValue(VariantProperty, value);
 	}
 
-	public FuchsThemeColor Color
+	protected override void ApplyThemedStyle()
 	{
-		get => (FuchsThemeColor)GetValue(ColorProperty);
-		set => SetValue(ColorProperty, value);
-	}
-
-	private static void OnStyleChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsButton)bindable).ApplyTheme();
-
-	private void ApplyTheme()
-	{
-		var color = FuchsThemeResourceLookup.GetColor(Color);
-		var foreground = Color is FuchsThemeColor.Light ? FuchsThemeManager.Current.TextColor : FuchsThemeManager.Current.LightColor;
-		BackgroundColor = Variant == FuchsVariant.Filled ? color : Colors.Transparent;
-		TextColor = Variant == FuchsVariant.Filled ? foreground : color;
+		var color = ThemeColor;
+		BackgroundColor = Variant is FuchsVariant.Filled ? color : Colors.Transparent;
+		TextColor = Variant is FuchsVariant.Filled ? ForegroundColor : color;
 		BorderColor = color;
-		BorderWidth = Variant == FuchsVariant.Outlined ? 1 : 0;
-		if (Variant == FuchsVariant.Filled)
+		BorderWidth = Variant is FuchsVariant.Outlined ? FuchsThemeManager.Current.BorderWidth : 0;
+		if (Variant is FuchsVariant.Filled or FuchsVariant.Outlined)
 		{
 			Shadow = new Shadow { Brush = new SolidColorBrush(color), Offset = new Point(0, 2), Radius = 0, Opacity = 0.85f };
 		}
@@ -49,4 +27,25 @@ public sealed class FuchsButton : Button
 			ClearValue(ShadowProperty);
 		}
 	}
+
+	protected override void ApplyVisualStates()
+	{
+		var borderWidth = FuchsThemeManager.Current.BorderWidth;
+		var pressedTranslation = Variant is FuchsVariant.Outlined ? borderWidth * 1.2 : borderWidth * 1.38;
+		var group = new VisualStateGroup { Name = "CommonStates" };
+		group.States.Add(CreateVisualState("Normal", 1, 0));
+		group.States.Add(CreateVisualState("PointerOver", 0.9, 0));
+		group.States.Add(CreateVisualState("Pressed", 0.9, pressedTranslation));
+
+		var disabled = CreateVisualState("Disabled", 0.7, borderWidth * 1.38);
+		disabled.Setters.Add(new Setter { Property = BackgroundColorProperty, Value = ThemeColor });
+		disabled.Setters.Add(new Setter { Property = TextColorProperty, Value = ForegroundColor });
+		disabled.Setters.Add(new Setter { Property = BorderWidthProperty, Value = 0d });
+		disabled.Setters.Add(new Setter { Property = ShadowProperty, Value = null });
+		group.States.Add(disabled);
+
+		VisualStateManager.SetVisualStateGroups(this, new VisualStateGroupList { group });
+	}
+
+	private static void OnVariantChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsButton)bindable).ApplyTheme();
 }

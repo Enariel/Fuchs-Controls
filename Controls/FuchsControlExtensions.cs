@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Reflection.Emit;
 using CommunityToolkit.Maui.Markup;
 
 namespace FuchsControls;
