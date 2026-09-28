@@ -22,9 +22,7 @@ public sealed class FuchsIcon : ContentView
 	public FuchsIcon()
 	{
 		InputTransparent = true;
-		path.Aspect = Stretch.Uniform;
-		path.HorizontalOptions = LayoutOptions.Fill;
-		path.VerticalOptions = LayoutOptions.Fill;
+		path.ApplyFuchsStyle("FuchsIconPathStyle");
 		Content = path;
 		UpdateSize();
 		UpdateIcon();

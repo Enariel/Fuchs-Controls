@@ -8,7 +8,7 @@ namespace FuchsControls;
 [ContentProperty(nameof(Items))]
 public sealed class FuchsRadioButtonGroup : FuchsFieldBase
 {
-	private readonly VerticalStackLayout _itemsLayout = new() { Spacing = 4 };
+	private readonly VerticalStackLayout _itemsLayout = new VerticalStackLayout().ApplyFuchsStyle("FuchsFormOptionLayoutVerticalStyle");
 	private readonly string _groupName = Guid.NewGuid().ToString("N");
 	private bool _isUpdating;
 

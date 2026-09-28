@@ -6,9 +6,7 @@ internal static class FuchsThemeResourceLookup
 	{
 		var key = $"Fuchs{color}{(light ? "Light" : "Color")}";
 		if (Application.Current?.Resources.TryGetValue(key, out var resource) == true && resource is Color resourceColor)
-		{
 			return resourceColor;
-		}
 
 		var theme = FuchsThemeManager.Current;
 		return color switch

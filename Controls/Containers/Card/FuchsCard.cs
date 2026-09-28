@@ -18,7 +18,7 @@ public sealed partial class FuchsCard : Border
 
 	public FuchsCard()
 	{
-		HorizontalOptions = LayoutOptions.Fill;
+		this.ApplyFuchsStyle("FuchsCardStyle");
 		ApplyTheme();
 	}
 
@@ -68,8 +68,6 @@ public sealed partial class FuchsCard : Border
 		hasAppliedTheme = true;
 		Background = new SolidColorBrush(CardBackgroundColor ?? theme.BackgroundColor);
 		Stroke = new SolidColorBrush(CardBorderColor ?? theme.FieldBorderColor);
-		StrokeThickness = theme.BorderWidth;
-		StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(theme.CornerRadius) };
 	}
 
 	private void SubscribeToThemeChanges()

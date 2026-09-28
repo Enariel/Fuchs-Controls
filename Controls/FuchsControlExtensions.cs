@@ -9,135 +9,80 @@ public static class FuchsControlExtensions
 	public static FuchsTypo ApplyFuchsFieldLabelStyle(this FuchsTypo label)
 	{
 		label.Type = FuchsTypoType.Caption;
-		label.FontAttributes = FontAttributes.Bold;
-		label.Margin = new Thickness(6, 4, 6, 0);
-		label.TextColor(FuchsThemeManager.Current.TextColor);
-		label.SetDynamicResource(Label.TextColorProperty, FuchsThemeResourceKeys.TextColor);
-		label.SetDynamicResource(Label.FontSizeProperty, FuchsThemeResourceKeys.CaptionFontSize);
-		return label;
+		return label.ApplyFuchsStyle("FuchsFieldLabelStyle");
 	}
 
 	public static FuchsTypo ApplyFuchsFieldHelpTextStyle(this FuchsTypo label)
 	{
 		label.Type = FuchsTypoType.Caption;
-		label.Margin = new Thickness(6, 0, 6, 4);
-		label.TextColor(FuchsThemeManager.Current.MutedTextColor);
-		label.SetDynamicResource(Label.TextColorProperty, FuchsThemeResourceKeys.MutedTextColor);
-		label.SetDynamicResource(Label.FontSizeProperty, FuchsThemeResourceKeys.CaptionFontSize);
-		return label;
+		return label.ApplyFuchsStyle("FuchsFieldHelpTextStyle");
 	}
 
 	public static T ApplyFuchsInputStyle<T>(this T input) where T : InputView
 	{
-		input.BackgroundColor = Colors.Transparent;
-		input.TextColor = FuchsThemeManager.Current.TextColor;
-		input.Margin = new Thickness(10, 0);
-		input.HeightRequest = FuchsThemeManager.Current.FieldHeight;
-		input.SetDynamicResource(InputView.TextColorProperty, FuchsThemeResourceKeys.TextColor);
-		input.SetDynamicResource(VisualElement.HeightRequestProperty, FuchsThemeResourceKeys.FieldHeight);
-		return input;
+		return input.ApplyFuchsStyle("FuchsInputStyle");
 	}
 
 	public static Entry ApplyFuchsEntryStyle(this Entry entry)
 	{
-		entry.ApplyFuchsInputStyle();
-		entry.PlaceholderColor = FuchsThemeManager.Current.MutedTextColor;
-		entry.SetDynamicResource(Entry.PlaceholderColorProperty, FuchsThemeResourceKeys.MutedTextColor);
-		return entry;
+		return entry.ApplyFuchsStyle("FuchsEntryStyle");
 	}
 
 	public static Editor ApplyFuchsEditorStyle(this Editor editor)
 	{
-		editor.ApplyFuchsInputStyle();
-		editor.PlaceholderColor = FuchsThemeManager.Current.MutedTextColor;
-		editor.AutoSize = EditorAutoSizeOption.TextChanges;
-		editor.MinimumHeightRequest = FuchsThemeManager.Current.MultilineFieldMinimumHeight;
-		editor.SetDynamicResource(Editor.PlaceholderColorProperty, FuchsThemeResourceKeys.MutedTextColor);
-		editor.SetDynamicResource(VisualElement.MinimumHeightRequestProperty, FuchsThemeResourceKeys.MultilineFieldMinimumHeight);
-		return editor;
+		return editor.ApplyFuchsStyle("FuchsEditorStyle");
 	}
 
 	public static Picker ApplyFuchsPickerStyle(this Picker picker)
 	{
-		picker.BackgroundColor = Colors.Transparent;
-		picker.TextColor = FuchsThemeManager.Current.TextColor;
-		picker.Margin = new Thickness(10, 0);
-		picker.HeightRequest = FuchsThemeManager.Current.FieldHeight;
-		picker.SetDynamicResource(Picker.TextColorProperty, FuchsThemeResourceKeys.TextColor);
-		picker.SetDynamicResource(VisualElement.HeightRequestProperty, FuchsThemeResourceKeys.FieldHeight);
-		return picker;
+		return picker.ApplyFuchsStyle("FuchsPickerStyle");
 	}
 
 	public static DatePicker ApplyFuchsDatePickerStyle(this DatePicker picker)
 	{
-		picker.BackgroundColor = Colors.Transparent;
-		picker.TextColor = FuchsThemeManager.Current.TextColor;
-		picker.Margin = new Thickness(10, 0);
-		picker.HeightRequest = FuchsThemeManager.Current.FieldHeight;
-		picker.SetDynamicResource(DatePicker.TextColorProperty, FuchsThemeResourceKeys.TextColor);
-		picker.SetDynamicResource(VisualElement.HeightRequestProperty, FuchsThemeResourceKeys.FieldHeight);
-		return picker;
+		return picker.ApplyFuchsStyle("FuchsDatePickerStyle");
 	}
 
 	public static TimePicker ApplyFuchsTimePickerStyle(this TimePicker picker)
 	{
-		picker.BackgroundColor = Colors.Transparent;
-		picker.TextColor = FuchsThemeManager.Current.TextColor;
-		picker.Margin = new Thickness(10, 0);
-		picker.HeightRequest = FuchsThemeManager.Current.FieldHeight;
-		picker.SetDynamicResource(TimePicker.TextColorProperty, FuchsThemeResourceKeys.TextColor);
-		picker.SetDynamicResource(VisualElement.HeightRequestProperty, FuchsThemeResourceKeys.FieldHeight);
-		return picker;
+		return picker.ApplyFuchsStyle("FuchsTimePickerStyle");
 	}
 
 	public static Switch ApplyFuchsSwitchStyle(this Switch control)
 	{
-		control.OnColor = FuchsThemeManager.Current.PrimaryColor;
-		control.ThumbColor = FuchsThemeManager.Current.LightColor;
-		control.SetDynamicResource(Switch.OnColorProperty, FuchsThemeResourceKeys.PrimaryColor);
-		control.SetDynamicResource(Switch.ThumbColorProperty, FuchsThemeResourceKeys.LightColor);
-		return control;
+		return control.ApplyFuchsStyle("FuchsSwitchStyle");
 	}
 
 	public static Button ApplyFuchsCheckboxStyle(this Button button)
 	{
-		button.BackgroundColor = FuchsThemeManager.Current.FieldBackgroundColor;
-		button.BorderColor = FuchsThemeManager.Current.FieldBorderColor;
-		button.BorderWidth = 1;
-		button.CornerRadius = 3;
-		button.TextColor = FuchsThemeManager.Current.SuccessColor;
-		button.SetDynamicResource(Button.BackgroundColorProperty, FuchsThemeResourceKeys.FieldBackgroundColor);
-		button.SetDynamicResource(Button.BorderColorProperty, FuchsThemeResourceKeys.FieldBorderColor);
-		button.SetDynamicResource(Button.TextColorProperty, FuchsThemeResourceKeys.SuccessColor);
-		return button;
+		return button.ApplyFuchsStyle("FuchsCheckboxStyle");
 	}
 
 	public static RadioButton ApplyFuchsRadioButtonStyle(this RadioButton button)
 	{
-		button.TextColor = FuchsThemeManager.Current.PrimaryColor;
-		button.SetDynamicResource(RadioButton.TextColorProperty, FuchsThemeResourceKeys.PrimaryColor);
-		return button;
+		return button.ApplyFuchsStyle("FuchsRadioButtonStyle");
 	}
 
 	public static Slider ApplyFuchsRangeStyle(this Slider slider)
 	{
-		slider.MinimumTrackColor = FuchsThemeManager.Current.PrimaryColor;
-		slider.MaximumTrackColor = FuchsThemeManager.Current.FieldBorderColor;
-		slider.ThumbColor = FuchsThemeManager.Current.FieldBackgroundColor;
-		slider.Margin = new Thickness(10, 0);
-		slider.SetDynamicResource(Slider.MinimumTrackColorProperty, FuchsThemeResourceKeys.PrimaryColor);
-		slider.SetDynamicResource(Slider.MaximumTrackColorProperty, FuchsThemeResourceKeys.FieldBorderColor);
-		slider.SetDynamicResource(Slider.ThumbColorProperty, FuchsThemeResourceKeys.FieldBackgroundColor);
-		return slider;
+		return slider.ApplyFuchsStyle("FuchsRangeStyle");
 	}
 
 	public static FuchsTypo ApplyFuchsTabTextStyle(this FuchsTypo text, bool active)
 	{
 		text.Type = FuchsTypoType.Body;
-		text.TextColor = active ? FuchsThemeManager.Current.PrimaryColor : FuchsThemeManager.Current.TextColor;
-		text.Opacity = active ? 1 : 0.6;
-		text.FontAttributes = active ? FontAttributes.Bold : FontAttributes.None;
-		text.SetDynamicResource(Label.TextColorProperty, active ? FuchsThemeResourceKeys.PrimaryColor : FuchsThemeResourceKeys.TextColor);
-		return text;
+		return text.ApplyFuchsStyle(active ? "FuchsTabActiveTextStyle" : "FuchsTabTextStyle");
 	}
+
+	internal static T ApplyFuchsStyle<T>(this T control, string styleKey) where T : VisualElement
+	{
+		control.SetDynamicResource(VisualElement.StyleProperty, styleKey);
+		return control;
+	}
+
+	internal static uint GetFuchsAnimationDuration(string resourceKey) =>
+		(uint)GetFuchsDoubleResource(resourceKey);
+
+	internal static double GetFuchsDoubleResource(string resourceKey) =>
+		Application.Current?.Resources.TryGetValue(resourceKey, out var value) == true && value is double number ? number : 0;
 }

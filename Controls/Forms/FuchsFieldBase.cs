@@ -39,13 +39,16 @@ public abstract class FuchsFieldBase : ContentView
 		_helpText = new FuchsTypo().ApplyFuchsFieldHelpTextStyle();
 		_inputBorder = new Border
 					   {
-						   Padding = 0, StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(4) }, Content = InputContainer
+						   Content = InputContainer
 					   };
-		_inputBorder.SetDynamicResource(Border.StrokeProperty, "FuchsFieldBorderColor");
-		_inputBorder.SetDynamicResource(BackgroundColorProperty, "FuchsFieldBackgroundColor");
+		_inputBorder.ApplyFuchsStyle("FuchsFieldBorderStyle");
 		InputContainer.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(FocusInput) });
 
-		Content = new VerticalStackLayout { Spacing = 4, Children = { _label, _inputBorder, _helpText } };
+		var contentLayout = new VerticalStackLayout().ApplyFuchsStyle("FuchsFieldContentStyle");
+		contentLayout.Children.Add(_label);
+		contentLayout.Children.Add(_inputBorder);
+		contentLayout.Children.Add(_helpText);
+		Content = contentLayout;
 		UpdatePresentation();
 	}
 

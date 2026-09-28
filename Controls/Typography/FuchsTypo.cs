@@ -2,6 +2,9 @@ namespace FuchsControls;
 
 public sealed partial class FuchsTypo : Label
 {
+	public static readonly BindableProperty ColorProperty = BindableProperty.Create(
+		nameof(Color), typeof(FuchsThemeColor), typeof(FuchsTypo), FuchsThemeColor.Default, BindingMode.TwoWay, propertyChanged: OnColorChanged);
+
 	public static readonly BindableProperty TypeProperty = BindableProperty.Create(
 		nameof(Type), typeof(FuchsTypoType), typeof(FuchsTypo), FuchsTypoType.Body, BindingMode.TwoWay, propertyChanged: OnTypeChanged);
 
@@ -14,8 +17,13 @@ public sealed partial class FuchsTypo : Label
 	public FuchsTypo()
 	{
 		ApplyStyle();
-		FuchsThemeManager.ThemeChanged += OnThemeChanged;
 		PropertyChanged += OnPropertyChanged;
+	}
+
+	public FuchsThemeColor Color
+	{
+		get => (FuchsThemeColor)GetValue(ColorProperty);
+		set => SetValue(ColorProperty, value);
 	}
 
 	public FuchsTypoType Type
@@ -36,29 +44,46 @@ public sealed partial class FuchsTypo : Label
 		set => SetValue(AccessibilityHintProperty, value);
 	}
 
+	protected override void OnHandlerChanged()
+	{
+		base.OnHandlerChanged();
+		FuchsThemeManager.ThemeChanged -= OnThemeChanged;
+		if (Handler is null)
+		{
+			return;
+		}
+
+		FuchsThemeManager.ThemeChanged += OnThemeChanged;
+		ApplyThemeColor();
+	}
+
 	private static void OnTypeChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsTypo)bindable).ApplyStyle();
+	private static void OnColorChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsTypo)bindable).ApplyThemeColor();
 	private static void OnAccessibilityChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsTypo)bindable).UpdateAccessibility();
+	private void OnThemeChanged(object? sender, EventArgs e) => ApplyThemeColor();
+	private void ApplyThemeColor() => TextColor = FuchsThemeResourceLookup.GetColor(Color);
 
 	private void ApplyStyle()
 	{
-		TextColor = FuchsThemeManager.Current.TextColor;
-		SetDynamicResource(Label.TextColorProperty, FuchsThemeResourceKeys.TextColor);
-		SetDynamicResource(Label.FontSizeProperty, Type switch
-												   {
-													   FuchsTypoType.Caption => FuchsThemeResourceKeys.CaptionFontSize
-													   , FuchsTypoType.Subtitle => FuchsThemeResourceKeys.SubtitleFontSize
-													   , _ => FuchsThemeResourceKeys.BodyFontSize
-												   });
+		SetDynamicResource(VisualElement.StyleProperty, Type switch
+														{
+															FuchsTypoType.Caption => "FuchsTypoCaptionStyle"
+															, FuchsTypoType.Subtitle => "FuchsTypoSubtitleStyle"
+															, FuchsTypoType.H1 => "FuchsTypoH1Style"
+															, FuchsTypoType.H2 => "FuchsTypoH2Style"
+															, FuchsTypoType.H3 => "FuchsTypoH3Style"
+															, FuchsTypoType.H4 => "FuchsTypoH4Style"
+															, FuchsTypoType.H5 => "FuchsTypoH5Style"
+															, FuchsTypoType.H6 => "FuchsTypoH6Style"
+															, _ => "FuchsTypoBodyStyle"
+														});
+		ApplyThemeColor();
 	}
-
-	private void OnThemeChanged(object? sender, EventArgs e) => ApplyStyle();
 
 	private void OnPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
 	{
 		if (e.PropertyName == nameof(Text))
-		{
 			UpdateAccessibility();
-		}
 	}
 
 	private void UpdateAccessibility()

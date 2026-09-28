@@ -12,8 +12,6 @@ public sealed class FuchsForm : VerticalStackLayout
 {
 	public FuchsForm()
 	{
-		Spacing = 12;
-		BackgroundColor = FuchsThemeManager.Current.BackgroundColor;
-		SetDynamicResource(BackgroundColorProperty, FuchsThemeResourceKeys.BackgroundColor);
+		this.ApplyFuchsStyle("FuchsFormStyle");
 	}
 }

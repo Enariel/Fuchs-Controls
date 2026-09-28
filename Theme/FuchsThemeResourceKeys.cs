@@ -28,6 +28,12 @@ public static class FuchsThemeResourceKeys
 	public const string BodyFontSize = "FuchsBodyFontSize";
 	public const string CaptionFontSize = "FuchsCaptionFontSize";
 	public const string SubtitleFontSize = "FuchsSubtitleFontSize";
+	public const string H1FontSize = "FuchsH1FontSize";
+	public const string H2FontSize = "FuchsH2FontSize";
+	public const string H3FontSize = "FuchsH3FontSize";
+	public const string H4FontSize = "FuchsH4FontSize";
+	public const string H5FontSize = "FuchsH5FontSize";
+	public const string H6FontSize = "FuchsH6FontSize";
 	public const string BodyLineHeight = "FuchsBodyLineHeight";
 	public const string SmallLineHeight = "FuchsSmallLineHeight";
 	public const string BaseLineHeight = "FuchsBaseLineHeight";

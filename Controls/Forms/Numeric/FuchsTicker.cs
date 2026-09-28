@@ -8,16 +8,16 @@ public sealed class FuchsTicker : FuchsNumericFieldBase
 	public FuchsTicker()
 	{
 		_entry.TextChanged += OnTextChanged;
-		var decrement = new Button { Text = "−", WidthRequest = 40 }.ApplyFuchsCheckboxStyle();
+		var decrement = new Button { Text = "−" }.ApplyFuchsStyle("FuchsTickerButtonStyle");
 		decrement.Clicked += (_, _) => ChangeByStep(-1);
-		var increment = new Button { Text = "+", WidthRequest = 40 }.ApplyFuchsCheckboxStyle();
+		var increment = new Button { Text = "+" }.ApplyFuchsStyle("FuchsTickerButtonStyle");
 		increment.Clicked += (_, _) => ChangeByStep(1);
 		var inputGrid = new Grid
 						{
 							ColumnDefinitions =
 								{ new ColumnDefinition(GridLength.Auto), new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) }
-							, ColumnSpacing = 0
 						};
+		inputGrid.ApplyFuchsStyle("FuchsTickerGridStyle");
 		inputGrid.Add(decrement, 0);
 		inputGrid.Add(_entry, 1);
 		inputGrid.Add(increment, 2);

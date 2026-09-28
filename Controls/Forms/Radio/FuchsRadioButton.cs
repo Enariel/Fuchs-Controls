@@ -3,7 +3,7 @@ namespace FuchsControls;
 public sealed class FuchsRadioButton : FuchsFieldBase
 {
 	private readonly RadioButton _radioButton = new RadioButton().ApplyFuchsRadioButtonStyle();
-	private readonly FuchsTypo _textLabel = new FuchsTypo { Type = FuchsTypoType.Body, VerticalOptions = LayoutOptions.Center };
+	private readonly FuchsTypo _textLabel = new FuchsTypo { Type = FuchsTypoType.Body }.ApplyFuchsStyle("FuchsFormOptionTextStyle");
 
 	public static readonly BindableProperty ValueProperty = BindableProperty.Create(nameof(Value), typeof(object), typeof(FuchsRadioButton), null);
 
@@ -19,7 +19,7 @@ public sealed class FuchsRadioButton : FuchsFieldBase
 	public FuchsRadioButton()
 	{
 		_radioButton.CheckedChanged += (_, e) => SetValue(IsSelectedProperty, e.Value);
-		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _radioButton, _textLabel } }, _radioButton);
+		SetInput(new HorizontalStackLayout { Children = { _radioButton, _textLabel } }.ApplyFuchsStyle("FuchsFormOptionLayoutStyle"), _radioButton);
 	}
 
 	public object? Value

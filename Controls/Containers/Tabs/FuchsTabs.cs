@@ -49,13 +49,11 @@ public sealed partial class FuchsTabs : ContentView
 		FuchsThemeManager.ThemeChanged += OnThemeChanged;
 		ApplyThemeStyles();
 
-		tabHeadersScroll.Orientation = ScrollOrientation.Horizontal;
-		tabHeadersScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Never;
-		tabHeadersScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Never;
+		tabHeadersScroll.ApplyFuchsStyle("FuchsTabsHeaderScrollStyle");
 		tabHeadersHost.Content = tabHeaders;
 
 		tabsHeaderGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
-		tabsHeaderGrid.RowDefinitions.Add(new RowDefinition { Height = 1 });
+		tabsHeaderGrid.RowDefinitions.Add(new RowDefinition { Height = FuchsThemeManager.Current.BorderWidth });
 		tabsHeaderGrid.Add(tabHeadersHost);
 		tabsHeaderGrid.Add(tabHeaderDivider);
 		Grid.SetRow(tabHeaderDivider, 1);
@@ -83,23 +81,13 @@ public sealed partial class FuchsTabs : ContentView
 
 	private void ApplyThemeStyles()
 	{
-		Margin = new Thickness(0, 10);
-		BackgroundColor = FuchsThemeManager.Current.BackgroundColor;
-		tabsBorder.Background = new SolidColorBrush(FuchsThemeManager.Current.BackgroundColor);
-		tabsBorder.Stroke = new SolidColorBrush(FuchsThemeManager.Current.FieldBorderColor);
-		tabsBorder.StrokeThickness = FuchsThemeManager.Current.BorderWidth;
-		tabsBorder.StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(FuchsThemeManager.Current.CornerRadius) };
-		tabsBorder.Padding = 0;
-		tabsHeader.Background = new SolidColorBrush(FuchsThemeManager.Current.BackgroundColor);
-		tabsHeader.Padding = new Thickness(16, 0);
-		tabHeaders.Direction = FlexDirection.Row;
-		tabHeaders.AlignItems = FlexAlignItems.Center;
-		tabHeaderDivider.Color = FuchsThemeManager.Current.FieldBorderColor;
-		tabHeaderDivider.HeightRequest = FuchsThemeManager.Current.BorderWidth;
-		tabsContent.Background = new SolidColorBrush(FuchsThemeManager.Current.BackgroundColor);
-		tabsContent.StrokeThickness = 0;
-		tabsContent.Padding = 0;
-		tabPanels.Padding = 0;
+		this.ApplyFuchsStyle("FuchsTabsStyle");
+		tabsBorder.ApplyFuchsStyle(IsBordered ? "FuchsTabsBorderStyle" : "FuchsTabsPlainStyle");
+		tabsHeader.ApplyFuchsStyle("FuchsTabsHeaderStyle");
+		tabHeaders.ApplyFuchsStyle("FuchsTabsHeaderItemsStyle");
+		tabHeaderDivider.ApplyFuchsStyle("FuchsTabsHeaderDividerStyle");
+		tabsContent.ApplyFuchsStyle("FuchsTabsContentStyle");
+		tabPanels.ApplyFuchsStyle("FuchsTabPanelsStyle");
 	}
 
 	public ObservableCollection<FuchsTab> Tabs => tabs;
@@ -269,11 +257,7 @@ public sealed partial class FuchsTabs : ContentView
 
 	private Border CreateTabHeader(FuchsTab tab, int index)
 	{
-		var header = new Border();
-		header.Background = Brush.Transparent;
-		header.StrokeThickness = 0;
-		header.Padding = new Thickness(12, 10);
-		header.Opacity = tab.IsEnabled ? 1 : 0.45;
+		var header = new Border { IsEnabled = tab.IsEnabled }.ApplyFuchsStyle("FuchsTabHeaderStyle");
 		header.GestureRecognizers.Add(new TapGestureRecognizer
 									  {
 										  Command = new Command(() =>
@@ -293,10 +277,8 @@ public sealed partial class FuchsTabs : ContentView
 		headerLayout.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
 		var headerContent = CreateHeaderContent(tab);
-		var indicator = new BoxView();
-		indicator.Color = tab.IsSelected ? FuchsThemeManager.Current.PrimaryColor : FuchsThemeManager.Current.FieldBorderColor;
-		indicator.HeightRequest = 2;
-		indicator.Opacity = tab.IsSelected && tab.IsEnabled ? 1 : 0;
+		var indicator = new BoxView().ApplyFuchsStyle("FuchsTabIndicatorStyle");
+		VisualStateManager.GoToState(indicator, !tab.IsEnabled ? "Disabled" : tab.IsSelected ? "Selected" : "Normal");
 		Grid.SetRow(headerContent, LineAtTop ? 1 : 0);
 		Grid.SetRow(indicator, LineAtTop ? 0 : 1);
 		headerLayout.Add(headerContent);
@@ -314,9 +296,9 @@ public sealed partial class FuchsTabs : ContentView
 
 		var header = new FuchsTypo
 					 {
-						 Text = tab.Header, Type = FuchsTypoType.Body, HorizontalTextAlignment = TextAlignment.Center
-						 , VerticalTextAlignment = TextAlignment.Center
+						 Text = tab.Header, Type = FuchsTypoType.Body
 					 };
+		header.IsEnabled = tab.IsEnabled;
 		if (tab.HeaderFormattedText is not null)
 		{
 			header.FormattedText = tab.HeaderFormattedText;
@@ -343,8 +325,7 @@ public sealed partial class FuchsTabs : ContentView
 
 	private void ApplyBorderStyle()
 	{
-		tabsBorder.Stroke = IsBordered ? new SolidColorBrush(FuchsThemeManager.Current.FieldBorderColor) : Brush.Transparent;
-		tabsBorder.StrokeThickness = IsBordered ? FuchsThemeManager.Current.BorderWidth : 0;
+		tabsBorder.ApplyFuchsStyle(IsBordered ? "FuchsTabsBorderStyle" : "FuchsTabsPlainStyle");
 	}
 
 	private void RebuildPanels()
@@ -359,8 +340,7 @@ public sealed partial class FuchsTabs : ContentView
 			var entry = oldEntries.FirstOrDefault(item => !usedEntries.Contains(item) && ReferenceEquals(item.Tab, tab));
 			if (entry is null)
 			{
-				var host = new ContentView();
-				host.Padding = new Thickness(16);
+				var host = new ContentView().ApplyFuchsStyle("FuchsTabPanelStyle");
 				entry = new PanelEntry(tab, host);
 			}
 
@@ -454,11 +434,11 @@ public sealed partial class FuchsTabs : ContentView
 			{
 				if (TabAnimation != FuchsTabAnimation.None)
 				{
-					await outgoing.FadeToAsync(0, 200, Easing.CubicIn);
+					await outgoing.FadeToAsync(0, FuchsControlExtensions.GetFuchsAnimationDuration("FuchsTabHideAnimationDuration"), Easing.CubicIn);
 				}
 
 				outgoing.IsVisible = false;
-				outgoing.Opacity = 1;
+				outgoing.Opacity = FuchsControlExtensions.GetFuchsDoubleResource("FuchsVisibleOpacity");
 			}
 
 			if (transition != selectionVersion)
@@ -472,17 +452,20 @@ public sealed partial class FuchsTabs : ContentView
 				return;
 			}
 
-			incoming.Opacity = 0;
+			incoming.Opacity = FuchsControlExtensions.GetFuchsDoubleResource("FuchsHiddenOpacity");
 			if (TabAnimation == FuchsTabAnimation.Slide)
 			{
-				incoming.TranslationX = index >= outgoingIndex ? 24 : -24;
+				var slideOffset = FuchsControlExtensions.GetFuchsDoubleResource("FuchsTabSlideOffset");
+				incoming.TranslationX = index >= outgoingIndex ? slideOffset : -slideOffset;
 				await Task.WhenAll(
-					incoming.FadeToAsync(1, 300, Easing.CubicOut),
-					incoming.TranslateToAsync(0, 0, 300, Easing.CubicOut));
+					incoming.FadeToAsync(FuchsControlExtensions.GetFuchsDoubleResource("FuchsVisibleOpacity")
+						, FuchsControlExtensions.GetFuchsAnimationDuration("FuchsTabShowAnimationDuration"), Easing.CubicOut),
+					incoming.TranslateToAsync(0, 0, FuchsControlExtensions.GetFuchsAnimationDuration("FuchsTabShowAnimationDuration"), Easing.CubicOut));
 			}
 			else
 			{
-				await incoming.FadeToAsync(1, 300, Easing.CubicOut);
+				await incoming.FadeToAsync(FuchsControlExtensions.GetFuchsDoubleResource("FuchsVisibleOpacity")
+					, FuchsControlExtensions.GetFuchsAnimationDuration("FuchsTabShowAnimationDuration"), Easing.CubicOut);
 			}
 		}
 		catch (Exception exception)
@@ -491,7 +474,7 @@ public sealed partial class FuchsTabs : ContentView
 			if (transition == selectionVersion)
 			{
 				incoming.IsVisible = true;
-				incoming.Opacity = 1;
+				incoming.Opacity = FuchsControlExtensions.GetFuchsDoubleResource("FuchsVisibleOpacity");
 			}
 		}
 	}

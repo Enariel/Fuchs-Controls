@@ -54,15 +54,11 @@ public sealed class FuchsThemingProvider : ContentView
 	private static void OnThemePropertyChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		var provider = (FuchsThemingProvider)bindable;
-		if (oldValue is FuchsTheme oldTheme)
-		{
+		if (oldValue is FuchsTheme oldTheme) 
 			oldTheme.PropertyChanged -= provider.OnThemeChanged;
-		}
 
-		if (newValue is FuchsTheme newTheme)
-		{
+		if (newValue is FuchsTheme newTheme) 
 			newTheme.PropertyChanged += provider.OnThemeChanged;
-		}
 
 		provider.ApplyTheme();
 	}
@@ -71,10 +67,8 @@ public sealed class FuchsThemingProvider : ContentView
 
 	private void OnGlobalThemeChanged(object? sender, EventArgs e)
 	{
-		if (!ReferenceEquals(FuchsThemeManager.Current, ActiveTheme))
-		{
+		if (!ReferenceEquals(FuchsThemeManager.Current, ActiveTheme)) 
 			ApplyTheme();
-		}
 	}
 
 	private void ApplyTheme()

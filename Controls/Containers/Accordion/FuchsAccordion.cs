@@ -13,7 +13,7 @@ public sealed class FuchsAccordion : ContentView
 		nameof(IsMultipleExpansionEnabled), typeof(bool), typeof(FuchsAccordion), false, propertyChanged: OnMultipleExpansionChanged);
 
 	private readonly ObservableCollection<FuchsAccordionItem> items = new();
-	private readonly VerticalStackLayout itemLayout = new() { Spacing = 8 };
+	private readonly VerticalStackLayout itemLayout = new VerticalStackLayout().ApplyFuchsStyle("FuchsAccordionItemsStyle");
 	private readonly Dictionary<FuchsAccordionItem, AccordionEntry> entries = new();
 	private bool isSynchronizing;
 	private bool isThemeChangeSubscribed;
@@ -154,33 +154,21 @@ public sealed class FuchsAccordion : ContentView
 
 	private AccordionEntry CreateItemEntry(FuchsAccordionItem item)
 	{
-		var header = new Border
-					 {
-						 Padding = new Thickness(16, 12)
-						 , StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(FuchsThemeManager.Current.CornerRadius) }
-						 , StrokeThickness = FuchsThemeManager.Current.BorderWidth, Opacity = item.IsEnabled ? 1 : 0.45
-					 };
+		var header = new Border { IsEnabled = item.IsEnabled }.ApplyFuchsStyle("FuchsAccordionHeaderStyle");
 		header.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(() => ToggleItem(item)) });
 		SemanticProperties.SetDescription(header, item.Header);
 		SemanticProperties.SetHint(header, item.IsEnabled ? (item.IsExpanded ? "Collapse section" : "Expand section") : "Disabled section");
 
-		var headerLayout = new Grid { ColumnSpacing = 12 };
+		var headerLayout = new Grid().ApplyFuchsStyle("FuchsAccordionHeaderGridStyle");
 		headerLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
 		headerLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 		headerLayout.Add(CreateHeaderContent(item), 0);
-		var indicator = new Label
-						{
-							Text = "⌄", FontSize = FuchsThemeManager.Current.BodyFontSize, VerticalTextAlignment = TextAlignment.Center
-							, HorizontalTextAlignment = TextAlignment.Center, Rotation = item.IsExpanded ? 180 : 0
-						};
+		var indicator = new Label { Text = "⌄" }.ApplyFuchsStyle("FuchsAccordionIndicatorStyle");
 		headerLayout.Add(indicator, 1);
 		header.Content = headerLayout;
 
-		var panel = new ContentView
-					{
-						Content = item.Content, Padding = new Thickness(16), IsVisible = item.IsExpanded, Opacity = 1
-					};
-		var host = new VerticalStackLayout { Spacing = 0, Children = { header, panel } };
+		var panel = new ContentView { Content = item.Content, IsVisible = item.IsExpanded }.ApplyFuchsStyle("FuchsAccordionPanelStyle");
+		var host = new VerticalStackLayout { Children = { header, panel } }.ApplyFuchsStyle("FuchsAccordionItemStyle");
 		var entry = new AccordionEntry(item, host, header, panel, indicator);
 		ApplyEntryTheme(entry);
 		return entry;
@@ -193,7 +181,7 @@ public sealed class FuchsAccordion : ContentView
 			return item.HeaderView;
 		}
 
-		var header = new FuchsTypo { Text = item.Header, Type = FuchsTypoType.Body, VerticalTextAlignment = TextAlignment.Center };
+		var header = new FuchsTypo { Text = item.Header, Type = FuchsTypoType.Body }.ApplyFuchsStyle("FuchsAccordionHeaderTextStyle");
 		if (item.HeaderFormattedText is not null)
 		{
 			header.FormattedText = item.HeaderFormattedText;
@@ -214,15 +202,18 @@ public sealed class FuchsAccordion : ContentView
 	private static async Task SetPanelVisibilityAsync(AccordionEntry entry, bool animate)
 	{
 		var transition = ++entry.TransitionVersion;
+		var visibleOpacity = FuchsControlExtensions.GetFuchsDoubleResource("FuchsVisibleOpacity");
+		var hiddenOpacity = FuchsControlExtensions.GetFuchsDoubleResource("FuchsHiddenOpacity");
 		if (entry.Item.IsExpanded)
 		{
 			entry.Panel.IsVisible = true;
-			entry.Panel.Opacity = animate ? 0 : 1;
+			entry.Panel.Opacity = animate ? hiddenOpacity : visibleOpacity;
 			if (animate)
 			{
 				try
 				{
-					await entry.Panel.FadeToAsync(1, 200, Easing.CubicOut);
+					await entry.Panel.FadeToAsync(visibleOpacity, FuchsControlExtensions.GetFuchsAnimationDuration("FuchsAccordionShowAnimationDuration")
+						, Easing.CubicInOut);
 				}
 				catch (Exception exception)
 				{
@@ -237,7 +228,8 @@ public sealed class FuchsAccordion : ContentView
 		{
 			try
 			{
-				await entry.Panel.FadeToAsync(0, 200, Easing.CubicIn);
+				await entry.Panel.FadeToAsync(hiddenOpacity, FuchsControlExtensions.GetFuchsAnimationDuration("FuchsAccordionHideAnimationDuration")
+					, Easing.CubicInOut);
 			}
 			catch (Exception exception)
 			{
@@ -247,32 +239,27 @@ public sealed class FuchsAccordion : ContentView
 			if (transition == entry.TransitionVersion && !entry.Item.IsExpanded)
 			{
 				entry.Panel.IsVisible = false;
-				entry.Panel.Opacity = 1;
+				entry.Panel.Opacity = visibleOpacity;
 			}
 		}
 		else
 		{
 			entry.Panel.IsVisible = false;
-			entry.Panel.Opacity = 1;
+			entry.Panel.Opacity = visibleOpacity;
 		}
 	}
 
 	private void ApplyTheme()
 	{
-		Margin = new Thickness(0, 10);
-		BackgroundColor = FuchsThemeManager.Current.BackgroundColor;
+		this.ApplyFuchsStyle("FuchsAccordionStyle");
 		RefreshEntries(false);
 	}
 
 	private static void ApplyEntryTheme(AccordionEntry entry)
 	{
-		var theme = FuchsThemeManager.Current;
-		entry.Header.Background = new SolidColorBrush(entry.Item.IsExpanded ? theme.PrimaryLight : theme.FieldBackgroundColor);
-		entry.Header.Stroke = new SolidColorBrush(entry.Item.IsExpanded ? theme.PrimaryColor : theme.FieldBorderColor);
-		entry.Header.StrokeThickness = theme.BorderWidth;
-		entry.Header.StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(theme.CornerRadius) };
-		entry.Indicator.TextColor = entry.Item.IsExpanded ? theme.PrimaryColor : theme.TextColor;
-		entry.Panel.BackgroundColor = theme.BackgroundColor;
+		var headerState = !entry.Item.IsEnabled ? entry.Item.IsExpanded ? "ExpandedDisabled" : "Disabled" : entry.Item.IsExpanded ? "Expanded" : "Normal";
+		VisualStateManager.GoToState(entry.Header, headerState);
+		VisualStateManager.GoToState(entry.Indicator, entry.Item.IsExpanded ? "Expanded" : "Normal");
 		SemanticProperties.SetHint(entry.Header, entry.Item.IsEnabled ? (entry.Item.IsExpanded ? "Collapse section" : "Expand section") : "Disabled section");
 	}
 

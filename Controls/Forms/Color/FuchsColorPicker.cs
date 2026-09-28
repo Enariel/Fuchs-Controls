@@ -3,7 +3,7 @@ namespace FuchsControls;
 public sealed class FuchsColorPicker : FuchsFieldBase
 {
 	private readonly Entry _entry = new Entry { Placeholder = "#RRGGBB" }.ApplyFuchsEntryStyle();
-	private readonly BoxView _preview = new() { WidthRequest = 28, HeightRequest = 28, CornerRadius = 3, VerticalOptions = LayoutOptions.Center };
+	private readonly BoxView _preview = new BoxView().ApplyFuchsStyle("FuchsColorPreviewStyle");
 	private bool _isUpdating;
 
 	public static readonly BindableProperty ValueProperty = BindableProperty.Create(nameof(Value), typeof(Color), typeof(FuchsColorPicker), Colors.Black
@@ -12,7 +12,7 @@ public sealed class FuchsColorPicker : FuchsFieldBase
 	public FuchsColorPicker()
 	{
 		_entry.TextChanged += OnTextChanged;
-		SetInput(new HorizontalStackLayout { Spacing = 8, Children = { _preview, _entry } }, _entry);
+		SetInput(new HorizontalStackLayout { Children = { _preview, _entry } }.ApplyFuchsStyle("FuchsFormOptionLayoutStyle"), _entry);
 		UpdateColor();
 	}
 

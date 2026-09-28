@@ -34,7 +34,14 @@ public sealed class FuchsTheme : BindableObject
 	public static readonly BindableProperty SubtitleFontSizeProperty =
 		BindableProperty.Create(nameof(SubtitleFontSize), typeof(double), typeof(FuchsTheme), 20d);
 
-	public static readonly BindableProperty BodyLineHeightProperty = BindableProperty.Create(nameof(BodyLineHeight), typeof(double), typeof(FuchsTheme), 1.8d);
+	public static readonly BindableProperty H1FontSizeProperty = BindableProperty.Create(nameof(H1FontSize), typeof(double), typeof(FuchsTheme), 56d);
+	public static readonly BindableProperty H2FontSizeProperty = BindableProperty.Create(nameof(H2FontSize), typeof(double), typeof(FuchsTheme), 48d);
+	public static readonly BindableProperty H3FontSizeProperty = BindableProperty.Create(nameof(H3FontSize), typeof(double), typeof(FuchsTheme), 37.6d);
+	public static readonly BindableProperty H4FontSizeProperty = BindableProperty.Create(nameof(H4FontSize), typeof(double), typeof(FuchsTheme), 32d);
+	public static readonly BindableProperty H5FontSizeProperty = BindableProperty.Create(nameof(H5FontSize), typeof(double), typeof(FuchsTheme), 26.4d);
+	public static readonly BindableProperty H6FontSizeProperty = BindableProperty.Create(nameof(H6FontSize), typeof(double), typeof(FuchsTheme), 21.6d);
+
+	public static readonly BindableProperty BodyLineHeightProperty = BindableProperty.Create(nameof(BodyLineHeight), typeof(double), typeof(FuchsTheme), 1.5d);
 
 	public static readonly BindableProperty
 		SmallLineHeightProperty = BindableProperty.Create(nameof(SmallLineHeight), typeof(double), typeof(FuchsTheme), 1.2d);
@@ -195,6 +202,42 @@ public sealed class FuchsTheme : BindableObject
 	{
 		get => (double)GetValue(SubtitleFontSizeProperty);
 		set => SetValue(SubtitleFontSizeProperty, value);
+	}
+
+	public double H1FontSize
+	{
+		get => (double)GetValue(H1FontSizeProperty);
+		set => SetValue(H1FontSizeProperty, value);
+	}
+
+	public double H2FontSize
+	{
+		get => (double)GetValue(H2FontSizeProperty);
+		set => SetValue(H2FontSizeProperty, value);
+	}
+
+	public double H3FontSize
+	{
+		get => (double)GetValue(H3FontSizeProperty);
+		set => SetValue(H3FontSizeProperty, value);
+	}
+
+	public double H4FontSize
+	{
+		get => (double)GetValue(H4FontSizeProperty);
+		set => SetValue(H4FontSizeProperty, value);
+	}
+
+	public double H5FontSize
+	{
+		get => (double)GetValue(H5FontSizeProperty);
+		set => SetValue(H5FontSizeProperty, value);
+	}
+
+	public double H6FontSize
+	{
+		get => (double)GetValue(H6FontSizeProperty);
+		set => SetValue(H6FontSizeProperty, value);
 	}
 
 	public double BodyLineHeight

@@ -55,11 +55,11 @@ builder
     .UseFuchsControls();
 ```
 
-`UseFuchsControls()` is the library's current public MAUI builder entry point. It applies the registered handler setup, including the form-border configuration.
+`UseFuchsControls()` is the library's current public MAUI builder entry point. Call it after `UseMauiApp<App>()`; it applies the registered handler setup, including the form-border configuration, and merges `FuchsStyles.xaml` into the consuming application's resources.
 
 Controls are organized by purpose under `Controls/`; styles and design tokens are provided by `Resources/Styles/FuchsStyles.xaml`.
 
-TODO: Document the supported resource-dictionary merge pattern and a complete, verified control usage example once a consuming host application is available.
+TODO: Document a complete, verified control usage example once a consuming host application is available.
 
 ## Run commands
 

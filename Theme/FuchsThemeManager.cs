@@ -13,10 +13,8 @@ public static class FuchsThemeManager
 		ArgumentNullException.ThrowIfNull(theme);
 		current = theme;
 		ApplyResources(theme, targetResources);
-		if (Application.Current is not null)
-		{
+		if (Application.Current is not null) 
 			ApplyResources(theme, Application.Current.Resources);
-		}
 
 		ThemeChanged?.Invoke(null, EventArgs.Empty);
 	}
@@ -31,9 +29,7 @@ public static class FuchsThemeManager
 	private static void ApplyResources(FuchsTheme theme, ResourceDictionary? resources)
 	{
 		if (resources is null)
-		{
 			return;
-		}
 
 		resources[FuchsThemeResourceKeys.BackgroundColor] = theme.BackgroundColor;
 		resources[FuchsThemeResourceKeys.FieldBackgroundColor] = theme.FieldBackgroundColor;
@@ -61,6 +57,12 @@ public static class FuchsThemeManager
 		resources[FuchsThemeResourceKeys.BodyFontSize] = theme.BodyFontSize;
 		resources[FuchsThemeResourceKeys.CaptionFontSize] = theme.CaptionFontSize;
 		resources[FuchsThemeResourceKeys.SubtitleFontSize] = theme.SubtitleFontSize;
+		resources[FuchsThemeResourceKeys.H1FontSize] = theme.H1FontSize;
+		resources[FuchsThemeResourceKeys.H2FontSize] = theme.H2FontSize;
+		resources[FuchsThemeResourceKeys.H3FontSize] = theme.H3FontSize;
+		resources[FuchsThemeResourceKeys.H4FontSize] = theme.H4FontSize;
+		resources[FuchsThemeResourceKeys.H5FontSize] = theme.H5FontSize;
+		resources[FuchsThemeResourceKeys.H6FontSize] = theme.H6FontSize;
 		resources[FuchsThemeResourceKeys.BodyLineHeight] = theme.BodyLineHeight;
 		resources[FuchsThemeResourceKeys.SmallLineHeight] = theme.SmallLineHeight;
 		resources[FuchsThemeResourceKeys.BaseLineHeight] = theme.BaseLineHeight;
