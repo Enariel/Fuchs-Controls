@@ -9,6 +9,11 @@ namespace FuchsControls;
 [ContentProperty(nameof(Items))]
 public sealed class FuchsAccordion : ContentView
 {
+	private const uint ShowAnimationDuration = 300;
+	private const uint HideAnimationDuration = 200;
+	private const double VisibleOpacity = 1;
+	private const double HiddenOpacity = 0;
+
 	public static readonly BindableProperty IsMultipleExpansionEnabledProperty = BindableProperty.Create(
 		nameof(IsMultipleExpansionEnabled), typeof(bool), typeof(FuchsAccordion), false, propertyChanged: OnMultipleExpansionChanged);
 
@@ -202,17 +207,15 @@ public sealed class FuchsAccordion : ContentView
 	private static async Task SetPanelVisibilityAsync(AccordionEntry entry, bool animate)
 	{
 		var transition = ++entry.TransitionVersion;
-		var visibleOpacity = FuchsControlExtensions.GetFuchsDoubleResource("FuchsVisibleOpacity");
-		var hiddenOpacity = FuchsControlExtensions.GetFuchsDoubleResource("FuchsHiddenOpacity");
 		if (entry.Item.IsExpanded)
 		{
 			entry.Panel.IsVisible = true;
-			entry.Panel.Opacity = animate ? hiddenOpacity : visibleOpacity;
+			entry.Panel.Opacity = animate ? HiddenOpacity : VisibleOpacity;
 			if (animate)
 			{
 				try
 				{
-					await entry.Panel.FadeToAsync(visibleOpacity, FuchsControlExtensions.GetFuchsAnimationDuration("FuchsAccordionShowAnimationDuration")
+					await entry.Panel.FadeToAsync(VisibleOpacity, ShowAnimationDuration
 						, Easing.CubicInOut);
 				}
 				catch (Exception exception)
@@ -228,7 +231,7 @@ public sealed class FuchsAccordion : ContentView
 		{
 			try
 			{
-				await entry.Panel.FadeToAsync(hiddenOpacity, FuchsControlExtensions.GetFuchsAnimationDuration("FuchsAccordionHideAnimationDuration")
+				await entry.Panel.FadeToAsync(HiddenOpacity, HideAnimationDuration
 					, Easing.CubicInOut);
 			}
 			catch (Exception exception)
@@ -239,13 +242,13 @@ public sealed class FuchsAccordion : ContentView
 			if (transition == entry.TransitionVersion && !entry.Item.IsExpanded)
 			{
 				entry.Panel.IsVisible = false;
-				entry.Panel.Opacity = visibleOpacity;
+				entry.Panel.Opacity = VisibleOpacity;
 			}
 		}
 		else
 		{
 			entry.Panel.IsVisible = false;
-			entry.Panel.Opacity = visibleOpacity;
+			entry.Panel.Opacity = VisibleOpacity;
 		}
 	}
 

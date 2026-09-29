@@ -5,7 +5,7 @@ Use this guide when modifying `FuchsControls`, a .NET 10 MAUI control library fo
 ## Project overview
 
 - `FuchsControls` is a .NET 10 MAUI control library inspired by FlatifyCSS.
-- It is a library, not an executable application. Validate UI behavior from a separate MAUI host app.
+- It is a library, not an executable application.
 - Prefer C# UI composition over XAML. Use `CommunityToolkit.Maui.Markup` where it improves clarity.
 - Keep controls reusable, maintainable, accessible, responsive, and cross-platform.
 
@@ -64,4 +64,5 @@ Use this guide when modifying `FuchsControls`, a .NET 10 MAUI control library fo
   - `net10.0-maccatalyst`
   - `net10.0-windows10.0.19041.0` on Windows
 - Linux intentionally excludes Apple and Windows targets.
-- Restore before the first build or when assets/target errors occur:
+- Restore before the first build or when assets/target errors occur.
+- Do not create test projects or unit tests in this library.

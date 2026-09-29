@@ -3,8 +3,14 @@
                     xmlns:controls="clr-namespace:FuchsControls"
                     x:Class="FuchsControls.Resources.Styles.FuchsStyles">
     <Color x:Key="FuchsBackgroundColor">#F1F4F7</Color>
+    <Color x:Key="FuchsFieldBackgroundColor">#E5EBF0</Color>
     <Color x:Key="FuchsTextColor">#141F23</Color>
+    <Color x:Key="FuchsMutedTextColor">#516773</Color>
     <Color x:Key="FuchsFieldBorderColor">#9FB1BC</Color>
+    <Color x:Key="FuchsFieldFocusColor">#167CC5</Color>
+    <Color x:Key="FuchsFieldValidColor">#298C55</Color>
+    <Color x:Key="FuchsFieldWarningColor">#D07800</Color>
+    <Color x:Key="FuchsFieldInvalidColor">#C84646</Color>
     <Color x:Key="FuchsDefaultColor">#385661</Color>
     <Color x:Key="FuchsPrimaryColor">#167CC5</Color>
     <Color x:Key="FuchsSecondaryColor">#516773</Color>
@@ -18,13 +24,8 @@
     <x:Double x:Key="FuchsBorderWidth">1</x:Double>
     <CornerRadius x:Key="FuchsCornerRadius">4</CornerRadius>
     <x:Int32 x:Key="FuchsButtonCornerRadius">4</x:Int32>
-    <x:Double x:Key="FuchsAccordionShowAnimationDuration">300</x:Double>
-    <x:Double x:Key="FuchsAccordionHideAnimationDuration">200</x:Double>
-    <x:Double x:Key="FuchsTabShowAnimationDuration">300</x:Double>
-    <x:Double x:Key="FuchsTabHideAnimationDuration">200</x:Double>
-    <x:Double x:Key="FuchsVisibleOpacity">1</x:Double>
-    <x:Double x:Key="FuchsHiddenOpacity">0</x:Double>
-    <x:Double x:Key="FuchsTabSlideOffset">24</x:Double>
+    <x:Double x:Key="FuchsFieldHeight">42</x:Double>
+    <x:Double x:Key="FuchsMultilineFieldMinimumHeight">88</x:Double>
 
     <!-- Flatify typography tokens translated to MAUI values. -->
     <x:Double x:Key="FuchsBodyFontSize">16</x:Double>
@@ -37,8 +38,6 @@
     <x:Double x:Key="FuchsH5FontSize">26.4</x:Double>
     <x:Double x:Key="FuchsH6FontSize">21.6</x:Double>
     <x:Double x:Key="FuchsBodyLineHeight">1.5</x:Double>
-    <x:Double x:Key="FuchsSmallLineHeight">1.2</x:Double>
-    <x:Double x:Key="FuchsBaseLineHeight">1.5</x:Double>
 
     <Style x:Key="FuchsTypoBodyStyle" TargetType="Label">
         <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
@@ -339,7 +338,6 @@
     </Style>
     <Style x:Key="FuchsFormStyle" TargetType="controls:FuchsForm">
         <Setter Property="Spacing" Value="12" />
-        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsBackgroundColor}" />
     </Style>
     <Style x:Key="FuchsFieldContentStyle" TargetType="VerticalStackLayout">
         <Setter Property="Spacing" Value="4" />

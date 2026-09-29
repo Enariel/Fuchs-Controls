@@ -2,8 +2,8 @@ namespace FuchsControls;
 
 public sealed partial class FuchsSpan : Span
 {
-	public static readonly BindableProperty ColorProperty = BindableProperty.Create(
-		nameof(Color), typeof(FuchsThemeColor), typeof(FuchsSpan), FuchsThemeColor.Default, BindingMode.TwoWay, propertyChanged: OnColorChanged);
+	public static readonly BindableProperty ThemeColorProperty = BindableProperty.Create(
+		nameof(ThemeColor), typeof(FuchsThemeColor), typeof(FuchsSpan), FuchsThemeColor.Text, BindingMode.TwoWay, propertyChanged: OnThemeColorChanged);
 
 	public static readonly BindableProperty TypeProperty = BindableProperty.Create(
 		nameof(Type), typeof(FuchsTypoType), typeof(FuchsSpan), FuchsTypoType.Body, BindingMode.TwoWay, propertyChanged: OnTypeChanged);
@@ -20,10 +20,10 @@ public sealed partial class FuchsSpan : Span
 		PropertyChanged += OnPropertyChanged;
 	}
 
-	public FuchsThemeColor Color
+	public FuchsThemeColor ThemeColor
 	{
-		get => (FuchsThemeColor)GetValue(ColorProperty);
-		set => SetValue(ColorProperty, value);
+		get => (FuchsThemeColor)GetValue(ThemeColorProperty);
+		set => SetValue(ThemeColorProperty, value);
 	}
 
 	public FuchsTypoType Type
@@ -58,10 +58,10 @@ public sealed partial class FuchsSpan : Span
 	}
 
 	private static void OnTypeChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsSpan)bindable).ApplyStyle();
-	private static void OnColorChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsSpan)bindable).ApplyThemeColor();
+	private static void OnThemeColorChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsSpan)bindable).ApplyThemeColor();
 	private static void OnAccessibilityChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsSpan)bindable).UpdateAccessibility();
 	private void OnThemeChanged(object? sender, EventArgs e) => ApplyThemeColor();
-	private void ApplyThemeColor() => TextColor = FuchsThemeResourceLookup.GetColor(Color);
+	private void ApplyThemeColor() => TextColor = FuchsThemeResourceLookup.GetColor(ThemeColor);
 
 	private void ApplyStyle()
 	{

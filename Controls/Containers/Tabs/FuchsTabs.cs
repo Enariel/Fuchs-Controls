@@ -11,6 +11,12 @@ namespace FuchsControls;
 [ContentProperty(nameof(Tabs))]
 public sealed partial class FuchsTabs : ContentView
 {
+	private const uint ShowAnimationDuration = 300;
+	private const uint HideAnimationDuration = 200;
+	private const double VisibleOpacity = 1;
+	private const double HiddenOpacity = 0;
+	private const double SlideOffset = 24;
+
 	public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(
 		nameof(SelectedIndex), typeof(int), typeof(FuchsTabs), 0, propertyChanged: OnSelectionChanged);
 
@@ -434,11 +440,11 @@ public sealed partial class FuchsTabs : ContentView
 			{
 				if (TabAnimation != FuchsTabAnimation.None)
 				{
-					await outgoing.FadeToAsync(0, FuchsControlExtensions.GetFuchsAnimationDuration("FuchsTabHideAnimationDuration"), Easing.CubicIn);
+					await outgoing.FadeToAsync(HiddenOpacity, HideAnimationDuration, Easing.CubicIn);
 				}
 
 				outgoing.IsVisible = false;
-				outgoing.Opacity = FuchsControlExtensions.GetFuchsDoubleResource("FuchsVisibleOpacity");
+				outgoing.Opacity = VisibleOpacity;
 			}
 
 			if (transition != selectionVersion)
@@ -452,20 +458,17 @@ public sealed partial class FuchsTabs : ContentView
 				return;
 			}
 
-			incoming.Opacity = FuchsControlExtensions.GetFuchsDoubleResource("FuchsHiddenOpacity");
+			incoming.Opacity = HiddenOpacity;
 			if (TabAnimation == FuchsTabAnimation.Slide)
 			{
-				var slideOffset = FuchsControlExtensions.GetFuchsDoubleResource("FuchsTabSlideOffset");
-				incoming.TranslationX = index >= outgoingIndex ? slideOffset : -slideOffset;
+				incoming.TranslationX = index >= outgoingIndex ? SlideOffset : -SlideOffset;
 				await Task.WhenAll(
-					incoming.FadeToAsync(FuchsControlExtensions.GetFuchsDoubleResource("FuchsVisibleOpacity")
-						, FuchsControlExtensions.GetFuchsAnimationDuration("FuchsTabShowAnimationDuration"), Easing.CubicOut),
-					incoming.TranslateToAsync(0, 0, FuchsControlExtensions.GetFuchsAnimationDuration("FuchsTabShowAnimationDuration"), Easing.CubicOut));
+					incoming.FadeToAsync(VisibleOpacity, ShowAnimationDuration, Easing.CubicOut),
+					incoming.TranslateToAsync(0, 0, ShowAnimationDuration, Easing.CubicOut));
 			}
 			else
 			{
-				await incoming.FadeToAsync(FuchsControlExtensions.GetFuchsDoubleResource("FuchsVisibleOpacity")
-					, FuchsControlExtensions.GetFuchsAnimationDuration("FuchsTabShowAnimationDuration"), Easing.CubicOut);
+				await incoming.FadeToAsync(VisibleOpacity, ShowAnimationDuration, Easing.CubicOut);
 			}
 		}
 		catch (Exception exception)
@@ -474,7 +477,7 @@ public sealed partial class FuchsTabs : ContentView
 			if (transition == selectionVersion)
 			{
 				incoming.IsVisible = true;
-				incoming.Opacity = FuchsControlExtensions.GetFuchsDoubleResource("FuchsVisibleOpacity");
+				incoming.Opacity = VisibleOpacity;
 			}
 		}
 	}

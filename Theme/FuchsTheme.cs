@@ -24,29 +24,17 @@ public sealed class FuchsTheme : BindableObject
 	public static readonly BindableProperty BorderWidthProperty = BindableProperty.Create(nameof(BorderWidth), typeof(double), typeof(FuchsTheme), 1d);
 	public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(double), typeof(FuchsTheme), 4d);
 	public static readonly BindableProperty FieldHeightProperty = BindableProperty.Create(nameof(FieldHeight), typeof(double), typeof(FuchsTheme), 42d);
-
-	public static readonly BindableProperty MultilineFieldMinimumHeightProperty =
-		BindableProperty.Create(nameof(MultilineFieldMinimumHeight), typeof(double), typeof(FuchsTheme), 88d);
-
+	public static readonly BindableProperty MultilineFieldMinimumHeightProperty = BindableProperty.Create(nameof(MultilineFieldMinimumHeight), typeof(double), typeof(FuchsTheme), 88d);
 	public static readonly BindableProperty BodyFontSizeProperty = BindableProperty.Create(nameof(BodyFontSize), typeof(double), typeof(FuchsTheme), 16d);
 	public static readonly BindableProperty CaptionFontSizeProperty = BindableProperty.Create(nameof(CaptionFontSize), typeof(double), typeof(FuchsTheme), 12d);
-
-	public static readonly BindableProperty SubtitleFontSizeProperty =
-		BindableProperty.Create(nameof(SubtitleFontSize), typeof(double), typeof(FuchsTheme), 20d);
-
+	public static readonly BindableProperty SubtitleFontSizeProperty = BindableProperty.Create(nameof(SubtitleFontSize), typeof(double), typeof(FuchsTheme), 20d);
 	public static readonly BindableProperty H1FontSizeProperty = BindableProperty.Create(nameof(H1FontSize), typeof(double), typeof(FuchsTheme), 56d);
 	public static readonly BindableProperty H2FontSizeProperty = BindableProperty.Create(nameof(H2FontSize), typeof(double), typeof(FuchsTheme), 48d);
 	public static readonly BindableProperty H3FontSizeProperty = BindableProperty.Create(nameof(H3FontSize), typeof(double), typeof(FuchsTheme), 37.6d);
 	public static readonly BindableProperty H4FontSizeProperty = BindableProperty.Create(nameof(H4FontSize), typeof(double), typeof(FuchsTheme), 32d);
 	public static readonly BindableProperty H5FontSizeProperty = BindableProperty.Create(nameof(H5FontSize), typeof(double), typeof(FuchsTheme), 26.4d);
 	public static readonly BindableProperty H6FontSizeProperty = BindableProperty.Create(nameof(H6FontSize), typeof(double), typeof(FuchsTheme), 21.6d);
-
 	public static readonly BindableProperty BodyLineHeightProperty = BindableProperty.Create(nameof(BodyLineHeight), typeof(double), typeof(FuchsTheme), 1.5d);
-
-	public static readonly BindableProperty
-		SmallLineHeightProperty = BindableProperty.Create(nameof(SmallLineHeight), typeof(double), typeof(FuchsTheme), 1.2d);
-
-	public static readonly BindableProperty BaseLineHeightProperty = BindableProperty.Create(nameof(BaseLineHeight), typeof(double), typeof(FuchsTheme), 1.5d);
 
 	public Color BackgroundColor
 	{
@@ -244,18 +232,6 @@ public sealed class FuchsTheme : BindableObject
 	{
 		get => (double)GetValue(BodyLineHeightProperty);
 		set => SetValue(BodyLineHeightProperty, value);
-	}
-
-	public double SmallLineHeight
-	{
-		get => (double)GetValue(SmallLineHeightProperty);
-		set => SetValue(SmallLineHeightProperty, value);
-	}
-
-	public double BaseLineHeight
-	{
-		get => (double)GetValue(BaseLineHeightProperty);
-		set => SetValue(BaseLineHeightProperty, value);
 	}
 
 	public static FuchsTheme CreateLight() =>

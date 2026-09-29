@@ -2,8 +2,8 @@ namespace FuchsControls;
 
 public sealed partial class FuchsTypo : Label
 {
-	public static readonly BindableProperty ColorProperty = BindableProperty.Create(
-		nameof(Color), typeof(FuchsThemeColor), typeof(FuchsTypo), FuchsThemeColor.Default, BindingMode.TwoWay, propertyChanged: OnColorChanged);
+	public static readonly BindableProperty ThemeColorProperty = BindableProperty.Create(
+		nameof(Color), typeof(FuchsThemeColor), typeof(FuchsTypo), FuchsThemeColor.Text, BindingMode.TwoWay, propertyChanged: OnThemeColorChanged);
 
 	public static readonly BindableProperty TypeProperty = BindableProperty.Create(
 		nameof(Typo), typeof(FuchsTypoType), typeof(FuchsTypo), FuchsTypoType.Body, BindingMode.TwoWay, propertyChanged: OnTypeChanged);
@@ -22,8 +22,8 @@ public sealed partial class FuchsTypo : Label
 
 	public FuchsThemeColor Color
 	{
-		get => (FuchsThemeColor)GetValue(ColorProperty);
-		set => SetValue(ColorProperty, value);
+		get => (FuchsThemeColor)GetValue(ThemeColorProperty);
+		set => SetValue(ThemeColorProperty, value);
 	}
 
 	public FuchsTypoType Typo
@@ -58,7 +58,7 @@ public sealed partial class FuchsTypo : Label
 	}
 
 	private static void OnTypeChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsTypo)bindable).ApplyStyle();
-	private static void OnColorChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsTypo)bindable).ApplyThemeColor();
+	private static void OnThemeColorChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsTypo)bindable).ApplyThemeColor();
 	private static void OnAccessibilityChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsTypo)bindable).UpdateAccessibility();
 	private void OnThemeChanged(object? sender, EventArgs e) => ApplyThemeColor();
 	private void ApplyThemeColor() => TextColor = FuchsThemeResourceLookup.GetColor(Color);

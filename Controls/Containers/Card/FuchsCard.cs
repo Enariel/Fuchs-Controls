@@ -3,7 +3,7 @@ using Microsoft.Maui.Controls.Shapes;
 namespace FuchsControls;
 
 [ContentProperty(nameof(Content))]
-public sealed partial class FuchsCard : Border
+public partial class FuchsCard : Border
 {
 	private const double PaddingScale = 0.75;
 	private bool isThemeChangeSubscribed;
@@ -15,6 +15,9 @@ public sealed partial class FuchsCard : Border
 
 	public static readonly BindableProperty CardBorderColorProperty = BindableProperty.Create(
 		nameof(CardBorderColor), typeof(Color), typeof(FuchsCard), propertyChanged: OnAppearanceChanged);
+
+	public static readonly BindableProperty ColorProperty = BindableProperty.Create(
+		nameof(Color), typeof(FuchsThemeColor?), typeof(FuchsCard), null, BindingMode.TwoWay, propertyChanged: OnAppearanceChanged);
 
 	public FuchsCard()
 	{
@@ -40,6 +43,15 @@ public sealed partial class FuchsCard : Border
 		set => SetValue(CardBorderColorProperty, value);
 	}
 
+	/// <summary>
+	/// Gets or sets an optional semantic theme color. When unset, the card uses the default theme background and border colors.
+	/// </summary>
+	public FuchsThemeColor? Color
+	{
+		get => (FuchsThemeColor?)GetValue(ColorProperty);
+		set => SetValue(ColorProperty, value);
+	}
+
 	protected override void OnHandlerChanged()
 	{
 		base.OnHandlerChanged();
@@ -58,6 +70,7 @@ public sealed partial class FuchsCard : Border
 	private void ApplyTheme()
 	{
 		var theme = FuchsThemeManager.Current;
+		var themeColor = Color is { } color ? FuchsThemeResourceLookup.GetColor(color) : null;
 		var padding = new Thickness(Math.Max(0, theme.BodyFontSize * PaddingScale));
 		if (!hasAppliedTheme || Padding.Equals(themePadding))
 		{
@@ -66,8 +79,8 @@ public sealed partial class FuchsCard : Border
 
 		themePadding = padding;
 		hasAppliedTheme = true;
-		Background = new SolidColorBrush(CardBackgroundColor ?? theme.BackgroundColor);
-		Stroke = new SolidColorBrush(CardBorderColor ?? theme.FieldBorderColor);
+		Background = new SolidColorBrush(CardBackgroundColor ?? themeColor ?? theme.BackgroundColor);
+		Stroke = new SolidColorBrush(CardBorderColor ?? themeColor ?? theme.FieldBorderColor);
 	}
 
 	private void SubscribeToThemeChanges()

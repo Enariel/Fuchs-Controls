@@ -33,11 +33,11 @@ public static class MauiAppBuilderExtensions
 						? ActivatorUtilities.GetServiceOrCreateInstance(serviceProvider, implementationType)
 						: throw new InvalidOperationException("The MAUI application service could not be created."));
 
-				if (application is Application mauiApplication
-					&& !mauiApplication.Resources.MergedDictionaries.OfType<FuchsStyles>().Any())
-				{
+				if (application is Application mauiApplication && !mauiApplication.Resources.MergedDictionaries.OfType<FuchsStyles>().Any())
 					mauiApplication.Resources.MergedDictionaries.Add(new FuchsStyles());
-				}
+
+				if (application is Application initializedApplication)
+					FuchsThemeManager.Initialize(initializedApplication);
 
 				return application;
 			}, applicationDescriptor.Lifetime));

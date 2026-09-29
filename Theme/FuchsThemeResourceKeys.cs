@@ -1,6 +1,6 @@
 namespace FuchsControls;
 
-public static class FuchsThemeResourceKeys
+internal static class FuchsThemeResourceKeys
 {
 	public const string BackgroundColor = "FuchsBackgroundColor";
 	public const string FieldBackgroundColor = "FuchsFieldBackgroundColor";
@@ -36,9 +36,6 @@ public static class FuchsThemeResourceKeys
 	public const string H5FontSize = "FuchsH5FontSize";
 	public const string H6FontSize = "FuchsH6FontSize";
 	public const string BodyLineHeight = "FuchsBodyLineHeight";
-	public const string SmallLineHeight = "FuchsSmallLineHeight";
-	public const string BaseLineHeight = "FuchsBaseLineHeight";
-	public const string ButtonStyle = "FuchsButtonStyle";
 	public const string FilledButtonStyle = "FuchsFilledButtonStyle";
 	public const string OutlinedButtonStyle = "FuchsOutlinedButtonStyle";
 	public const string TextButtonStyle = "FuchsTextButtonStyle";

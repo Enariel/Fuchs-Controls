@@ -90,10 +90,4 @@ public static class FuchsControlExtensions
 		control.SetDynamicResource(VisualElement.StyleProperty, styleKey);
 		return control;
 	}
-
-	internal static uint GetFuchsAnimationDuration(string resourceKey) =>
-		(uint)GetFuchsDoubleResource(resourceKey);
-
-	internal static double GetFuchsDoubleResource(string resourceKey) =>
-		Application.Current?.Resources.TryGetValue(resourceKey, out var value) == true && value is double number ? number : 0;
 }
