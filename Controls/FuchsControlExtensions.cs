@@ -544,12 +544,12 @@ public static class FuchsControlExtensions
 		return picker.ApplyFuchsStyle("FuchsTimePickerStyle");
 	}
 
-	public static Switch ApplyFuchsSwitchStyle(this Switch control)
+	public static FuchsSwitch ApplyFuchsSwitchStyle(this FuchsSwitch control)
 	{
 		return control.ApplyFuchsStyle("FuchsSwitchStyle");
 	}
 
-	public static CheckBox ApplyFuchsCheckboxStyle(this CheckBox checkBox)
+	public static FuchsCheckbox ApplyFuchsCheckboxStyle(this FuchsCheckbox checkBox)
 	{
 		return checkBox.ApplyFuchsStyle("FuchsCheckboxStyle");
 	}

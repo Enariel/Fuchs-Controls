@@ -2,30 +2,38 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                     xmlns:controls="clr-namespace:FuchsControls"
                     x:Class="FuchsControls.Resources.Styles.FuchsStyles">
-    <Color x:Key="FuchsBackgroundColor">#F1F4F7</Color>
-    <Color x:Key="FuchsFieldBackgroundColor">#E5EBF0</Color>
-    <Color x:Key="FuchsTextColor">#141F23</Color>
-    <Color x:Key="FuchsMutedTextColor">#516773</Color>
-    <Color x:Key="FuchsFieldBorderColor">#9FB1BC</Color>
-    <Color x:Key="FuchsFieldFocusColor">#167CC5</Color>
-    <Color x:Key="FuchsFieldValidColor">#298C55</Color>
-    <Color x:Key="FuchsFieldWarningColor">#D07800</Color>
-    <Color x:Key="FuchsFieldInvalidColor">#C84646</Color>
-    <Color x:Key="FuchsDefaultColor">#385661</Color>
-    <Color x:Key="FuchsPrimaryColor">#167CC5</Color>
-    <Color x:Key="FuchsSecondaryColor">#516773</Color>
-    <Color x:Key="FuchsSuccessColor">#298C55</Color>
-    <Color x:Key="FuchsInfoColor">#189DC6</Color>
-    <Color x:Key="FuchsWarningColor">#D07800</Color>
-    <Color x:Key="FuchsDangerColor">#C84646</Color>
-    <Color x:Key="FuchsLightColor">#E5EBF0</Color>
-    <Color x:Key="FuchsDarkColor">#263B43</Color>
-    <Color x:Key="FuchsPrimaryLight">#D7EAF8</Color>
-    <x:Double x:Key="FuchsBorderWidth">1</x:Double>
-    <CornerRadius x:Key="FuchsCornerRadius">4</CornerRadius>
-    <x:Int32 x:Key="FuchsButtonCornerRadius">4</x:Int32>
-    <x:Double x:Key="FuchsFieldHeight">42</x:Double>
-    <x:Double x:Key="FuchsMultilineFieldMinimumHeight">88</x:Double>
+    <!-- Flatify's default palette and geometry, translated to MAUI resources. -->
+    <Color x:Key="FuchsBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="FuchsFieldBackgroundColor">#F1F4F7</Color>
+    <Color x:Key="FuchsTextColor">#2E4051</Color>
+    <Color x:Key="FuchsMutedTextColor">#77838E</Color>
+    <Color x:Key="FuchsFieldBorderColor">#CED9E3</Color>
+    <Color x:Key="FuchsFieldFocusColor">#1CB0F6</Color>
+    <Color x:Key="FuchsFieldValidColor">#58CC02</Color>
+    <Color x:Key="FuchsFieldWarningColor">#FF9600</Color>
+    <Color x:Key="FuchsFieldInvalidColor">#FF4B4B</Color>
+    <Color x:Key="FuchsDefaultColor">#F1F4F7</Color>
+    <Color x:Key="FuchsPrimaryColor">#1CB0F6</Color>
+    <Color x:Key="FuchsSecondaryColor">#77838E</Color>
+    <Color x:Key="FuchsSuccessColor">#58CC02</Color>
+    <Color x:Key="FuchsInfoColor">#1CB0F6</Color>
+    <Color x:Key="FuchsWarningColor">#FF9600</Color>
+    <Color x:Key="FuchsDangerColor">#FF4B4B</Color>
+    <Color x:Key="FuchsLightColor">#FFFFFF</Color>
+    <Color x:Key="FuchsDarkColor">#1E2A35</Color>
+    <Color x:Key="FuchsPrimaryLight">#77D0FA</Color>
+    <x:Double x:Key="FuchsBorderWidth">2</x:Double>
+    <CornerRadius x:Key="FuchsCornerRadius">16</CornerRadius>
+    <x:Int32 x:Key="FuchsButtonCornerRadius">16</x:Int32>
+    <x:Double x:Key="FuchsFieldHeight">44</x:Double>
+    <x:Double x:Key="FuchsMultilineFieldMinimumHeight">96</x:Double>
+
+    <x:Double x:Key="FuchsDisabledOpacity">0.7</x:Double>
+    <x:Double x:Key="FuchsHoverOpacity">0.95</x:Double>
+    <x:Double x:Key="FuchsPressedOpacity">0.95</x:Double>
+    <x:Double x:Key="FuchsPressedTranslation">2.76</x:Double>
+    <x:Single x:Key="FuchsButtonShadowOpacity">0.85</x:Single>
+    <x:Single x:Key="FuchsCardShadowOpacity">0.2</x:Single>
 
     <!-- Flatify typography tokens translated to MAUI values. -->
     <x:Double x:Key="FuchsBodyFontSize">16</x:Double>
@@ -106,14 +114,20 @@
 
     <!-- Flatify-inspired tab resources. The controls apply these by DynamicResource so theme changes flow through. -->
     <RoundRectangle x:Key="FuchsTabsShape" CornerRadius="{DynamicResource FuchsCornerRadius}" />
+    <RoundRectangle x:Key="FuchsTabShape" CornerRadius="{DynamicResource FuchsCornerRadius}" />
     <Style x:Key="FuchsTabsStyle" TargetType="ContentView">
-        <Setter Property="Margin" Value="0,10" />
+        <Setter Property="Margin" Value="0,8" />
     </Style>
     <Style x:Key="FuchsTabsBorderStyle" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource FuchsBackgroundColor}" />
         <Setter Property="Stroke" Value="{DynamicResource FuchsFieldBorderColor}" />
         <Setter Property="StrokeThickness" Value="{DynamicResource FuchsBorderWidth}" />
         <Setter Property="StrokeShape" Value="{StaticResource FuchsTabsShape}" />
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Offset="0,2" Radius="0" Opacity="0.15" />
+            </Setter.Value>
+        </Setter>
         <Setter Property="Padding" Value="0" />
     </Style>
     <Style x:Key="FuchsTabsPlainStyle" TargetType="Border" BasedOn="{StaticResource FuchsTabsBorderStyle}">
@@ -126,8 +140,8 @@
         <Setter Property="VerticalScrollBarVisibility" Value="Never" />
     </Style>
     <Style x:Key="FuchsTabsHeaderStyle" TargetType="Border">
-        <Setter Property="Background" Value="{DynamicResource FuchsBackgroundColor}" />
-        <Setter Property="Padding" Value="16,0" />
+        <Setter Property="Background" Value="{DynamicResource FuchsFieldBackgroundColor}" />
+        <Setter Property="Padding" Value="12,4" />
     </Style>
     <Style x:Key="FuchsTabsHeaderItemsStyle" TargetType="FlexLayout">
         <Setter Property="Direction" Value="Row" />
@@ -139,16 +153,18 @@
         <Setter Property="HeightRequest" Value="{DynamicResource FuchsBorderWidth}" />
     </Style>
     <Style x:Key="FuchsTabHeaderStyle" TargetType="Border">
-        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Background" Value="{DynamicResource FuchsFieldBackgroundColor}" />
+        <Setter Property="Stroke" Value="Transparent" />
         <Setter Property="StrokeThickness" Value="0" />
-        <Setter Property="Padding" Value="12,10" />
+        <Setter Property="StrokeShape" Value="{StaticResource FuchsTabShape}" />
+        <Setter Property="Padding" Value="14,10,14,8" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.45" />
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsDisabledOpacity}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -159,7 +175,7 @@
         <Setter Property="Opacity" Value="0.45" />
     </Style>
     <Style x:Key="FuchsTabTextStyle" TargetType="Label" BasedOn="{StaticResource FuchsTypoBodyStyle}">
-        <Setter Property="Opacity" Value="0.6" />
+        <Setter Property="Opacity" Value="0.75" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
         <Setter Property="VerticalTextAlignment" Value="Center" />
         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -180,7 +196,7 @@
                     </VisualState>
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.45" />
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsDisabledOpacity}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -194,7 +210,7 @@
     </Style>
     <Style x:Key="FuchsTabIndicatorStyle" TargetType="BoxView">
         <Setter Property="Color" Value="{DynamicResource FuchsFieldBorderColor}" />
-        <Setter Property="HeightRequest" Value="2" />
+        <Setter Property="HeightRequest" Value="{DynamicResource FuchsBorderWidth}" />
         <Setter Property="Opacity" Value="0" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
@@ -231,11 +247,11 @@
         <Setter Property="Padding" Value="0" />
     </Style>
     <Style x:Key="FuchsTabPanelStyle" TargetType="ContentView">
-        <Setter Property="Padding" Value="16" />
+        <Setter Property="Padding" Value="16,14" />
     </Style>
 
     <Style x:Key="FuchsAccordionStyle" TargetType="controls:FuchsAccordion">
-        <Setter Property="Margin" Value="0,10" />
+        <Setter Property="Margin" Value="0,8" />
         <Setter Property="BackgroundColor" Value="{DynamicResource FuchsBackgroundColor}" />
     </Style>
     <Style x:Key="FuchsAccordionItemsStyle" TargetType="VerticalStackLayout">
@@ -248,33 +264,38 @@
         <Setter Property="ColumnSpacing" Value="12" />
     </Style>
     <Style x:Key="FuchsAccordionHeaderStyle" TargetType="Border">
-        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="Padding" Value="16,14,16,12" />
         <Setter Property="StrokeThickness" Value="{DynamicResource FuchsBorderWidth}" />
         <Setter Property="StrokeShape">
             <Setter.Value>
                 <RoundRectangle CornerRadius="{DynamicResource FuchsCornerRadius}" />
             </Setter.Value>
         </Setter>
-        <Setter Property="Background" Value="{DynamicResource FuchsFieldBackgroundColor}" />
+        <Setter Property="Background" Value="{DynamicResource FuchsBackgroundColor}" />
         <Setter Property="Stroke" Value="{DynamicResource FuchsFieldBorderColor}" />
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Offset="0,2" Radius="0" Opacity="0.15" />
+            </Setter.Value>
+        </Setter>
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="AccordionHeaderStates">
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Expanded">
                         <VisualState.Setters>
-                            <Setter Property="Background" Value="{DynamicResource FuchsPrimaryLight}" />
+                            <Setter Property="Background" Value="{DynamicResource FuchsFieldBackgroundColor}" />
                             <Setter Property="Stroke" Value="{DynamicResource FuchsPrimaryColor}" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.45" />
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsDisabledOpacity}" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="ExpandedDisabled">
                         <VisualState.Setters>
-                            <Setter Property="Background" Value="{DynamicResource FuchsPrimaryLight}" />
+                            <Setter Property="Background" Value="{DynamicResource FuchsFieldBackgroundColor}" />
                             <Setter Property="Stroke" Value="{DynamicResource FuchsPrimaryColor}" />
                             <Setter Property="Opacity" Value="0.45" />
                         </VisualState.Setters>
@@ -307,14 +328,22 @@
         </Setter>
     </Style>
     <Style x:Key="FuchsAccordionPanelStyle" TargetType="ContentView">
-        <Setter Property="Padding" Value="16" />
+        <Setter Property="Padding" Value="16,14" />
         <Setter Property="BackgroundColor" Value="{DynamicResource FuchsBackgroundColor}" />
     </Style>
     <RoundRectangle x:Key="FuchsCardShape" CornerRadius="{DynamicResource FuchsCornerRadius}" />
     <Style x:Key="FuchsCardStyle" TargetType="controls:FuchsCard">
         <Setter Property="HorizontalOptions" Value="Fill" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="Background" Value="{DynamicResource FuchsBackgroundColor}" />
+        <Setter Property="Stroke" Value="{DynamicResource FuchsFieldBorderColor}" />
         <Setter Property="StrokeThickness" Value="{DynamicResource FuchsBorderWidth}" />
         <Setter Property="StrokeShape" Value="{StaticResource FuchsCardShape}" />
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Offset="0,2" Radius="0" Opacity="{DynamicResource FuchsCardShadowOpacity}" />
+            </Setter.Value>
+        </Setter>
     </Style>
     <Style x:Key="FuchsContainerStyle" TargetType="controls:FuchsContainer">
         <Setter Property="HorizontalOptions" Value="Center" />
@@ -344,14 +373,14 @@
         <Setter Property="FontSize" Value="{DynamicResource FuchsCaptionFontSize}" />
         <Setter Property="Margin" Value="6,0,6,4" />
     </Style>
-    <Style x:Key="FuchsFormStyle" TargetType="controls:FuchsForm">
+    <Style x:Key="FuchsFormStyle" TargetType="controls:FuchsForm" BasedOn="{StaticResource FuchsCardStyle}">
         <Setter Property="Spacing" Value="12" />
     </Style>
     <Style x:Key="FuchsFieldContentStyle" TargetType="VerticalStackLayout">
         <Setter Property="Spacing" Value="4" />
     </Style>
     <Style x:Key="FuchsFieldBorderStyle" TargetType="Border">
-        <Setter Property="Padding" Value="0" />
+        <Setter Property="Padding" Value="2" />
         <Setter Property="StrokeShape">
             <Setter.Value>
                 <RoundRectangle CornerRadius="{DynamicResource FuchsCornerRadius}" />
@@ -359,7 +388,12 @@
         </Setter>
         <Setter Property="StrokeThickness" Value="{DynamicResource FuchsBorderWidth}" />
         <Setter Property="Stroke" Value="{DynamicResource FuchsFieldBorderColor}" />
-        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsFieldBackgroundColor}" />
+        <Setter Property="Background" Value="{DynamicResource FuchsFieldBackgroundColor}" />
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Offset="0,2" Radius="0" Opacity="0.12" />
+            </Setter.Value>
+        </Setter>
     </Style>
     <Style x:Key="FuchsFormOptionLayoutStyle" TargetType="HorizontalStackLayout">
         <Setter Property="Spacing" Value="8" />
@@ -385,14 +419,16 @@
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
         <Setter Property="PlaceholderColor" Value="{DynamicResource FuchsMutedTextColor}" />
-        <Setter Property="Margin" Value="10,0" />
+        <Setter Property="FontSize" Value="{DynamicResource FuchsBodyFontSize}" />
+        <Setter Property="Margin" Value="10,0,10,1" />
         <Setter Property="HeightRequest" Value="{DynamicResource FuchsFieldHeight}" />
     </Style>
     <Style x:Key="FuchsEditorStyle" TargetType="Editor">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
         <Setter Property="PlaceholderColor" Value="{DynamicResource FuchsMutedTextColor}" />
-        <Setter Property="Margin" Value="10,0" />
+        <Setter Property="FontSize" Value="{DynamicResource FuchsBodyFontSize}" />
+        <Setter Property="Margin" Value="10,0,10,1" />
         <Setter Property="HeightRequest" Value="{DynamicResource FuchsFieldHeight}" />
         <Setter Property="AutoSize" Value="TextChanges" />
         <Setter Property="MinimumHeightRequest" Value="{DynamicResource FuchsMultilineFieldMinimumHeight}" />
@@ -400,53 +436,102 @@
     <Style x:Key="FuchsPickerStyle" TargetType="Picker">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
-        <Setter Property="Margin" Value="10,0" />
+        <Setter Property="FontSize" Value="{DynamicResource FuchsBodyFontSize}" />
+        <Setter Property="Margin" Value="10,0,10,1" />
         <Setter Property="HeightRequest" Value="{DynamicResource FuchsFieldHeight}" />
     </Style>
     <Style x:Key="FuchsDatePickerStyle" TargetType="DatePicker">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
-        <Setter Property="Margin" Value="10,0" />
+        <Setter Property="FontSize" Value="{DynamicResource FuchsBodyFontSize}" />
+        <Setter Property="Margin" Value="10,0,10,1" />
         <Setter Property="HeightRequest" Value="{DynamicResource FuchsFieldHeight}" />
     </Style>
     <Style x:Key="FuchsTimePickerStyle" TargetType="TimePicker">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{DynamicResource FuchsTextColor}" />
-        <Setter Property="Margin" Value="10,0" />
+        <Setter Property="FontSize" Value="{DynamicResource FuchsBodyFontSize}" />
+        <Setter Property="Margin" Value="10,0,10,1" />
         <Setter Property="HeightRequest" Value="{DynamicResource FuchsFieldHeight}" />
     </Style>
-    <Style x:Key="FuchsSwitchStyle" TargetType="Switch">
-        <Setter Property="OnColor" Value="{DynamicResource FuchsPrimaryColor}" />
-        <Setter Property="ThumbColor" Value="{DynamicResource FuchsLightColor}" />
+    <Style x:Key="FuchsSwitchStyle" TargetType="controls:FuchsSwitch">
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal" />
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsHoverOpacity}" />
+                        </VisualState.Setters>
+                    </VisualState>
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.45" />
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsDisabledOpacity}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
     </Style>
-    <Style x:Key="FuchsCheckboxStyle" TargetType="CheckBox">
-        <Setter Property="Color" Value="{DynamicResource FuchsPrimaryColor}" />
-        <Setter Property="WidthRequest" Value="24" />
+    <Style x:Key="FuchsSwitchTrackStyle" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsDefaultColor}" />
+        <Setter Property="Stroke" Value="{DynamicResource FuchsFieldBorderColor}" />
+        <Setter Property="StrokeThickness" Value="{DynamicResource FuchsBorderWidth}" />
+        <Setter Property="WidthRequest" Value="44" />
         <Setter Property="HeightRequest" Value="24" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="12" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="FuchsSwitchThumbStyle" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsLightColor}" />
+        <Setter Property="Stroke" Value="{DynamicResource FuchsFieldBorderColor}" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="WidthRequest" Value="18" />
+        <Setter Property="HeightRequest" Value="18" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="9" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="FuchsCheckboxStyle" TargetType="controls:FuchsCheckbox">
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal" />
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsHoverOpacity}" />
+                        </VisualState.Setters>
+                    </VisualState>
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.45" />
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsDisabledOpacity}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
+    </Style>
+    <Style x:Key="FuchsCheckboxSurfaceStyle" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsLightColor}" />
+        <Setter Property="Stroke" Value="{DynamicResource FuchsFieldBorderColor}" />
+        <Setter Property="StrokeThickness" Value="{DynamicResource FuchsBorderWidth}" />
+        <Setter Property="WidthRequest" Value="24" />
+        <Setter Property="HeightRequest" Value="24" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="4" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="FuchsCheckboxMarkStyle" TargetType="BoxView">
+        <Setter Property="Color" Value="{DynamicResource FuchsPrimaryColor}" />
+        <Setter Property="WidthRequest" Value="3" />
+        <Setter Property="HeightRequest" Value="10" />
     </Style>
     <Style x:Key="FuchsRadioButtonStyle" TargetType="RadioButton">
         <Setter Property="TextColor" Value="{DynamicResource FuchsPrimaryColor}" />
@@ -459,13 +544,23 @@
     </Style>
     <Style x:Key="FuchsTickerButtonStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{DynamicResource FuchsPrimaryColor}" />
+        <Setter Property="TextColor" Value="{DynamicResource FuchsLightColor}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="{DynamicResource FuchsButtonCornerRadius}" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Offset="0,2" Radius="0" Opacity="0.85" />
+            </Setter.Value>
+        </Setter>
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.45" />
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsDisabledOpacity}" />
+                            <Setter Property="TranslationY" Value="{DynamicResource FuchsPressedTranslation}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -481,13 +576,13 @@
         <Setter Property="HeightRequest" Value="{DynamicResource FuchsFieldHeight}" />
     </Style>
     <Style x:Key="FuchsButtonStyle" TargetType="Button">
-        <Setter Property="Padding" Value="14,10,14,8" />
+        <Setter Property="Padding" Value="14,12,14,8" />
         <Setter Property="Margin" Value="5,5,5,8" />
         <Setter Property="CornerRadius" Value="{DynamicResource FuchsButtonCornerRadius}" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="Shadow">
             <Setter.Value>
-                <Shadow Offset="0,1.38" Radius="0" Opacity="0.85" />
+                <Shadow Offset="0,2.76" Radius="0" Opacity="{DynamicResource FuchsButtonShadowOpacity}" />
             </Setter.Value>
         </Setter>
         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -501,14 +596,14 @@
                     </VisualState>
                     <VisualState x:Name="PointerOver">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.95" />
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsHoverOpacity}" />
                             <Setter Property="TranslationY" Value="0" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Pressed">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.95" />
-                            <Setter Property="TranslationY" Value="1.38" />
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsPressedOpacity}" />
+                            <Setter Property="TranslationY" Value="{DynamicResource FuchsPressedTranslation}" />
                             <Setter Property="Shadow">
                                 <Setter.Value>
                                     <Shadow Offset="0,0" Radius="0" Opacity="0" />
@@ -518,8 +613,8 @@
                     </VisualState>
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.7" />
-                            <Setter Property="TranslationY" Value="1.38" />
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsDisabledOpacity}" />
+                            <Setter Property="TranslationY" Value="{DynamicResource FuchsPressedTranslation}" />
                             <Setter Property="Shadow">
                                 <Setter.Value>
                                     <Shadow Offset="0,0" Radius="0" Opacity="0" />
@@ -536,46 +631,6 @@
     <Style x:Key="FuchsFilledButtonStyle" TargetType="controls:FuchsButton"
            BasedOn="{StaticResource FuchsControlButtonStyle}">
         <Setter Property="BorderWidth" Value="0" />
-        <Setter Property="VisualStateManager.VisualStateGroups">
-            <VisualStateGroupList>
-                <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal">
-                        <VisualState.Setters>
-                            <Setter Property="Opacity" Value="1" />
-                            <Setter Property="TranslationY" Value="0" />
-                        </VisualState.Setters>
-                    </VisualState>
-                    <VisualState x:Name="PointerOver">
-                        <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.95" />
-                            <Setter Property="TranslationY" Value="0" />
-                        </VisualState.Setters>
-                    </VisualState>
-                    <VisualState x:Name="Pressed">
-                        <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.95" />
-                            <Setter Property="TranslationY" Value="1.38" />
-                            <Setter Property="Shadow">
-                                <Setter.Value>
-                                    <Shadow Offset="0,0" Radius="0" Opacity="0" />
-                                </Setter.Value>
-                            </Setter>
-                        </VisualState.Setters>
-                    </VisualState>
-                    <VisualState x:Name="Disabled">
-                        <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.7" />
-                            <Setter Property="TranslationY" Value="1.38" />
-                            <Setter Property="Shadow">
-                                <Setter.Value>
-                                    <Shadow Offset="0,0" Radius="0" Opacity="0" />
-                                </Setter.Value>
-                            </Setter>
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateGroupList>
-        </Setter>
     </Style>
     <Style x:Key="FuchsOutlinedButtonStyle" TargetType="controls:FuchsButton"
            BasedOn="{StaticResource FuchsControlButtonStyle}">
@@ -588,19 +643,20 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="PointerOver">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.95" />
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsHoverOpacity}" />
+                            <Setter Property="TranslationY" Value="0" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Pressed">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.95" />
-                            <Setter Property="TranslationY" Value="1.2" />
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsPressedOpacity}" />
+                            <Setter Property="TranslationY" Value="{DynamicResource FuchsPressedTranslation}" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.7" />
-                            <Setter Property="TranslationY" Value="1.38" />
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsDisabledOpacity}" />
+                            <Setter Property="TranslationY" Value="{DynamicResource FuchsPressedTranslation}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -619,17 +675,19 @@
                     <VisualState x:Name="PointerOver">
                         <VisualState.Setters>
                             <Setter Property="Opacity" Value="0.75" />
+                            <Setter Property="TranslationY" Value="0" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Pressed">
                         <VisualState.Setters>
                             <Setter Property="Opacity" Value="0.65" />
+                            <Setter Property="TranslationY" Value="{DynamicResource FuchsPressedTranslation}" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.7" />
-                            <Setter Property="TranslationY" Value="1.38" />
+                            <Setter Property="Opacity" Value="{DynamicResource FuchsDisabledOpacity}" />
+                            <Setter Property="TranslationY" Value="{DynamicResource FuchsPressedTranslation}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>

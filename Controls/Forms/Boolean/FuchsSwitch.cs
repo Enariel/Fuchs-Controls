@@ -1,24 +1,47 @@
 namespace FuchsControls;
 
-public sealed class FuchsSwitch : FuchsBooleanBase
+public sealed partial class FuchsSwitch : FuchsBooleanBase
 {
-	private readonly Switch _switch = new Switch().ApplyFuchsSwitchStyle();
-	private bool _isUpdating;
+	private readonly Border _track = new Border
+									 {
+										 Padding = 0, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center
+									 }.ApplyFuchsStyle("FuchsSwitchTrackStyle");
+
+	private readonly Border _thumb = new Border
+									 {
+										 Padding = 0, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center
+									 }.ApplyFuchsStyle("FuchsSwitchThumbStyle");
+
+	private readonly Grid _switchVisual = new() { WidthRequest = 44, HeightRequest = 44 };
+
+	private readonly Grid _input = new()
+								   {
+									   BackgroundColor = Colors.Transparent, HorizontalOptions = LayoutOptions.Start
+									   , VerticalOptions = LayoutOptions.Center
+								   };
+
+	private Color _themeColor = Colors.Transparent;
 
 	public static readonly BindableProperty IsToggledProperty = BindableProperty.Create(
 		nameof(IsToggled), typeof(bool), typeof(FuchsSwitch), false, BindingMode.TwoWay, propertyChanged: OnIsToggledChanged);
 
-	[Obsolete("Use IsToggled instead.")]
-	public static readonly BindableProperty ValueProperty = BindableProperty.Create(
+	[Obsolete("Use IsToggled instead.")] public static readonly BindableProperty ValueProperty = BindableProperty.Create(
 		nameof(Value), typeof(bool), typeof(FuchsSwitch), false, BindingMode.TwoWay, propertyChanged: OnValueChanged);
 
 	public event EventHandler<FuchsBooleanChangedEventArgs>? Toggled;
 
 	public FuchsSwitch()
 	{
-		_switch.Toggled += OnToggled;
-		SetBooleanInput(_switch, _switch);
+		this.ApplyFuchsSwitchStyle();
+		_switchVisual.Children.Add(_track);
+		_switchVisual.Children.Add(_thumb);
+		_input.Children.Add(_switchVisual);
+		_input.SetDynamicResource(VisualElement.WidthRequestProperty, FuchsThemeResourceKeys.FieldHeight);
+		_input.SetDynamicResource(VisualElement.HeightRequestProperty, FuchsThemeResourceKeys.FieldHeight);
+		_input.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(ToggleSwitch) });
+		SetBooleanInput(_input, _input);
 		UpdateIsToggled();
+		ApplyThemeColor(ThemeColor);
 	}
 
 	public bool IsToggled
@@ -40,12 +63,6 @@ public sealed class FuchsSwitch : FuchsBooleanBase
 	private static void OnValueChanged(BindableObject bindable, object oldValue, object newValue) =>
 		((FuchsSwitch)bindable).SetIsToggled((bool)newValue);
 
-	private void OnToggled(object? sender, ToggledEventArgs e)
-	{
-		if (!_isUpdating)
-			IsToggled = e.Value;
-	}
-
 	private void OnIsToggledChanged(bool value)
 	{
 		UpdateIsToggled();
@@ -62,10 +79,20 @@ public sealed class FuchsSwitch : FuchsBooleanBase
 
 	private void UpdateIsToggled()
 	{
-		_isUpdating = true;
-		_switch.IsToggled = IsToggled;
-		_isUpdating = false;
+		_track.BackgroundColor = IsToggled ? _themeColor : FuchsThemeManager.Current.DefaultColor;
+		_track.Stroke = new SolidColorBrush(IsToggled ? _themeColor : FuchsThemeManager.Current.FieldBorderColor);
+		_thumb.TranslationX = IsToggled ? 10 : -10;
 	}
 
-	protected override void ApplyThemeColor(Color color) => _switch.OnColor = color;
+	private void ToggleSwitch()
+	{
+		if (IsEnabled)
+			IsToggled = !IsToggled;
+	}
+
+	protected override void ApplyThemeColor(Color color)
+	{
+		_themeColor = color;
+		UpdateIsToggled();
+	}
 }

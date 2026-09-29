@@ -1,9 +1,31 @@
 namespace FuchsControls;
 
-public sealed class FuchsCheckbox : FuchsBooleanBase
+public sealed partial class FuchsCheckbox : FuchsBooleanBase
 {
-	private readonly CheckBox _checkBox = new CheckBox().ApplyFuchsCheckboxStyle();
-	private bool _isUpdating;
+	private readonly BoxView _shortCheckMark = new BoxView
+											   {
+												   WidthRequest = 3, HeightRequest = 7, Rotation = 45, TranslationX = -4, TranslationY = 2
+												   , HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center
+											   }.ApplyFuchsStyle("FuchsCheckboxMarkStyle");
+
+	private readonly BoxView _longCheckMark = new BoxView
+											  {
+												  WidthRequest = 3, HeightRequest = 13, Rotation = -45, TranslationX = 1.5, TranslationY = -1.5
+												  , HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center
+											  }.ApplyFuchsStyle("FuchsCheckboxMarkStyle");
+
+	private readonly Grid _checkMarkLayout = new() { WidthRequest = 24, HeightRequest = 24 };
+
+	private readonly Border _checkSurface = new Border
+											{
+												Padding = 0, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center
+											}.ApplyFuchsStyle("FuchsCheckboxSurfaceStyle");
+
+	private readonly Grid _input = new()
+								   {
+									   BackgroundColor = Colors.Transparent, HorizontalOptions = LayoutOptions.Start
+									   , VerticalOptions = LayoutOptions.Center
+								   };
 
 	public static readonly BindableProperty IsCheckedProperty = BindableProperty.Create(
 		nameof(IsChecked), typeof(bool), typeof(FuchsCheckbox), false, BindingMode.TwoWay, propertyChanged: OnIsCheckedChanged);
@@ -20,9 +42,17 @@ public sealed class FuchsCheckbox : FuchsBooleanBase
 
 	public FuchsCheckbox()
 	{
-		_checkBox.CheckedChanged += OnCheckedChanged;
-		SetBooleanInput(_checkBox, _checkBox);
+		this.ApplyFuchsCheckboxStyle();
+		_checkMarkLayout.Children.Add(_shortCheckMark);
+		_checkMarkLayout.Children.Add(_longCheckMark);
+		_checkSurface.Content = _checkMarkLayout;
+		_input.Children.Add(_checkSurface);
+		_input.SetDynamicResource(VisualElement.WidthRequestProperty, FuchsThemeResourceKeys.FieldHeight);
+		_input.SetDynamicResource(VisualElement.HeightRequestProperty, FuchsThemeResourceKeys.FieldHeight);
+		_input.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(ToggleChecked) });
+		SetBooleanInput(_input, _input);
 		UpdateIsChecked();
+		ApplyThemeColor(ThemeColor);
 	}
 
 	public bool IsChecked
@@ -49,13 +79,7 @@ public sealed class FuchsCheckbox : FuchsBooleanBase
 		((FuchsCheckbox)bindable).OnIsCheckedChanged((bool)newValue);
 
 	private static void OnValueChanged(BindableObject bindable, object oldValue, object newValue) =>
-		((FuchsCheckbox)bindable).SetIsChecked((bool?)newValue ?? false);
-
-	private void OnCheckedChanged(object? sender, CheckedChangedEventArgs e)
-	{
-		if (!_isUpdating)
-			IsChecked = e.Value;
-	}
+		((FuchsCheckbox)bindable).SetIsChecked(newValue is true);
 
 	private void OnIsCheckedChanged(bool value)
 	{
@@ -73,10 +97,19 @@ public sealed class FuchsCheckbox : FuchsBooleanBase
 
 	private void UpdateIsChecked()
 	{
-		_isUpdating = true;
-		_checkBox.IsChecked = IsChecked;
-		_isUpdating = false;
+		_shortCheckMark.IsVisible = IsChecked;
+		_longCheckMark.IsVisible = IsChecked;
 	}
 
-	protected override void ApplyThemeColor(Color color) => _checkBox.Color = color;
+	private void ToggleChecked()
+	{
+		if (IsEnabled)
+			IsChecked = !IsChecked;
+	}
+
+	protected override void ApplyThemeColor(Color color)
+	{
+		_shortCheckMark.Color = color;
+		_longCheckMark.Color = color;
+	}
 }

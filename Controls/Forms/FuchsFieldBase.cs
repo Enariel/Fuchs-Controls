@@ -130,7 +130,7 @@ public abstract class FuchsFieldBase : ContentView
 		_label.IsVisible = !string.IsNullOrWhiteSpace(Label);
 		_helpText.Text = HelpText;
 		_helpText.IsVisible = !string.IsNullOrWhiteSpace(HelpText);
-		if (_input is not null)
+		if (_input is not null && HelpText != string.Empty)
 		{
 			ToolTipProperties.SetText(_input, HelpText);
 		}

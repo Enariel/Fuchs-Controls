@@ -20,11 +20,11 @@ public sealed class FuchsTheme : BindableObject
 	public static readonly BindableProperty DangerColorProperty = CreateColorProperty(nameof(DangerColor));
 	public static readonly BindableProperty LightColorProperty = CreateColorProperty(nameof(LightColor));
 	public static readonly BindableProperty DarkColorProperty = CreateColorProperty(nameof(DarkColor));
-	public static readonly BindableProperty PrimaryLightProperty = CreateColorProperty(nameof(PrimaryLight));
-	public static readonly BindableProperty BorderWidthProperty = BindableProperty.Create(nameof(BorderWidth), typeof(double), typeof(FuchsTheme), 1d);
-	public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(double), typeof(FuchsTheme), 4d);
-	public static readonly BindableProperty FieldHeightProperty = BindableProperty.Create(nameof(FieldHeight), typeof(double), typeof(FuchsTheme), 42d);
-	public static readonly BindableProperty MultilineFieldMinimumHeightProperty = BindableProperty.Create(nameof(MultilineFieldMinimumHeight), typeof(double), typeof(FuchsTheme), 88d);
+	public static readonly BindableProperty PrimaryLightProperty = CreateColorProperty(nameof(PrimaryLight)); 
+	public static readonly BindableProperty BorderWidthProperty = BindableProperty.Create(nameof(BorderWidth), typeof(double), typeof(FuchsTheme), 2d); 
+	public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(double), typeof(FuchsTheme), 16d); 
+	public static readonly BindableProperty FieldHeightProperty = BindableProperty.Create(nameof(FieldHeight), typeof(double), typeof(FuchsTheme), 44d); 
+	public static readonly BindableProperty MultilineFieldMinimumHeightProperty = BindableProperty.Create(nameof(MultilineFieldMinimumHeight), typeof(double), typeof(FuchsTheme), 96d);
 	public static readonly BindableProperty BodyFontSizeProperty = BindableProperty.Create(nameof(BodyFontSize), typeof(double), typeof(FuchsTheme), 16d);
 	public static readonly BindableProperty CaptionFontSizeProperty = BindableProperty.Create(nameof(CaptionFontSize), typeof(double), typeof(FuchsTheme), 12d);
 	public static readonly BindableProperty SubtitleFontSizeProperty = BindableProperty.Create(nameof(SubtitleFontSize), typeof(double), typeof(FuchsTheme), 20d);
@@ -237,49 +237,49 @@ public sealed class FuchsTheme : BindableObject
 	public static FuchsTheme CreateLight() =>
 		new FuchsTheme
 		{
-			BackgroundColor = Color.FromArgb("#F1F4F7")
-			, FieldBackgroundColor = Color.FromArgb("#E5EBF0")
-			, TextColor = Color.FromArgb("#141F23")
-			, MutedTextColor = Color.FromArgb("#516773")
-			, FieldBorderColor = Color.FromArgb("#9FB1BC")
-			, FieldFocusColor = Color.FromArgb("#167CC5")
-			, FieldValidColor = Color.FromArgb("#298C55")
-			, FieldWarningColor = Color.FromArgb("#D07800")
-			, FieldInvalidColor = Color.FromArgb("#C84646")
-			, DefaultColor = Color.FromArgb("#385661")
-			, PrimaryColor = Color.FromArgb("#167CC5")
-			, SecondaryColor = Color.FromArgb("#516773")
-			, SuccessColor = Color.FromArgb("#298C55")
-			, InfoColor = Color.FromArgb("#189DC6")
-			, WarningColor = Color.FromArgb("#D07800")
-			, DangerColor = Color.FromArgb("#C84646")
-			, LightColor = Color.FromArgb("#E5EBF0")
-			, DarkColor = Color.FromArgb("#263B43")
-			, PrimaryLight = Color.FromArgb("#D7EAF8")
+			BackgroundColor = Color.FromArgb("#FFFFFF")
+			, FieldBackgroundColor = Color.FromArgb("#F1F4F7")
+			, TextColor = Color.FromArgb("#2E4051")
+			, MutedTextColor = Color.FromArgb("#77838E")
+			, FieldBorderColor = Color.FromArgb("#CED9E3")
+			, FieldFocusColor = Color.FromArgb("#1CB0F6")
+			, FieldValidColor = Color.FromArgb("#58CC02")
+			, FieldWarningColor = Color.FromArgb("#FF9600")
+			, FieldInvalidColor = Color.FromArgb("#FF4B4B")
+			, DefaultColor = Color.FromArgb("#F1F4F7")
+			, PrimaryColor = Color.FromArgb("#1CB0F6")
+			, SecondaryColor = Color.FromArgb("#77838E")
+			, SuccessColor = Color.FromArgb("#58CC02")
+			, InfoColor = Color.FromArgb("#1CB0F6")
+			, WarningColor = Color.FromArgb("#FF9600")
+			, DangerColor = Color.FromArgb("#FF4B4B")
+			, LightColor = Color.FromArgb("#FFFFFF")
+			, DarkColor = Color.FromArgb("#1E2A35")
+			, PrimaryLight = Color.FromArgb("#77D0FA")
 		};
 
 	public static FuchsTheme CreateDark() =>
 		new FuchsTheme
 		{
-			BackgroundColor = Color.FromArgb("#18252B")
-			, FieldBackgroundColor = Color.FromArgb("#263B43")
-			, TextColor = Color.FromArgb("#F1F4F7")
-			, MutedTextColor = Color.FromArgb("#B4C5CD")
-			, FieldBorderColor = Color.FromArgb("#607985")
-			, FieldFocusColor = Color.FromArgb("#58B6F2")
-			, FieldValidColor = Color.FromArgb("#62C98A")
-			, FieldWarningColor = Color.FromArgb("#F0A63A")
-			, FieldInvalidColor = Color.FromArgb("#F07B7B")
-			, DefaultColor = Color.FromArgb("#B4C5CD")
-			, PrimaryColor = Color.FromArgb("#58B6F2")
-			, SecondaryColor = Color.FromArgb("#9FB1BC")
-			, SuccessColor = Color.FromArgb("#62C98A")
-			, InfoColor = Color.FromArgb("#58CBEA")
-			, WarningColor = Color.FromArgb("#F0A63A")
-			, DangerColor = Color.FromArgb("#F07B7B")
-			, LightColor = Color.FromArgb("#E5EBF0")
-			, DarkColor = Color.FromArgb("#10191D")
-			, PrimaryLight = Color.FromArgb("#244D68")
+			BackgroundColor = Color.FromArgb("#1E2A35")
+			, FieldBackgroundColor = Color.FromArgb("#2E4051")
+			, TextColor = Color.FromArgb("#FFFFFF")
+			, MutedTextColor = Color.FromArgb("#B7C1CA")
+			, FieldBorderColor = Color.FromArgb("#526577")
+			, FieldFocusColor = Color.FromArgb("#77D0FA")
+			, FieldValidColor = Color.FromArgb("#9BE067")
+			, FieldWarningColor = Color.FromArgb("#FFC066")
+			, FieldInvalidColor = Color.FromArgb("#FF9393")
+			, DefaultColor = Color.FromArgb("#2E4051")
+			, PrimaryColor = Color.FromArgb("#77D0FA")
+			, SecondaryColor = Color.FromArgb("#B7C1CA")
+			, SuccessColor = Color.FromArgb("#9BE067")
+			, InfoColor = Color.FromArgb("#77D0FA")
+			, WarningColor = Color.FromArgb("#FFC066")
+			, DangerColor = Color.FromArgb("#FF9393")
+			, LightColor = Color.FromArgb("#FFFFFF")
+			, DarkColor = Color.FromArgb("#121A20")
+			, PrimaryLight = Color.FromArgb("#0E587B")
 		};
 
 	private static BindableProperty CreateColorProperty(string name) => BindableProperty.Create(name, typeof(Color), typeof(FuchsTheme), Colors.Transparent);

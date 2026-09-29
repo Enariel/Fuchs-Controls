@@ -11,7 +11,7 @@ namespace FuchsControls;
 [ContentProperty(nameof(Children))]
 public sealed class FuchsForm : FuchsCard
 {
-	private readonly VerticalStackLayout formLayout = new();
+	private readonly VerticalStackLayout formLayout = new VerticalStackLayout();
 
 	public static readonly BindableProperty SpacingProperty = BindableProperty.Create(
 		nameof(Spacing), typeof(double), typeof(FuchsForm), default(double), propertyChanged: OnSpacingChanged);
