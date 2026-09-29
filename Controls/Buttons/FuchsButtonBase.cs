@@ -9,7 +9,6 @@ public abstract class FuchsButtonBase : Button
 
 	protected FuchsButtonBase()
 	{
-		this.ApplyFuchsStyle("FuchsControlButtonStyle");
 		ApplyTheme();
 	}
 

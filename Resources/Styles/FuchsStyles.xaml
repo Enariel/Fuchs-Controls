@@ -17,8 +17,7 @@
     <Color x:Key="FuchsPrimaryLight">#D7EAF8</Color>
     <x:Double x:Key="FuchsBorderWidth">1</x:Double>
     <CornerRadius x:Key="FuchsCornerRadius">4</CornerRadius>
-    <x:Double x:Key="FuchsButtonAnimationDuration">150</x:Double>
-    <x:Double x:Key="FuchsButtonShadowOffsetFactor">1.38</x:Double>
+    <x:Int32 x:Key="FuchsButtonCornerRadius">4</x:Int32>
     <x:Double x:Key="FuchsAccordionShowAnimationDuration">300</x:Double>
     <x:Double x:Key="FuchsAccordionHideAnimationDuration">200</x:Double>
     <x:Double x:Key="FuchsTabShowAnimationDuration">300</x:Double>
@@ -285,7 +284,8 @@
             </VisualStateGroupList>
         </Setter>
     </Style>
-    <Style x:Key="FuchsAccordionHeaderTextStyle" TargetType="controls:FuchsTypo" BasedOn="{StaticResource FuchsTypoBodyStyle}">
+    <Style x:Key="FuchsAccordionHeaderTextStyle" TargetType="controls:FuchsTypo"
+           BasedOn="{StaticResource FuchsTypoBodyStyle}">
         <Setter Property="VerticalTextAlignment" Value="Center" />
     </Style>
     <Style x:Key="FuchsAccordionIndicatorStyle" TargetType="Label">
@@ -355,7 +355,8 @@
     <Style x:Key="FuchsFormOptionLayoutStyle" TargetType="HorizontalStackLayout">
         <Setter Property="Spacing" Value="8" />
     </Style>
-    <Style x:Key="FuchsFormOptionTextStyle" TargetType="controls:FuchsTypo" BasedOn="{StaticResource FuchsTypoBodyStyle}">
+    <Style x:Key="FuchsFormOptionTextStyle" TargetType="controls:FuchsTypo"
+           BasedOn="{StaticResource FuchsTypoBodyStyle}">
         <Setter Property="VerticalOptions" Value="Center" />
         <Setter Property="VerticalTextAlignment" Value="Center" />
     </Style>
@@ -413,7 +414,7 @@
         <Setter Property="BackgroundColor" Value="{DynamicResource FuchsFieldBackgroundColor}" />
         <Setter Property="BorderColor" Value="{DynamicResource FuchsFieldBorderColor}" />
         <Setter Property="BorderWidth" Value="{DynamicResource FuchsBorderWidth}" />
-        <Setter Property="CornerRadius" Value="{DynamicResource FuchsCornerRadius}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource FuchsButtonCornerRadius}" />
         <Setter Property="TextColor" Value="{DynamicResource FuchsSuccessColor}" />
         <Setter Property="WidthRequest" Value="32" />
         <Setter Property="HeightRequest" Value="32" />
@@ -441,7 +442,7 @@
     <Style x:Key="FuchsButtonStyle" TargetType="Button">
         <Setter Property="Padding" Value="14,10,14,8" />
         <Setter Property="Margin" Value="5,5,5,8" />
-        <Setter Property="CornerRadius" Value="{DynamicResource FuchsCornerRadius}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource FuchsButtonCornerRadius}" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="Shadow">
             <Setter.Value>
@@ -467,74 +468,132 @@
                         <VisualState.Setters>
                             <Setter Property="Opacity" Value="0.95" />
                             <Setter Property="TranslationY" Value="1.38" />
-                            <Setter Property="Shadow" Value="{x:Null}" />
+                            <Setter Property="Shadow">
+                                <Setter.Value>
+                                    <Shadow Offset="0,0" Radius="0" Opacity="0" />
+                                </Setter.Value>
+                            </Setter>
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="Opacity" Value="0.7" />
                             <Setter Property="TranslationY" Value="1.38" />
-                            <Setter Property="Shadow" Value="{x:Null}" />
+                            <Setter Property="Shadow">
+                                <Setter.Value>
+                                    <Shadow Offset="0,0" Radius="0" Opacity="0" />
+                                </Setter.Value>
+                            </Setter>
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
     </Style>
-    <Style x:Key="FuchsControlButtonStyle" TargetType="controls:FuchsButton" BasedOn="{StaticResource FuchsButtonStyle}">
+    <Style x:Key="FuchsControlButtonStyle" TargetType="controls:FuchsButton"
+           BasedOn="{StaticResource FuchsButtonStyle}" />
+    <Style x:Key="FuchsFilledButtonStyle" TargetType="controls:FuchsButton"
+           BasedOn="{StaticResource FuchsControlButtonStyle}">
+        <Setter Property="BorderWidth" Value="0" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
-                <VisualStateGroup x:Name="FuchsButtonStates">
-                    <VisualState x:Name="FilledNormal">
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
                         <VisualState.Setters>
                             <Setter Property="Opacity" Value="1" />
                             <Setter Property="TranslationY" Value="0" />
                         </VisualState.Setters>
                     </VisualState>
-                    <VisualState x:Name="FilledPointerOver">
+                    <VisualState x:Name="PointerOver">
                         <VisualState.Setters>
                             <Setter Property="Opacity" Value="0.95" />
                             <Setter Property="TranslationY" Value="0" />
                         </VisualState.Setters>
                     </VisualState>
-                    <VisualState x:Name="OutlinedPointerOver">
-                        <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.95" />
-                            <Setter Property="TranslationY" Value="0" />
-                            <Setter Property="Shadow" Value="{x:Null}" />
-                        </VisualState.Setters>
-                    </VisualState>
-                    <VisualState x:Name="OutlinedNormal">
-                        <VisualState.Setters>
-                            <Setter Property="Opacity" Value="1" />
-                            <Setter Property="TranslationY" Value="0" />
-                            <Setter Property="Shadow" Value="{x:Null}" />
-                        </VisualState.Setters>
-                    </VisualState>
-                    <VisualState x:Name="FilledPressed">
+                    <VisualState x:Name="Pressed">
                         <VisualState.Setters>
                             <Setter Property="Opacity" Value="0.95" />
                             <Setter Property="TranslationY" Value="1.38" />
-                            <Setter Property="Shadow" Value="{x:Null}" />
+                            <Setter Property="Shadow">
+                                <Setter.Value>
+                                    <Shadow Offset="0,0" Radius="0" Opacity="0" />
+                                </Setter.Value>
+                            </Setter>
                         </VisualState.Setters>
                     </VisualState>
-                    <VisualState x:Name="OutlinedPressed">
-                        <VisualState.Setters>
-                            <Setter Property="Opacity" Value="0.95" />
-                            <Setter Property="TranslationY" Value="1.2" />
-                            <Setter Property="Shadow" Value="{x:Null}" />
-                        </VisualState.Setters>
-                    </VisualState>
-                    <VisualState x:Name="FuchsDisabled">
+                    <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="Opacity" Value="0.7" />
                             <Setter Property="TranslationY" Value="1.38" />
-                            <Setter Property="Shadow" Value="{x:Null}" />
+                            <Setter Property="Shadow">
+                                <Setter.Value>
+                                    <Shadow Offset="0,0" Radius="0" Opacity="0" />
+                                </Setter.Value>
+                            </Setter>
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
     </Style>
-    <Style TargetType="controls:FuchsButton" BasedOn="{StaticResource FuchsControlButtonStyle}" />
+    <Style x:Key="FuchsOutlinedButtonStyle" TargetType="controls:FuchsButton"
+           BasedOn="{StaticResource FuchsControlButtonStyle}">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderWidth" Value="{DynamicResource FuchsBorderWidth}" />
+        <Setter Property="Shadow" Value="{x:Null}" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.95" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.95" />
+                            <Setter Property="TranslationY" Value="1.2" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.7" />
+                            <Setter Property="TranslationY" Value="1.38" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+    <Style x:Key="FuchsTextButtonStyle" TargetType="controls:FuchsButton"
+           BasedOn="{StaticResource FuchsControlButtonStyle}">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="Shadow" Value="{x:Null}" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.75" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.65" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.7" />
+                            <Setter Property="TranslationY" Value="1.38" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+    <!-- <Style TargetType="controls:FuchsButton" BasedOn="{StaticResource FuchsControlButtonStyle}" /> -->
 </ResourceDictionary>

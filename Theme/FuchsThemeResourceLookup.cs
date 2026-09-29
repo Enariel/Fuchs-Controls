@@ -2,9 +2,19 @@ namespace FuchsControls;
 
 internal static class FuchsThemeResourceLookup
 {
+	public static string GetButtonStyleKey(FuchsVariant variant) => variant switch
+																	{
+																		FuchsVariant.Outlined => FuchsThemeResourceKeys.OutlinedButtonStyle
+																		, FuchsVariant.Text => FuchsThemeResourceKeys.TextButtonStyle
+																		, _ => FuchsThemeResourceKeys.FilledButtonStyle
+																	};
+
+	public static string GetColorResourceKey(FuchsThemeColor color, bool light = false) =>
+		$"Fuchs{color}{(light ? "Light" : "Color")}";
+
 	public static Color GetColor(FuchsThemeColor color, bool light = false)
 	{
-		var key = $"Fuchs{color}{(light ? "Light" : "Color")}";
+		var key = GetColorResourceKey(color, light);
 		if (Application.Current?.Resources.TryGetValue(key, out var resource) == true && resource is Color resourceColor)
 			return resourceColor;
 

@@ -3,7 +3,7 @@ namespace FuchsControls;
 public sealed class FuchsCheckbox : FuchsFieldBase
 {
 	private readonly Button _button = new Button().ApplyFuchsCheckboxStyle();
-	private readonly FuchsTypo _textLabel = new FuchsTypo { Type = FuchsTypoType.Body }.ApplyFuchsStyle("FuchsFormOptionTextStyle");
+	private readonly FuchsTypo _textLabel = new FuchsTypo { Typo = FuchsTypoType.Body }.ApplyFuchsStyle("FuchsFormOptionTextStyle");
 
 	public static readonly BindableProperty ValueProperty = BindableProperty.Create(nameof(Value), typeof(bool?), typeof(FuchsCheckbox), null
 		, BindingMode.TwoWay, propertyChanged: OnValueChanged);

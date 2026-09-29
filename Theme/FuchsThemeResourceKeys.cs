@@ -23,6 +23,7 @@ public static class FuchsThemeResourceKeys
 	public const string PrimaryLight = "FuchsPrimaryLight";
 	public const string BorderWidth = "FuchsBorderWidth";
 	public const string CornerRadius = "FuchsCornerRadius";
+	public const string ButtonCornerRadius = "FuchsButtonCornerRadius";
 	public const string FieldHeight = "FuchsFieldHeight";
 	public const string MultilineFieldMinimumHeight = "FuchsMultilineFieldMinimumHeight";
 	public const string BodyFontSize = "FuchsBodyFontSize";
@@ -37,4 +38,8 @@ public static class FuchsThemeResourceKeys
 	public const string BodyLineHeight = "FuchsBodyLineHeight";
 	public const string SmallLineHeight = "FuchsSmallLineHeight";
 	public const string BaseLineHeight = "FuchsBaseLineHeight";
+	public const string ButtonStyle = "FuchsButtonStyle";
+	public const string FilledButtonStyle = "FuchsFilledButtonStyle";
+	public const string OutlinedButtonStyle = "FuchsOutlinedButtonStyle";
+	public const string TextButtonStyle = "FuchsTextButtonStyle";
 }

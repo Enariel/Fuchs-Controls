@@ -8,13 +8,13 @@ public static class FuchsControlExtensions
 {
 	public static FuchsTypo ApplyFuchsFieldLabelStyle(this FuchsTypo label)
 	{
-		label.Type = FuchsTypoType.Caption;
+		label.Typo = FuchsTypoType.Caption;
 		return label.ApplyFuchsStyle("FuchsFieldLabelStyle");
 	}
 
 	public static FuchsTypo ApplyFuchsFieldHelpTextStyle(this FuchsTypo label)
 	{
-		label.Type = FuchsTypoType.Caption;
+		label.Typo = FuchsTypoType.Caption;
 		return label.ApplyFuchsStyle("FuchsFieldHelpTextStyle");
 	}
 
@@ -58,6 +58,17 @@ public static class FuchsControlExtensions
 		return button.ApplyFuchsStyle("FuchsCheckboxStyle");
 	}
 
+	internal static FuchsButton ApplyFuchsButtonStyle(this FuchsButton button, FuchsVariant variant)
+	{
+		var styleKey = FuchsThemeResourceLookup.GetButtonStyleKey(variant);
+		if (Application.Current?.Resources.TryGetValue(styleKey, out var resource) == true && resource is Style style)
+		{
+			button.Style = style;
+		}
+
+		return button;
+	}
+
 	public static RadioButton ApplyFuchsRadioButtonStyle(this RadioButton button)
 	{
 		return button.ApplyFuchsStyle("FuchsRadioButtonStyle");
@@ -70,7 +81,7 @@ public static class FuchsControlExtensions
 
 	public static FuchsTypo ApplyFuchsTabTextStyle(this FuchsTypo text, bool active)
 	{
-		text.Type = FuchsTypoType.Body;
+		text.Typo = FuchsTypoType.Body;
 		return text.ApplyFuchsStyle(active ? "FuchsTabActiveTextStyle" : "FuchsTabTextStyle");
 	}
 

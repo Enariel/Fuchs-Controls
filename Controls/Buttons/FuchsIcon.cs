@@ -9,6 +9,9 @@ public sealed class FuchsIcon : ContentView
 	public static readonly BindableProperty PathDataProperty = BindableProperty.Create(
 		nameof(PathData), typeof(string), typeof(FuchsIcon), string.Empty, propertyChanged: OnIconPropertyChanged);
 
+	public static readonly BindableProperty IconProperty = BindableProperty.Create(
+		nameof(Icon), typeof(string), typeof(FuchsIcon), FuchsIcons.QuestionMark, propertyChanged: OnIconPropertyChanged);
+
 	public static readonly BindableProperty ColorProperty = BindableProperty.Create(
 		nameof(Color), typeof(FuchsThemeColor), typeof(FuchsIcon), FuchsThemeColor.Default, BindingMode.TwoWay, propertyChanged: OnIconPropertyChanged);
 
@@ -32,6 +35,12 @@ public sealed class FuchsIcon : ContentView
 	{
 		get => (string)GetValue(PathDataProperty);
 		set => SetValue(PathDataProperty, value);
+	}
+
+	public string Icon
+	{
+		get => (string)GetValue(IconProperty);
+		set => SetValue(IconProperty, value);
 	}
 
 	public FuchsThemeColor Color
@@ -96,8 +105,9 @@ public sealed class FuchsIcon : ContentView
 	private void UpdateIcon()
 	{
 		path.Fill = new SolidColorBrush(FuchsThemeResourceLookup.GetColor(Color));
-		path.Data = string.IsNullOrWhiteSpace(PathData)
+		var pathData = string.IsNullOrWhiteSpace(PathData) ? Icon : PathData;
+		path.Data = string.IsNullOrWhiteSpace(pathData)
 			? null
-			: new PathGeometryConverter().ConvertFromInvariantString(PathData) as Geometry;
+			: new PathGeometryConverter().ConvertFromInvariantString(pathData) as Geometry;
 	}
 }

@@ -181,7 +181,7 @@ public sealed class FuchsAccordion : ContentView
 			return item.HeaderView;
 		}
 
-		var header = new FuchsTypo { Text = item.Header, Type = FuchsTypoType.Body }.ApplyFuchsStyle("FuchsAccordionHeaderTextStyle");
+		var header = new FuchsTypo { Text = item.Header, Typo = FuchsTypoType.Body }.ApplyFuchsStyle("FuchsAccordionHeaderTextStyle");
 		if (item.HeaderFormattedText is not null)
 		{
 			header.FormattedText = item.HeaderFormattedText;

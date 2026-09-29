@@ -3,7 +3,7 @@ namespace FuchsControls;
 public sealed class FuchsSwitch : FuchsFieldBase
 {
 	private readonly Switch _switch = new Switch().ApplyFuchsSwitchStyle();
-	private readonly FuchsTypo _valueLabel = new FuchsTypo { Type = FuchsTypoType.Body }.ApplyFuchsStyle("FuchsFormOptionTextStyle");
+	private readonly FuchsTypo _valueLabel = new FuchsTypo { Typo = FuchsTypoType.Body }.ApplyFuchsStyle("FuchsFormOptionTextStyle");
 	private bool _isUpdating;
 
 	public static readonly BindableProperty ValueProperty =

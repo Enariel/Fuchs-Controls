@@ -296,7 +296,7 @@ public sealed partial class FuchsTabs : ContentView
 
 		var header = new FuchsTypo
 					 {
-						 Text = tab.Header, Type = FuchsTypoType.Body
+						 Text = tab.Header, Typo = FuchsTypoType.Body
 					 };
 		header.IsEnabled = tab.IsEnabled;
 		if (tab.HeaderFormattedText is not null)

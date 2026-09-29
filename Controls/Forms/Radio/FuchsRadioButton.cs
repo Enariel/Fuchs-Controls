@@ -3,7 +3,7 @@ namespace FuchsControls;
 public sealed class FuchsRadioButton : FuchsFieldBase
 {
 	private readonly RadioButton _radioButton = new RadioButton().ApplyFuchsRadioButtonStyle();
-	private readonly FuchsTypo _textLabel = new FuchsTypo { Type = FuchsTypoType.Body }.ApplyFuchsStyle("FuchsFormOptionTextStyle");
+	private readonly FuchsTypo _textLabel = new FuchsTypo { Typo = FuchsTypoType.Body }.ApplyFuchsStyle("FuchsFormOptionTextStyle");
 
 	public static readonly BindableProperty ValueProperty = BindableProperty.Create(nameof(Value), typeof(object), typeof(FuchsRadioButton), null);
 

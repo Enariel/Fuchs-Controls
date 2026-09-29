@@ -6,7 +6,7 @@ public sealed partial class FuchsTypo : Label
 		nameof(Color), typeof(FuchsThemeColor), typeof(FuchsTypo), FuchsThemeColor.Default, BindingMode.TwoWay, propertyChanged: OnColorChanged);
 
 	public static readonly BindableProperty TypeProperty = BindableProperty.Create(
-		nameof(Type), typeof(FuchsTypoType), typeof(FuchsTypo), FuchsTypoType.Body, BindingMode.TwoWay, propertyChanged: OnTypeChanged);
+		nameof(Typo), typeof(FuchsTypoType), typeof(FuchsTypo), FuchsTypoType.Body, BindingMode.TwoWay, propertyChanged: OnTypeChanged);
 
 	public static readonly BindableProperty AccessibilityLabelProperty = BindableProperty.Create(
 		nameof(AccessibilityLabel), typeof(string), typeof(FuchsTypo), string.Empty, propertyChanged: OnAccessibilityChanged);
@@ -26,7 +26,7 @@ public sealed partial class FuchsTypo : Label
 		set => SetValue(ColorProperty, value);
 	}
 
-	public FuchsTypoType Type
+	public FuchsTypoType Typo
 	{
 		get => (FuchsTypoType)GetValue(TypeProperty);
 		set => SetValue(TypeProperty, value);
@@ -65,7 +65,7 @@ public sealed partial class FuchsTypo : Label
 
 	private void ApplyStyle()
 	{
-		SetDynamicResource(VisualElement.StyleProperty, Type switch
+		SetDynamicResource(VisualElement.StyleProperty, Typo switch
 														{
 															FuchsTypoType.Caption => "FuchsTypoCaptionStyle"
 															, FuchsTypoType.Subtitle => "FuchsTypoSubtitleStyle"

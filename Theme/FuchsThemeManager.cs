@@ -52,6 +52,7 @@ public static class FuchsThemeManager
 		resources[FuchsThemeResourceKeys.PrimaryLight] = theme.PrimaryLight;
 		resources[FuchsThemeResourceKeys.BorderWidth] = theme.BorderWidth;
 		resources[FuchsThemeResourceKeys.CornerRadius] = new CornerRadius(theme.CornerRadius);
+		resources[FuchsThemeResourceKeys.ButtonCornerRadius] = (int)Math.Round(theme.CornerRadius);
 		resources[FuchsThemeResourceKeys.FieldHeight] = theme.FieldHeight;
 		resources[FuchsThemeResourceKeys.MultilineFieldMinimumHeight] = theme.MultilineFieldMinimumHeight;
 		resources[FuchsThemeResourceKeys.BodyFontSize] = theme.BodyFontSize;
