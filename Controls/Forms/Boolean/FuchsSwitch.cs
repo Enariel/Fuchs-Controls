@@ -1,49 +1,71 @@
 namespace FuchsControls;
 
-public sealed class FuchsSwitch : FuchsFieldBase
+public sealed class FuchsSwitch : FuchsBooleanBase
 {
 	private readonly Switch _switch = new Switch().ApplyFuchsSwitchStyle();
-	private readonly FuchsTypo _valueLabel = new FuchsTypo { Typo = FuchsTypoType.Body }.ApplyFuchsStyle("FuchsFormOptionTextStyle");
 	private bool _isUpdating;
 
-	public static readonly BindableProperty ValueProperty =
-		BindableProperty.Create(nameof(Value), typeof(bool), typeof(FuchsSwitch), false, BindingMode.TwoWay, propertyChanged: OnValueChanged);
+	public static readonly BindableProperty IsToggledProperty = BindableProperty.Create(
+		nameof(IsToggled), typeof(bool), typeof(FuchsSwitch), false, BindingMode.TwoWay, propertyChanged: OnIsToggledChanged);
 
-	public static readonly BindableProperty TextProperty =
-		BindableProperty.Create(nameof(Text), typeof(string), typeof(FuchsSwitch), string.Empty, propertyChanged: OnTextChanged);
+	[Obsolete("Use IsToggled instead.")]
+	public static readonly BindableProperty ValueProperty = BindableProperty.Create(
+		nameof(Value), typeof(bool), typeof(FuchsSwitch), false, BindingMode.TwoWay, propertyChanged: OnValueChanged);
+
+	public event EventHandler<FuchsBooleanChangedEventArgs>? Toggled;
 
 	public FuchsSwitch()
 	{
 		_switch.Toggled += OnToggled;
-		SetInput(new HorizontalStackLayout { Children = { _switch, _valueLabel } }.ApplyFuchsStyle("FuchsFormOptionLayoutStyle"), _switch);
-		UpdateValue();
+		SetBooleanInput(_switch, _switch);
+		UpdateIsToggled();
 	}
 
+	public bool IsToggled
+	{
+		get => (bool)GetValue(IsToggledProperty);
+		set => SetValue(IsToggledProperty, value);
+	}
+
+	[Obsolete("Use IsToggled instead.")]
 	public bool Value
 	{
 		get => (bool)GetValue(ValueProperty);
 		set => SetValue(ValueProperty, value);
 	}
 
-	public string Text
-	{
-		get => (string)GetValue(TextProperty);
-		set => SetValue(TextProperty, value);
-	}
+	private static void OnIsToggledChanged(BindableObject bindable, object oldValue, object newValue) =>
+		((FuchsSwitch)bindable).OnIsToggledChanged((bool)newValue);
 
-	private static void OnValueChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsSwitch)bindable).UpdateValue();
-	private static void OnTextChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsSwitch)bindable)._valueLabel.Text = (string)newValue;
+	private static void OnValueChanged(BindableObject bindable, object oldValue, object newValue) =>
+		((FuchsSwitch)bindable).SetIsToggled((bool)newValue);
 
 	private void OnToggled(object? sender, ToggledEventArgs e)
 	{
-		if (!_isUpdating) SetValue(ValueProperty, e.Value);
+		if (!_isUpdating)
+			IsToggled = e.Value;
 	}
 
-	private void UpdateValue()
+	private void OnIsToggledChanged(bool value)
+	{
+		UpdateIsToggled();
+		SetValue(ValueProperty, value);
+		RaiseValueChanged(value);
+		Toggled?.Invoke(this, new FuchsBooleanChangedEventArgs(value));
+	}
+
+	private void SetIsToggled(bool value)
+	{
+		if (IsToggled != value)
+			IsToggled = value;
+	}
+
+	private void UpdateIsToggled()
 	{
 		_isUpdating = true;
-		_switch.IsToggled = Value;
-		_valueLabel.Text = Text;
+		_switch.IsToggled = IsToggled;
 		_isUpdating = false;
 	}
+
+	protected override void ApplyThemeColor(Color color) => _switch.OnColor = color;
 }

@@ -409,16 +409,35 @@
     <Style x:Key="FuchsSwitchStyle" TargetType="Switch">
         <Setter Property="OnColor" Value="{DynamicResource FuchsPrimaryColor}" />
         <Setter Property="ThumbColor" Value="{DynamicResource FuchsLightColor}" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.45" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
-    <Style x:Key="FuchsCheckboxStyle" TargetType="Button">
-        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsFieldBackgroundColor}" />
-        <Setter Property="BorderColor" Value="{DynamicResource FuchsFieldBorderColor}" />
-        <Setter Property="BorderWidth" Value="{DynamicResource FuchsBorderWidth}" />
-        <Setter Property="CornerRadius" Value="{DynamicResource FuchsButtonCornerRadius}" />
-        <Setter Property="TextColor" Value="{DynamicResource FuchsSuccessColor}" />
-        <Setter Property="WidthRequest" Value="32" />
-        <Setter Property="HeightRequest" Value="32" />
-        <Setter Property="Padding" Value="0" />
+    <Style x:Key="FuchsCheckboxStyle" TargetType="CheckBox">
+        <Setter Property="Color" Value="{DynamicResource FuchsPrimaryColor}" />
+        <Setter Property="WidthRequest" Value="24" />
+        <Setter Property="HeightRequest" Value="24" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.45" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
     <Style x:Key="FuchsRadioButtonStyle" TargetType="RadioButton">
         <Setter Property="TextColor" Value="{DynamicResource FuchsPrimaryColor}" />
@@ -429,7 +448,20 @@
         <Setter Property="ThumbColor" Value="{DynamicResource FuchsFieldBackgroundColor}" />
         <Setter Property="Margin" Value="10,0" />
     </Style>
-    <Style x:Key="FuchsTickerButtonStyle" TargetType="Button" BasedOn="{StaticResource FuchsCheckboxStyle}">
+    <Style x:Key="FuchsTickerButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsPrimaryColor}" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.45" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
         <Setter Property="WidthRequest" Value="40" />
         <Setter Property="Margin" Value="0" />
     </Style>

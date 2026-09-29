@@ -53,9 +53,9 @@ public static class FuchsControlExtensions
 		return control.ApplyFuchsStyle("FuchsSwitchStyle");
 	}
 
-	public static Button ApplyFuchsCheckboxStyle(this Button button)
+	public static CheckBox ApplyFuchsCheckboxStyle(this CheckBox checkBox)
 	{
-		return button.ApplyFuchsStyle("FuchsCheckboxStyle");
+		return checkBox.ApplyFuchsStyle("FuchsCheckboxStyle");
 	}
 
 	internal static FuchsButton ApplyFuchsButtonStyle(this FuchsButton button, FuchsVariant variant)
