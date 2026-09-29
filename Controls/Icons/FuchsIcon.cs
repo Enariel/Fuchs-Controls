@@ -12,8 +12,8 @@ public sealed class FuchsIcon : ContentView
 	public static readonly BindableProperty IconProperty = BindableProperty.Create(
 		nameof(Icon), typeof(string), typeof(FuchsIcon), FuchsIcons.QuestionMark, propertyChanged: OnIconPropertyChanged);
 
-	public static readonly BindableProperty ColorProperty = BindableProperty.Create(
-		nameof(Color), typeof(FuchsThemeColor), typeof(FuchsIcon), FuchsThemeColor.Default, BindingMode.TwoWay, propertyChanged: OnIconPropertyChanged);
+	public static readonly BindableProperty ThemeColorProperty = BindableProperty.Create(
+		nameof(Color), typeof(FuchsThemeColor), typeof(FuchsIcon), FuchsThemeColor.Text, BindingMode.TwoWay, propertyChanged: OnIconPropertyChanged);
 
 	public static readonly BindableProperty SizeProperty = BindableProperty.Create(
 		nameof(Size), typeof(double), typeof(FuchsIcon), DefaultSize, BindingMode.TwoWay, propertyChanged: OnSizeChanged,
@@ -24,7 +24,7 @@ public sealed class FuchsIcon : ContentView
 
 	public FuchsIcon()
 	{
-		InputTransparent = true;
+		this.ApplyFuchsStyle("FuchsIconStyle");
 		path.ApplyFuchsStyle("FuchsIconPathStyle");
 		Content = path;
 		UpdateSize();
@@ -45,8 +45,8 @@ public sealed class FuchsIcon : ContentView
 
 	public FuchsThemeColor Color
 	{
-		get => (FuchsThemeColor)GetValue(ColorProperty);
-		set => SetValue(ColorProperty, value);
+		get => (FuchsThemeColor)GetValue(ThemeColorProperty);
+		set => SetValue(ThemeColorProperty, value);
 	}
 
 	public double Size

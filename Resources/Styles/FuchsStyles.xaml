@@ -319,10 +319,18 @@
     <Style x:Key="FuchsContainerStyle" TargetType="controls:FuchsContainer">
         <Setter Property="HorizontalOptions" Value="Center" />
     </Style>
+    <Style x:Key="FuchsIconStyle" TargetType="controls:FuchsIcon">
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="InputTransparent" Value="True" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
     <Style x:Key="FuchsIconPathStyle" TargetType="Path">
         <Setter Property="Aspect" Value="Uniform" />
         <Setter Property="HorizontalOptions" Value="Fill" />
         <Setter Property="VerticalOptions" Value="Fill" />
+        <Setter Property="StrokeThickness" Value="0" />
     </Style>
 
     <Style x:Key="FuchsFieldLabelStyle" TargetType="Label">
