@@ -14,7 +14,7 @@ public abstract class FuchsNumericFieldBase : FuchsFieldBase
 		, double.MaxValue, propertyChanged: OnNumericPropertyChanged);
 
 	public static readonly BindableProperty StepProperty =
-		BindableProperty.Create(nameof(Step), typeof(double), typeof(FuchsNumericFieldBase), 1d, propertyChanged: OnNumericPropertyChanged);
+		BindableProperty.Create(nameof(Step), typeof(double), typeof(FuchsNumericFieldBase), null, propertyChanged: OnNumericPropertyChanged);
 
 	public static readonly BindableProperty NumberTypeProperty = BindableProperty.Create(nameof(NumberType), typeof(FuchsNumberType)
 		, typeof(FuchsNumericFieldBase), FuchsNumberType.Double, propertyChanged: OnNumericPropertyChanged);
@@ -49,8 +49,7 @@ public abstract class FuchsNumericFieldBase : FuchsFieldBase
 		set => SetValue(NumberTypeProperty, value);
 	}
 
-	protected static void OnNumericPropertyChanged(BindableObject bindable, object oldValue, object newValue) =>
-		((FuchsNumericFieldBase)bindable).OnNumericValueChanged();
+	protected static void OnNumericPropertyChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsNumericFieldBase)bindable).OnNumericValueChanged();
 
 	protected virtual void OnNumericValueChanged() { }
 
@@ -59,21 +58,37 @@ public abstract class FuchsNumericFieldBase : FuchsFieldBase
 		normalized = text?.Trim() ?? string.Empty;
 		value = null;
 		if (string.IsNullOrEmpty(normalized))
-		{
 			return true;
-		}
 
 		if (!double.TryParse(normalized, NumberStyles.Number | NumberStyles.AllowLeadingSign, CultureInfo.CurrentCulture, out var number))
-		{
 			return false;
-		}
 
 		number = Math.Clamp(number, Minimum, Maximum);
-		value = NumberType switch
-				{
-					FuchsNumberType.Integer => Convert.ToInt32(number), FuchsNumberType.Long => Convert.ToInt64(number)
-					, FuchsNumberType.Single => Convert.ToSingle(number), FuchsNumberType.Decimal => Convert.ToDecimal(number), _ => number
-				};
+		switch (NumberType)
+		{
+			case FuchsNumberType.Integer:
+				value = Convert.ToInt32(number);
+				break;
+			case FuchsNumberType.Long:
+				value = Convert.ToInt64(number);
+				break;
+			case FuchsNumberType.Single:
+				value = Convert.ToSingle(number);
+				break;
+			case FuchsNumberType.Decimal:
+				value = Convert.ToDecimal(number);
+				break;
+			case FuchsNumberType.Float:
+				value = Convert.ToSingle(number);
+				break;
+			case FuchsNumberType.Double:
+				value = Convert.ToDouble(number);
+				break;
+			default:
+				value = number;
+				break;
+		}
+
 		normalized = Convert.ToString(value, CultureInfo.CurrentCulture) ?? string.Empty;
 		return true;
 	}

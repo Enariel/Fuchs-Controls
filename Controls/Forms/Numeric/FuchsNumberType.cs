@@ -7,4 +7,5 @@ public enum FuchsNumberType
 	, Single
 	, Double
 	, Decimal
+	,Float
 }
