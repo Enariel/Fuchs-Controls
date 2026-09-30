@@ -430,6 +430,12 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="FuchsAutocompleteSuggestionsStyle" TargetType="Border"
+           BasedOn="{StaticResource FuchsFieldBorderStyle}" />
+    <Style x:Key="FuchsAutocompleteSuggestionStyle" TargetType="Label"
+           BasedOn="{StaticResource FuchsTypoBodyStyle}">
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>
     <Style x:Key="FuchsFormOptionLayoutStyle" TargetType="HorizontalStackLayout">
         <Setter Property="Spacing" Value="8" />
     </Style>

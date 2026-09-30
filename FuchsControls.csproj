@@ -41,6 +41,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Controls\Forms\Autocomplete\" />
         <Folder Include="Resources\Fonts\"/>
         <Folder Include="Resources\Images\"/>
         <Folder Include="Resources\Styles\"/>

@@ -13,6 +13,11 @@ public abstract class FuchsFieldBase : ContentView
 	private bool _isInputFocused;
 	private bool _isThemeChangeSubscribed;
 
+	protected VerticalStackLayout PostInputContent { get; } = new()
+															  {
+																  IsVisible = false
+															  };
+
 	public static readonly BindableProperty LabelProperty = BindableProperty.Create(
 		nameof(Label), typeof(string), typeof(FuchsFieldBase), string.Empty, propertyChanged: OnPresentationChanged);
 
@@ -47,6 +52,7 @@ public abstract class FuchsFieldBase : ContentView
 		var contentLayout = new VerticalStackLayout().ApplyFuchsStyle("FuchsFieldContentStyle");
 		contentLayout.Children.Add(_label);
 		contentLayout.Children.Add(_inputBorder);
+		contentLayout.Children.Add(PostInputContent);
 		contentLayout.Children.Add(_helpText);
 		Content = contentLayout;
 		UpdatePresentation();
@@ -120,7 +126,10 @@ public abstract class FuchsFieldBase : ContentView
 	{
 		_isInputFocused = isFocused;
 		UpdateBorder();
+		OnInputFocusChanged(isFocused);
 	}
+
+	protected virtual void OnInputFocusChanged(bool isFocused) { }
 
 	private static void OnPresentationChanged(BindableObject bindable, object oldValue, object newValue) => ((FuchsFieldBase)bindable).UpdatePresentation();
 
@@ -196,7 +205,7 @@ public abstract class FuchsFieldBase : ContentView
 
 	private static Color GetThemeColor(string key) =>
 		Application.Current?.Resources.TryGetValue(key, out var value) == true && value is Color color
-			? color
+			? color                 
 			: key switch
 			  {
 				  FuchsThemeResourceKeys.FieldValidColor => FuchsThemeManager.Current.FieldValidColor
