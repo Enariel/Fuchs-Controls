@@ -1,23 +1,36 @@
 namespace FuchsControls.Responsive;
 
+/// <summary>
+/// Provides an abstract base class for controls that dynamically adjust their visibility
+/// according to responsive breakpoints or device environment conditions.
+/// </summary>
 [ContentProperty(nameof(Content))]
 public abstract class FuchsResponsiveBase : ContentView
 {
+	/// <summary>
+	/// Identifies the <see cref="MeasurementMode"/> bindable property.
+	/// </summary>
 	public static readonly BindableProperty MeasurementModeProperty = BindableProperty.Create(
-		nameof(MeasurementMode), typeof(FuchsResponsiveMeasurementMode), typeof(FuchsResponsiveBase), FuchsResponsiveMeasurementMode.AvailableBounds
-		, propertyChanged: OnMeasurementModeChanged);
+		nameof(MeasurementMode), typeof(FuchsResponsiveMeasurementMode), typeof(FuchsResponsiveBase), FuchsResponsiveMeasurementMode.AvailableBounds,
+		propertyChanged: OnMeasurementModeChanged);
 
 	private bool isDisplayMetricsSubscribed;
 	private bool isRefreshing;
 	private bool refreshPending;
 	private VisualElement? responsiveParent;
 
+	/// <summary>
+	/// Initializes a new instance of the <see cref="FuchsResponsiveBase"/> class.
+	/// </summary>
 	protected FuchsResponsiveBase()
 	{
 		SizeChanged += OnSizeChanged;
 		ParentChanged += OnParentChanged;
 	}
 
+	/// <summary>
+	/// Gets or sets the measurement mode used to evaluate responsive conditions.
+	/// </summary>
 	public FuchsResponsiveMeasurementMode MeasurementMode
 	{
 		get => (FuchsResponsiveMeasurementMode)GetValue(MeasurementModeProperty);
@@ -25,39 +38,70 @@ public abstract class FuchsResponsiveBase : ContentView
 	}
 
 	/// <summary>
-	/// Gets a value indicating whether the condition needs a responsive width before it can be evaluated.
+	/// Gets a value indicating whether the condition requires a valid responsive width before it can be evaluated.
 	/// </summary>
 	protected virtual bool RequiresResponsiveWidth => false;
 
 	/// <summary>
 	/// Evaluates the condition that controls this responsive host's visibility.
 	/// </summary>
+	/// <returns><c>true</c> if the condition is met and the control should be visible; otherwise, <c>false</c>.</returns>
 	protected abstract bool IsConditionMet();
 
 	/// <summary>
-	/// Gets the current responsive width in device-independent units.
+	/// Attempts to retrieve the current responsive width in device-independent units.
 	/// </summary>
+	/// <param name="width">When this method returns, contains the current responsive width if available; otherwise, zero.</param>
+	/// <returns><c>true</c> if a valid responsive width was successfully obtained; otherwise, <c>false</c>.</returns>
 	protected bool TryGetResponsiveWidth(out double width)
 	{
 		if (MeasurementMode == FuchsResponsiveMeasurementMode.AvailableBounds)
 		{
-			width = Width;
-			if (IsValidMeasurement(width))
+			// Prioritize container / parent width so hidden or collapsed children re-evaluate correctly when resized.
+			if (responsiveParent is not null && IsValidMeasurement(responsiveParent.Width))
 			{
+				width = responsiveParent.Width;
 				return true;
 			}
 
-			width = responsiveParent?.Width ?? 0;
-			return IsValidMeasurement(width);
+			// If parent width is not available yet, fall back to the control's own width when visible.
+			if (IsVisible && IsValidMeasurement(Width))
+			{
+				width = Width;
+				return true;
+			}
+
+			// Walk up the visual tree to find the nearest ancestor with a valid measured width.
+			var ancestor = (responsiveParent?.Parent ?? Parent) as VisualElement;
+			while (ancestor is not null)
+			{
+				if (IsValidMeasurement(ancestor.Width))
+				{
+					width = ancestor.Width;
+					return true;
+				}
+
+				ancestor = ancestor.Parent as VisualElement;
+			}
+
+			width = 0;
+			return false;
 		}
 
 		var displayInfo = DeviceDisplay.Current.MainDisplayInfo;
-		width = displayInfo.Width / displayInfo.Density;
+		var density = displayInfo.Density;
+		if (density <= 0)
+		{
+			width = 0;
+			return false;
+		}
+
+		width = displayInfo.Width / density;
 		return IsValidMeasurement(width);
 	}
 
 	/// <summary>
-	/// Re-evaluates the condition and applies its result immediately to this control.
+	/// Re-evaluates the responsive condition and applies the resulting visibility state.
 	/// </summary>
 	protected void RefreshVisibility()
 	{
@@ -84,7 +128,10 @@ public abstract class FuchsResponsiveBase : ContentView
 					continue;
 				}
 
-				IsVisible = isConditionMet;
+				if (IsVisible != isConditionMet)
+				{
+					IsVisible = isConditionMet;
+				}
 			} while (refreshPending);
 		}
 		finally
@@ -93,6 +140,7 @@ public abstract class FuchsResponsiveBase : ContentView
 		}
 	}
 
+	/// <inheritdoc />
 	protected override void OnHandlerChanged()
 	{
 		base.OnHandlerChanged();
@@ -112,7 +160,7 @@ public abstract class FuchsResponsiveBase : ContentView
 	private void OnParentChanged(object? sender, EventArgs e)
 	{
 		UpdateResponsiveParentSubscription();
-		if (MeasurementMode == FuchsResponsiveMeasurementMode.AvailableBounds)
+		if (RequiresResponsiveWidth && MeasurementMode == FuchsResponsiveMeasurementMode.AvailableBounds)
 		{
 			RefreshVisibility();
 		}
@@ -120,7 +168,7 @@ public abstract class FuchsResponsiveBase : ContentView
 
 	private void OnSizeChanged(object? sender, EventArgs e)
 	{
-		if (MeasurementMode == FuchsResponsiveMeasurementMode.AvailableBounds)
+		if (RequiresResponsiveWidth && MeasurementMode == FuchsResponsiveMeasurementMode.AvailableBounds)
 		{
 			RefreshVisibility();
 		}
@@ -128,7 +176,7 @@ public abstract class FuchsResponsiveBase : ContentView
 
 	private void OnResponsiveParentSizeChanged(object? sender, EventArgs e)
 	{
-		if (MeasurementMode == FuchsResponsiveMeasurementMode.AvailableBounds)
+		if (RequiresResponsiveWidth && MeasurementMode == FuchsResponsiveMeasurementMode.AvailableBounds)
 		{
 			RefreshVisibility();
 		}
@@ -136,7 +184,7 @@ public abstract class FuchsResponsiveBase : ContentView
 
 	private void UpdateResponsiveParentSubscription()
 	{
-		var shouldSubscribe = Handler is not null && MeasurementMode == FuchsResponsiveMeasurementMode.AvailableBounds;
+		var shouldSubscribe = RequiresResponsiveWidth && Handler is not null && MeasurementMode == FuchsResponsiveMeasurementMode.AvailableBounds;
 		var parent = shouldSubscribe ? Parent as VisualElement : null;
 		if (ReferenceEquals(parent, responsiveParent))
 		{
@@ -157,7 +205,7 @@ public abstract class FuchsResponsiveBase : ContentView
 
 	private void OnMainDisplayInfoChanged(object? sender, DisplayInfoChangedEventArgs e)
 	{
-		if (MeasurementMode == FuchsResponsiveMeasurementMode.DisplayMetrics)
+		if (RequiresResponsiveWidth && MeasurementMode == FuchsResponsiveMeasurementMode.DisplayMetrics)
 		{
 			RefreshVisibility();
 		}
@@ -165,7 +213,7 @@ public abstract class FuchsResponsiveBase : ContentView
 
 	private void UpdateDisplayMetricsSubscription()
 	{
-		var shouldSubscribe = Handler is not null && MeasurementMode == FuchsResponsiveMeasurementMode.DisplayMetrics;
+		var shouldSubscribe = RequiresResponsiveWidth && Handler is not null && MeasurementMode == FuchsResponsiveMeasurementMode.DisplayMetrics;
 		if (shouldSubscribe == isDisplayMetricsSubscribed)
 		{
 			return;

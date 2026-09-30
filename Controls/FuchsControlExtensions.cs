@@ -553,30 +553,61 @@ public static class FuchsControlExtensions
 		return control;
 	}
 
+	/// <summary>
+	/// Sets the measurement mode for the specified responsive control.
+	/// </summary>
+	/// <typeparam name="T">The type of responsive control.</typeparam>
+	/// <param name="control">The responsive control instance.</param>
+	/// <param name="measurementMode">The measurement mode to apply.</param>
+	/// <returns>The responsive control for fluent chaining.</returns>
 	public static T MeasurementMode<T>(this T control, FuchsResponsiveMeasurementMode measurementMode) where T : FuchsResponsiveBase
 	{
 		control.MeasurementMode = measurementMode;
 		return control;
 	}
 
+	/// <summary>
+	/// Sets the target breakpoint name for the specified breakpoint control.
+	/// </summary>
+	/// <param name="control">The breakpoint control instance.</param>
+	/// <param name="breakpoint">The breakpoint name to evaluate against.</param>
+	/// <returns>The breakpoint control for fluent chaining.</returns>
 	public static FuchsBreakpoint Breakpoint(this FuchsBreakpoint control, FuchsBreakpointName breakpoint)
 	{
 		control.Breakpoint = breakpoint;
 		return control;
 	}
 
+	/// <summary>
+	/// Sets the breakpoint match mode for the specified breakpoint control.
+	/// </summary>
+	/// <param name="control">The breakpoint control instance.</param>
+	/// <param name="matchMode">The matching strategy (Exact, Minimum, or Maximum).</param>
+	/// <returns>The breakpoint control for fluent chaining.</returns>
 	public static FuchsBreakpoint MatchMode(this FuchsBreakpoint control, FuchsBreakpointMatchMode matchMode)
 	{
 		control.MatchMode = matchMode;
 		return control;
 	}
 
+	/// <summary>
+	/// Sets the single target device idiom for the specified idiom control.
+	/// </summary>
+	/// <param name="control">The idiom control instance.</param>
+	/// <param name="idiom">The target device idiom to match.</param>
+	/// <returns>The idiom control for fluent chaining.</returns>
 	public static FuchsIdiom Idiom(this FuchsIdiom control, DeviceIdiom idiom)
 	{
 		control.Idiom = idiom;
 		return control;
 	}
 
+	/// <summary>
+	/// Sets the collection of target device idioms for the specified idiom control.
+	/// </summary>
+	/// <param name="control">The idiom control instance.</param>
+	/// <param name="idioms">The collection of device idioms to match.</param>
+	/// <returns>The idiom control for fluent chaining.</returns>
 	public static FuchsIdiom Idioms(this FuchsIdiom control, ObservableCollection<DeviceIdiom> idioms)
 	{
 		control.Idioms = idioms;
