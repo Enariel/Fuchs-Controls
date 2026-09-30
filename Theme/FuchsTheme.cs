@@ -20,14 +20,20 @@ public sealed class FuchsTheme : BindableObject
 	public static readonly BindableProperty DangerColorProperty = CreateColorProperty(nameof(DangerColor));
 	public static readonly BindableProperty LightColorProperty = CreateColorProperty(nameof(LightColor));
 	public static readonly BindableProperty DarkColorProperty = CreateColorProperty(nameof(DarkColor));
-	public static readonly BindableProperty PrimaryLightProperty = CreateColorProperty(nameof(PrimaryLight)); 
-	public static readonly BindableProperty BorderWidthProperty = BindableProperty.Create(nameof(BorderWidth), typeof(double), typeof(FuchsTheme), 2d); 
-	public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(double), typeof(FuchsTheme), 16d); 
-	public static readonly BindableProperty FieldHeightProperty = BindableProperty.Create(nameof(FieldHeight), typeof(double), typeof(FuchsTheme), 44d); 
-	public static readonly BindableProperty MultilineFieldMinimumHeightProperty = BindableProperty.Create(nameof(MultilineFieldMinimumHeight), typeof(double), typeof(FuchsTheme), 96d);
+	public static readonly BindableProperty PrimaryLightProperty = CreateColorProperty(nameof(PrimaryLight));
+	public static readonly BindableProperty BorderWidthProperty = BindableProperty.Create(nameof(BorderWidth), typeof(double), typeof(FuchsTheme), 2d);
+	public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(double), typeof(FuchsTheme), 16d);
+	public static readonly BindableProperty FieldHeightProperty = BindableProperty.Create(nameof(FieldHeight), typeof(double), typeof(FuchsTheme), 44d);
+
+	public static readonly BindableProperty MultilineFieldMinimumHeightProperty =
+		BindableProperty.Create(nameof(MultilineFieldMinimumHeight), typeof(double), typeof(FuchsTheme), 96d);
+
 	public static readonly BindableProperty BodyFontSizeProperty = BindableProperty.Create(nameof(BodyFontSize), typeof(double), typeof(FuchsTheme), 16d);
 	public static readonly BindableProperty CaptionFontSizeProperty = BindableProperty.Create(nameof(CaptionFontSize), typeof(double), typeof(FuchsTheme), 12d);
-	public static readonly BindableProperty SubtitleFontSizeProperty = BindableProperty.Create(nameof(SubtitleFontSize), typeof(double), typeof(FuchsTheme), 20d);
+
+	public static readonly BindableProperty SubtitleFontSizeProperty =
+		BindableProperty.Create(nameof(SubtitleFontSize), typeof(double), typeof(FuchsTheme), 20d);
+
 	public static readonly BindableProperty H1FontSizeProperty = BindableProperty.Create(nameof(H1FontSize), typeof(double), typeof(FuchsTheme), 56d);
 	public static readonly BindableProperty H2FontSizeProperty = BindableProperty.Create(nameof(H2FontSize), typeof(double), typeof(FuchsTheme), 48d);
 	public static readonly BindableProperty H3FontSizeProperty = BindableProperty.Create(nameof(H3FontSize), typeof(double), typeof(FuchsTheme), 37.6d);

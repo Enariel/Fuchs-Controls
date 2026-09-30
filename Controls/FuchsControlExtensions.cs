@@ -74,6 +74,84 @@ public static class FuchsControlExtensions
 		return control;
 	}
 
+	public static FuchsImage AlternativeText(this FuchsImage control, string alternativeText)
+	{
+		control.AlternativeText = alternativeText;
+		return control;
+	}
+
+	public static FuchsActionCard Title(this FuchsActionCard control, string? title)
+	{
+		control.Title = title;
+		return control;
+	}
+
+	public static FuchsActionCard Body(this FuchsActionCard control, string? body)
+	{
+		control.Body = body;
+		return control;
+	}
+
+	public static FuchsActionCard ImageSource(this FuchsActionCard control, ImageSource? imageSource)
+	{
+		control.ImageSource = imageSource;
+		return control;
+	}
+
+	public static FuchsActionCard Path(this FuchsActionCard control, string? path)
+	{
+		control.Path = path;
+		return control;
+	}
+
+	public static FuchsActionCard ImageAlternativeText(this FuchsActionCard control, string? alternativeText)
+	{
+		control.ImageAlternativeText = alternativeText;
+		return control;
+	}
+
+	public static FuchsItemCard Title(this FuchsItemCard control, string? title)
+	{
+		control.Title = title;
+		return control;
+	}
+
+	public static FuchsItemCard Body(this FuchsItemCard control, string? body)
+	{
+		control.Body = body;
+		return control;
+	}
+
+	public static FuchsItemCard ImageSource(this FuchsItemCard control, ImageSource? imageSource)
+	{
+		control.ImageSource = imageSource;
+		return control;
+	}
+
+	public static FuchsItemCard Path(this FuchsItemCard control, string? path)
+	{
+		control.Path = path;
+		return control;
+	}
+
+	public static FuchsItemCard ImageAlternativeText(this FuchsItemCard control, string? alternativeText)
+	{
+		control.ImageAlternativeText = alternativeText;
+		return control;
+	}
+
+	public static FuchsBadge Text(this FuchsBadge control, string text)
+	{
+		control.Text = text;
+		return control;
+	}
+
+	public static FuchsBadge IsPulsing(this FuchsBadge control, bool isPulsing = true)
+	{
+		control.IsPulsing = isPulsing;
+		return control;
+	}
+
 	public static T Color<T>(this T control, FuchsThemeColor color) where T : BindableObject
 	{
 		switch (control)
@@ -86,6 +164,9 @@ public static class FuchsControlExtensions
 				break;
 			case FuchsButtonBase button:
 				button.Color = color;
+				break;
+			case FuchsBadge badge:
+				badge.Color = color;
 				break;
 			case FuchsBooleanBase boolean:
 				boolean.Color = color;

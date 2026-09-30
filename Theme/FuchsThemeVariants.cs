@@ -2,7 +2,7 @@ namespace FuchsControls;
 
 public enum FuchsVariant
 {
-	Filled,
-	Outlined,
-	Text
+	Filled
+	, Outlined
+	, Text
 }

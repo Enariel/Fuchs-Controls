@@ -345,6 +345,41 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="FuchsActionCardLayoutStyle" TargetType="VerticalStackLayout">
+        <Setter Property="Spacing" Value="10" />
+    </Style>
+    <Style x:Key="FuchsActionCardBadgesStyle" TargetType="FlexLayout">
+        <Setter Property="Direction" Value="Row" />
+        <Setter Property="Wrap" Value="Wrap" />
+        <Setter Property="AlignItems" Value="Center" />
+    </Style>
+    <Style x:Key="FuchsActionCardImageStyle" TargetType="controls:FuchsImage">
+        <Setter Property="HeightRequest" Value="180" />
+        <Setter Property="HorizontalOptions" Value="Fill" />
+    </Style>
+    <Style x:Key="FuchsCardIconStyle" TargetType="controls:FuchsIcon">
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+    <Style x:Key="FuchsActionCardFooterStyle" TargetType="HorizontalStackLayout">
+        <Setter Property="Spacing" Value="8" />
+        <Setter Property="HorizontalOptions" Value="Fill" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="Margin" Value="0,4,0,0" />
+    </Style>
+    <Style x:Key="FuchsItemCardLayoutStyle" TargetType="Grid">
+        <Setter Property="ColumnSpacing" Value="16" />
+        <Setter Property="RowSpacing" Value="12" />
+        <Setter Property="VerticalOptions" Value="Start" />
+    </Style>
+    <Style x:Key="FuchsItemCardImageAreaStyle" TargetType="VerticalStackLayout">
+        <Setter Property="Spacing" Value="8" />
+        <Setter Property="VerticalOptions" Value="Start" />
+    </Style>
+    <Style x:Key="FuchsItemCardContentStyle" TargetType="VerticalStackLayout">
+        <Setter Property="Spacing" Value="8" />
+        <Setter Property="VerticalOptions" Value="Start" />
+    </Style>
     <Style x:Key="FuchsContainerStyle" TargetType="controls:FuchsContainer">
         <Setter Property="HorizontalOptions" Value="Center" />
     </Style>
@@ -693,6 +728,23 @@
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
+    </Style>
+    <Style x:Key="FuchsImageStyle" TargetType="controls:FuchsImage">
+        <Setter Property="Aspect" Value="AspectFill" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource FuchsFieldBackgroundColor}" />
+    </Style>
+    <RoundRectangle x:Key="FuchsBadgeShape" CornerRadius="8" />
+    <Style x:Key="FuchsBadgeTextStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="{DynamicResource FuchsCaptionFontSize}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="LineBreakMode" Value="TailTruncation" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="FuchsBadgeStyle" TargetType="controls:FuchsBadge">
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="Stroke" Value="Transparent" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="StrokeShape" Value="{StaticResource FuchsBadgeShape}" />
     </Style>
     <!-- <Style TargetType="controls:FuchsButton" BasedOn="{StaticResource FuchsControlButtonStyle}" /> -->
 </ResourceDictionary>
